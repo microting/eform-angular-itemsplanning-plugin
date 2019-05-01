@@ -25,8 +25,8 @@ SOFTWARE.
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using eFormCore;
-using eFormCore.Installers;
 using ItemsPlanning.Pn.Abstractions;
+using ItemsPlanning.Pn.Installers;
 using Microting.eFormApi.BasePn.Abstractions;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Factories;

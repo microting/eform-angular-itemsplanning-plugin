@@ -40,12 +40,19 @@ namespace ItemsPlanning.Pn.Services
         
         public string GetString(string key)
         {
-            throw new System.NotImplementedException();
+            var str = _localizer[key];
+            return str.Value;
         }
 
         public string GetString(string format, params object[] args)
         {
-            throw new System.NotImplementedException();
+            var message = _localizer[format];
+            if (message?.Value == null)
+            {
+                return null;
+            }
+
+            return string.Format(message.Value, args);
         }
     }
 }

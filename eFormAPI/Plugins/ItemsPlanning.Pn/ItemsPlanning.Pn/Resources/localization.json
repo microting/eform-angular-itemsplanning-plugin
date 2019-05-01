@@ -1,0 +1,23 @@
+[
+	{
+		"Key": "ItemsPlanning",
+		"LocalizedValue": {
+			"da": "Enhedsplanlægning",
+			"en-US": "Items planning"
+		}
+	},
+	{
+		"Key": "Items",
+		"LocalizedValue": {
+			"da": "Enheder",
+			"en-US": "Items"
+		}
+	},
+	{
+		"Key": "Settings",
+		"LocalizedValue": {
+			"da": "Indstillinger",
+			"en-US": "Settings"
+		}
+	}
+]

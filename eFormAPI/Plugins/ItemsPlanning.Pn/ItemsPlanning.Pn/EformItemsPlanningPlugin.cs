@@ -58,7 +58,6 @@ namespace ItemsPlanning.Pn
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IItemsPlanningLocalizationService, ItemsPlanningLocalizationService>();
-//            services.AddTransient<IItemsPlanningService, ItemsPlanningService>();
             services.AddTransient<IItemsPlanningPnSettingsService, ItemsPlanningPnSettingsService>();
             services.AddSingleton<IRebusService, RebusService>();
         }
@@ -71,6 +70,14 @@ namespace ItemsPlanning.Pn
                 connectionString, 
                 seedData, 
                 contextFactory);
+        }
+
+        public void ConfigureOptionsServices(
+            IServiceCollection services, 
+            IConfiguration configuration)
+        {
+            services.ConfigurePluginDbOptions<ItemsPlanningBaseSettings>(
+                configuration.GetSection("ItemsPlanningBaseSettings"));
         }
 
         public void ConfigureDbContext(IServiceCollection services, string connectionString)
@@ -137,17 +144,13 @@ namespace ItemsPlanning.Pn
 
         public void SeedDatabase(string connectionString)
         {
+            // Get DbContext
             var contextFactory = new ItemsPlanningPnContextFactory();
             using (var context = contextFactory.CreateDbContext(new []{connectionString}))
             {
+                // Seed configuration
                 ItemsPlanningPluginSeed.SeedData(context);
             }
         }
-
-        public void ConfigureOptionsServices(IServiceCollection services, IConfiguration configuration)
-        {
-            services.ConfigurePluginDbOptions<ItemsPlanningBaseSettings>(
-                configuration.GetSection("ItemsPlanningBaseSettings"));
-       }
     }
 }

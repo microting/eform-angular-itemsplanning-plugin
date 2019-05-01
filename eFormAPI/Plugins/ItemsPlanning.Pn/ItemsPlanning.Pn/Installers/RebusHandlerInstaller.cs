@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2007 - 2019 Microting A/S
+Copyright (c) 2007 - 2019 microting
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +22,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System.Threading.Tasks;
-using ItemsPlanning.Pn.Infrastructure.Models;
-using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+using Rebus.Handlers;
 
-namespace ItemsPlanning.Pn.Abstractions
+namespace ItemsPlanning.Pn.Installers
 {
-    public interface IItemsPlanningPnSettingsService
+    public class RebusHandlerInstaller : IWindsorInstaller
     {
-        OperationDataResult<ItemsPlanningBaseSettings> GetSettings();
-        Task<OperationResult> UpdateSettings(ItemsPlanningBaseSettings itemsPlanningBaseSettings);
-        
+        public void Install(IWindsorContainer container, IConfigurationStore store)
+        {
+//            container.Register(Component.For<IHandleMessages<MachineAreaCreate>>().ImplementedBy<MachineAreaCreateHandler>().LifestyleTransient());            
+//            container.Register(Component.For<IHandleMessages<MachineAreaUpdate>>().ImplementedBy<MachineAreaUpdateHandler>().LifestyleTransient());            
+//            container.Register(Component.For<IHandleMessages<MachineAreaDelete>>().ImplementedBy<MachineAreaDeleteHandler>().LifestyleTransient());            
+        }
     }
 }
