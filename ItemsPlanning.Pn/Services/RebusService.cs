@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2007 - 2019 microting
+Copyright (c) 2007 - 2019 Microting A/S
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,8 +28,8 @@ using eFormCore;
 using eFormCore.Installers;
 using ItemsPlanning.Pn.Abstractions;
 using Microting.eFormApi.BasePn.Abstractions;
-using Microting.ItemsPlanningBase.Infrastucture.Data;
-using Microting.ItemsPlanningBase.Infrastucture.Data.Factories;
+using Microting.ItemsPlanningBase.Infrastructure.Data;
+using Microting.ItemsPlanningBase.Infrastructure.Data.Factories;
 using Rebus.Bus;
 
 namespace ItemsPlanning.Pn.Services

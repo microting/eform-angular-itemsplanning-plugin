@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2007 - 2019 microting
+Copyright (c) 2007 - 2019 Microting A/S
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -33,27 +33,27 @@ namespace ItemsPlanning.Pn.Infrastructure.Data.Seed.Data
         {
             new PluginConfigurationValue()
             {
-                Name = "TrashInspectionBaseSettings:LogLevel",
+                Name = "ItemsPlanningBaseSettings:LogLevel",
                 Value = "4"
             },
             new PluginConfigurationValue()
             {
-                Name = "TrashInspectionBaseSettings:LogLimit",
+                Name = "ItemsPlanningBaseSettings:LogLimit",
                 Value = "25000"
             },
             new PluginConfigurationValue()
             {
-                Name = "TrashInspectionBaseSettings:SdkConnectionString",
+                Name = "ItemsPlanningBaseSettings:SdkConnectionString",
                 Value = "..."
             },
             new PluginConfigurationValue()
             {
-                Name = "TrashInspectionBaseSettings:MaxParallelism",
+                Name = "ItemsPlanningBaseSettings:MaxParallelism",
                 Value = "1"
             },
             new PluginConfigurationValue()
             {
-                Name = "TrashInspectionBaseSettings:NumberOfWorkers",
+                Name = "ItemsPlanningBaseSettings:NumberOfWorkers",
                 Value = "1"
             }
         };
