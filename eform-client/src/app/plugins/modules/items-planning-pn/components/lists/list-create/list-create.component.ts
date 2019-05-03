@@ -89,7 +89,7 @@ export class ListCreateComponent implements OnInit {
 
   onSelectedChanged(e: any) {
     // debugger;
-    this.newListModel.eFormId = e.id;
+    // this.newListModel.eFormId = e.id;
   }
   // submitDeployment() {
   //   this.spinnerStatus = true;
