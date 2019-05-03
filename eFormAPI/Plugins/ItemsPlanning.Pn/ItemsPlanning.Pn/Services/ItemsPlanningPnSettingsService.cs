@@ -32,6 +32,7 @@ using ItemsPlanning.Pn.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microting.eFormApi.BasePn.Abstractions;
 using Microting.eFormApi.BasePn.Infrastructure.Helpers.PluginDbOptions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
@@ -43,10 +44,28 @@ namespace ItemsPlanning.Pn.Services
         private readonly ILogger<ItemsPlanningPnSettingsService> _logger;
         private readonly IItemsPlanningLocalizationService _itemsPlanningLocalizationService;
         private readonly ItemsPlanningPnDbContext _dbContext;
+        private readonly IEFormCoreService _coreHelper;
         private readonly IPluginDbOptions<ItemsPlanningBaseSettings> _options;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        
-        public OperationDataResult<ItemsPlanningBaseSettings> GetSettings()
+
+
+        public ItemsPlanningPnSettingsService(ILogger<ItemsPlanningPnSettingsService> logger,
+            IItemsPlanningLocalizationService itemsPlanningLocalizationService,
+            ItemsPlanningPnDbContext dbContext,
+            IPluginDbOptions<ItemsPlanningBaseSettings> options,
+            IEFormCoreService coreHelper,
+            IHttpContextAccessor httpContextAccessor)
+        {
+            _logger = logger;
+            _dbContext = dbContext;
+            _coreHelper = coreHelper;
+            _options = options;
+            _httpContextAccessor = httpContextAccessor;
+            _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
+        }
+
+
+        public async Task<OperationDataResult<ItemsPlanningBaseSettings>> GetSettings()
         {
             try
             {
@@ -60,7 +79,7 @@ namespace ItemsPlanning.Pn.Services
                     string dbPrefix = Regex.Match(connectionString, @"Database=(\d*)_").Groups[1].Value;
                     string sdk = $"Database={dbPrefix}_SDK;";
                     connectionString = connectionString.Replace(dbNameSection, sdk);
-                    _options.UpdateDb(settings => { settings.SdkConnectionString = connectionString;}, _dbContext, UserId);
+                    await _options.UpdateDb(settings => { settings.SdkConnectionString = connectionString;}, _dbContext, UserId);
 
                 }
 

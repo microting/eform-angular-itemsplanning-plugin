@@ -30,7 +30,7 @@ namespace ItemsPlanning.Pn.Abstractions
 {
     public interface IItemsPlanningPnSettingsService
     {
-        OperationDataResult<ItemsPlanningBaseSettings> GetSettings();
+        Task<OperationDataResult<ItemsPlanningBaseSettings>> GetSettings();
         Task<OperationResult> UpdateSettings(ItemsPlanningBaseSettings itemsPlanningBaseSettings);
         
     }

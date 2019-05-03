@@ -7,10 +7,10 @@
 		}
 	},
 	{
-		"Key": "Items",
+		"Key": "Lists",
 		"LocalizedValue": {
-			"da": "Enheder",
-			"en-US": "Items"
+			"da": "Lister",
+			"en-US": "Lists"
 		}
 	},
 	{

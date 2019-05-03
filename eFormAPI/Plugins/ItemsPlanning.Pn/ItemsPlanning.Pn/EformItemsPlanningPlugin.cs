@@ -59,6 +59,7 @@ namespace ItemsPlanning.Pn
         {
             services.AddSingleton<IItemsPlanningLocalizationService, ItemsPlanningLocalizationService>();
             services.AddTransient<IItemsPlanningPnSettingsService, ItemsPlanningPnSettingsService>();
+            services.AddTransient<IListService, ListService>();
             services.AddSingleton<IRebusService, RebusService>();
         }
 
@@ -125,9 +126,9 @@ namespace ItemsPlanning.Pn
                 {
                     new MenuItemModel()
                     {
-                        Name = localizationService.GetString("ItemsPlannings"),
-                        E2EId = "items-planning-pn-items-planning",
-                        Link = "/plugins/items-planning-pn/items-plannings",
+                        Name = localizationService.GetString("Lists"),
+                        E2EId = "items-planning-pn-lists",
+                        Link = "/plugins/items-planning-pn/lists",
                         Position = 0,
                     },
                     new MenuItemModel()
