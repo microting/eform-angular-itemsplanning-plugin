@@ -68,7 +68,7 @@ export class ListEditComponent implements OnInit {
 
   onSelectedChanged(e: any) {
     // debugger;
-    this.selectedListModel.eFormId = e.id;
+    // this.selectedListModel.eFormId = e.id;
   }
 
 }
