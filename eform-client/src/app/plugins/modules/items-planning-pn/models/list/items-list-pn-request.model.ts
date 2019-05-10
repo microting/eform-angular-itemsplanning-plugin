@@ -1,4 +1,4 @@
-export class ListPnRequestModel {
+export class ItemsListPnRequestModel {
   pageSize: number;
   sort: string;
   pageIndex: number;

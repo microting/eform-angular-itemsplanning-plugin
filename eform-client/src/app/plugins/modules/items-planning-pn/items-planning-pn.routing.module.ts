@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {AdminGuard, AuthGuard} from 'src/app/common/guards';
 import {ItemsPlanningPnLayoutComponent} from './layouts';
 import {ItemsPlanningSettingsComponent} from './components/items-plannings-setting';
-import {ListsPageComponent} from './components/lists';
+import {ListsPageComponent} from './components/items-lists';
 
 export const routes: Routes = [
   {

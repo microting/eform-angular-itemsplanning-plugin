@@ -104,9 +104,9 @@
 
 <spinner-pn [spinnerVisibility]="spinnerStatus"></spinner-pn>
 
-<app-items-planning-pn-list-create #createListModal
-                                             (onListCreated)="getAllLists()">
-</app-items-planning-pn-list-create>
+<app-items-planning-pn-items-list-create #createListModal
+                                         (listCreated)="getAllLists()">
+</app-items-planning-pn-items-list-create>
 <app-items-planning-pn-list-edit #editListModal
                                (onListUpdated)="getAllLists()"></app-items-planning-pn-list-edit>
 <app-items-planning-pn-list-delete #deleteListModal

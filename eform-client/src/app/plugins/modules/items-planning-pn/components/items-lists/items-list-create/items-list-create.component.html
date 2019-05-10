@@ -1,0 +1,146 @@
+<div mdbModal class="modal fade" #frame="mdbModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ 'New List' | translate }}</h3>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row mb-3">
+            <div class="col-md-2 col-xs-6">
+              <div class="md-form">
+                <input mdbInputDirective
+                       [mdbValidate]="false"
+                       [(ngModel)]="newListModel.name"
+                       type="text" id="createListItemName"
+                       name="createListItemName" class="form-control">
+                <label for="createListItemName">{{'List Name' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+              <div class="md-form">
+                <input mdbInputDirective
+                       [mdbValidate]="false"
+                       [(ngModel)]="newListModel.repeatEvery"
+                       type="text" id="createRepeatEvery"
+                       name="createRepeatEvery" class="form-control">
+                <label for="createRepeatEvery">{{'Repeat every' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+              <div class="md-form">
+                <input mdbInputDirective
+                       [mdbValidate]="false"
+                       [(ngModel)]="newListModel.repeatType"
+                       type="text" id="createRepeatType"
+                       name="createRepeatType" class="form-control">
+                <label for="createRepeatType">{{'Repeat type' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+              <div class="md-form">
+                <input mdbInputDirective
+                       [mdbValidate]="false"
+                       [(ngModel)]="newListModel.repeatOn"
+                       type="text" id="createRepeatOn"
+                       name="createRepeatOn" class="form-control">
+                <label for="createRepeatOn">{{'Repeat on' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+              <div class="md-form">
+                <input mdbInputDirective
+                       [mdbValidate]="false"
+                       [(ngModel)]="newListModel.repeatUntil"
+                       type="text" id="createRepeatUntil"
+                       name="createRepeatUntil" class="form-control">
+                <label for="createRepeatUntil">{{'Repeat until' | translate}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="row p-1 mt-4 table-responsive no-gutters">
+            <button class="btn btn-success" (click)="addNewItem()">
+              <fa-icon icon="plus" class="mr-1"></fa-icon>
+              {{ 'Add New Item' | translate }}
+            </button>
+            <table class="table table-sm text-center z-depth-1 pr-2 pl-2">
+              <tbody id="tableBody">
+              <tr *ngFor="let item of newListModel.items">
+                <td id="listId">
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
+                           [(ngModel)]="item.name"
+                           type="text" id="createItemName"
+                           name="createItemName" class="form-control">
+                    <label for="createItemName">{{'Name' | translate}}</label>
+                  </div>
+                </td>
+                <td id="listName">
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
+                           [(ngModel)]="item.description"
+                           type="text" id="createItemDescription"
+                           name="createItemDescription" class="form-control">
+                    <label for="createItemDescription">{{'Description' | translate}}</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
+                           [(ngModel)]="item.itemNumber"
+                           type="text" id="createItemNumber"
+                           name="createItemNumber" class="form-control">
+                    <label for="createItemNumber">{{'Number' | translate}}</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
+                           [(ngModel)]="item.locationCode"
+                           type="text" id="createItemLocationCode"
+                           name="createItemLocationCode" class="form-control">
+                    <label for="createItemLocationCode">{{'Location code' | translate}}</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="md-form md-form-sm">
+                    <ng-select [items]="templatesModel.templates"
+                               bindLabel="label"
+                               [placeholder]="('Selected template' | translate)"
+                               bindValue="id"
+                               [typeahead]="typeahead"
+                               [(ngModel)]="item.templateId"
+                               id="createListSelector">
+                    </ng-select>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex flex-row justify-content-center">
+                    <button id="deleteListBtn"
+                            class="btn btn-danger btn-icon mb-2 "
+                            mdbTooltip="{{ 'Delete Item' | translate }}">
+                      <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="listCreateSaveBtn" class="btn btn-success" [disabled]="!newListModel.name" (click)="createItemsList()">
+          {{ 'Create' | translate }}
+        </button>
+        <button id="listCreateCancelBtn" class="btn btn-accent text-black-50" (click)="frame.hide()">{{'Cancel' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<spinner-pn [spinnerVisibility]="spinnerStatus"></spinner-pn>

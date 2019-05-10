@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core'
 import {
   ItemsPlanningPnListsService
 } from 'src/app/plugins/modules/items-planning-pn/services';
-import {ListPnModel} from '../../../models/list';
+import {ItemsListPnModel} from '../../../models/list';
 
 @Component({
   selector: 'app-items-planning-pn-list-delete',
@@ -13,13 +13,13 @@ export class ListDeleteComponent implements OnInit {
   @ViewChild('frame') frame;
   @Output() onListDeleted: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
-  selectedListModel: ListPnModel = new ListPnModel();
+  selectedListModel: ItemsListPnModel = new ItemsListPnModel();
   constructor(private trashInspectionPnListsService: ItemsPlanningPnListsService) { }
 
   ngOnInit() {
   }
 
-  show(listModel: ListPnModel) {
+  show(listModel: ItemsListPnModel) {
     this.selectedListModel = listModel;
     this.frame.show();
   }
