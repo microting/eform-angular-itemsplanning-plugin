@@ -28,6 +28,8 @@ using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 
 namespace ItemsPlanning.Pn.Abstractions
 {
+    using Infrastructure.Models.Settings;
+
     public interface IItemsPlanningPnSettingsService
     {
         Task<OperationDataResult<ItemsPlanningBaseSettings>> GetSettings();

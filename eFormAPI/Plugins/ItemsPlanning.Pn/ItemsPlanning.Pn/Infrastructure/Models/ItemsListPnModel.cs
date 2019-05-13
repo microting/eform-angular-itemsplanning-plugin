@@ -1,0 +1,22 @@
+using System.Collections.Generic;
+
+namespace ItemsPlanning.Pn.Infrastructure.Models
+{
+    using System;
+    using Microting.ItemsPlanningBase.Infrastructure.Enums;
+
+    public class ItemsListPnModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int RepeatEvery { get; set; }
+        public RepeatType RepeatType { get; set; }
+        public RepeatOn RepeatOn { get; set; }
+        public DateTime? RepeatUntil { get; set; }
+        public int TemplateId { get; set; }
+
+        public List<ItemsListPnItemModel> Items { get; set; }
+            = new List<ItemsListPnItemModel>();
+    }
+}

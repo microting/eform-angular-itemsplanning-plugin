@@ -28,7 +28,6 @@ using System.Reflection;
 using ItemsPlanning.Pn.Abstractions;
 using ItemsPlanning.Pn.Infrastructure.Data.Seed;
 using ItemsPlanning.Pn.Infrastructure.Data.Seed.Data;
-using ItemsPlanning.Pn.Infrastructure.Models;
 using ItemsPlanning.Pn.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +42,8 @@ using Microting.ItemsPlanningBase.Infrastructure.Data.Factories;
 
 namespace ItemsPlanning.Pn
 {
+    using Infrastructure.Models.Settings;
+
     public class EformItemsPlanningPlugin : IEformPlugin
     {
         public string Name => "Microting Items Planning Plugin";
@@ -59,7 +60,7 @@ namespace ItemsPlanning.Pn
         {
             services.AddSingleton<IItemsPlanningLocalizationService, ItemsPlanningLocalizationService>();
             services.AddTransient<IItemsPlanningPnSettingsService, ItemsPlanningPnSettingsService>();
-            services.AddTransient<IListService, ListService>();
+            services.AddTransient<IItemsListService, ItemsListService>();
             services.AddSingleton<IRebusService, RebusService>();
         }
 
