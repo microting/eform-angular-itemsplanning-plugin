@@ -14,7 +14,6 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         public RepeatType RepeatType { get; set; }
         public RepeatOn RepeatOn { get; set; }
         public DateTime? RepeatUntil { get; set; }
-        public int TemplateId { get; set; }
 
         public List<ItemsListPnItemModel> Items { get; set; }
             = new List<ItemsListPnItemModel>();

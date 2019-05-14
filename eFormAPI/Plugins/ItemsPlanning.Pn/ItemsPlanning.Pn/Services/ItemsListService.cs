@@ -73,7 +73,6 @@ namespace ItemsPlanning.Pn.Services
                     RepeatOn = x.RepeatOn,
                     RepeatType = x.RepeatType,
                     RepeatUntil = x.RepeatUntil,
-                    TemplateId = x.TemplateId,
                 }).ToListAsync();
 
                 listsModel.Total = await _dbContext.ItemLists.CountAsync(x =>
@@ -101,7 +100,6 @@ namespace ItemsPlanning.Pn.Services
                     CreatedByUserId = UserId,
                     CreatedAt = DateTime.UtcNow,
                     RepeatEvery = model.RepeatEvery,
-                    TemplateId = model.TemplateId,
                     RepeatUntil = model.RepeatUntil,
                     RepeatOn = model.RepeatOn,
                     RepeatType = model.RepeatType,
@@ -155,7 +153,6 @@ namespace ItemsPlanning.Pn.Services
                     RepeatUntil = updateModel.RepeatUntil,
                     RepeatOn = updateModel.RepeatOn,
                     RepeatEvery = updateModel.RepeatEvery,
-                    TemplateId = updateModel.TemplateId,
                     RepeatType = updateModel.RepeatType,
                     Description = updateModel.Description,
                     Name = updateModel.Name,
@@ -189,7 +186,6 @@ namespace ItemsPlanning.Pn.Services
                         RepeatUntil = x.RepeatUntil,
                         RepeatOn = x.RepeatOn,
                         RepeatEvery = x.RepeatEvery,
-                        TemplateId = x.TemplateId,
                         RepeatType = x.RepeatType,
                         Description = x.Description,
                         Name = x.Name,
@@ -200,6 +196,7 @@ namespace ItemsPlanning.Pn.Services
                             Name = i.Name,
                             LocationCode = i.LocationCode,
                             ItemNumber = i.ItemNumber,
+                            TemplateId = i.TemplateId,
                         }).ToList()
                     }).FirstOrDefaultAsync();
 

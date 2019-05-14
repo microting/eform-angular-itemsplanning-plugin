@@ -7,5 +7,6 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         public string Description { get; set; }
         public string ItemNumber { get; set; }
         public string LocationCode { get; set; }
+        public int TemplateId { get; set; }
     }
 }
