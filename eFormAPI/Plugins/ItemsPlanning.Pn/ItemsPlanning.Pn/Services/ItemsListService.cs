@@ -93,6 +93,7 @@ namespace ItemsPlanning.Pn.Services
         {
             try
             {
+                Debugger.Break();
                 var itemsList = new ItemList
                 {
                     Name = model.Name,
@@ -104,7 +105,20 @@ namespace ItemsPlanning.Pn.Services
                     RepeatOn = model.RepeatOn,
                     RepeatType = model.RepeatType,
                     Enabled = true,
+                    Items = new List<Item>()
                 };
+
+                foreach (var listItem in model.Items)
+                {
+                    itemsList.Items.Add(new Item()
+                    {
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedByUserId = UserId,
+                        ItemNumber = listItem.ItemNumber,
+                        LocationCode = listItem.LocationCode,
+                        Name = listItem.Name
+                    });
+                }
 
                 await itemsList.Save(_dbContext);
 
@@ -124,6 +138,7 @@ namespace ItemsPlanning.Pn.Services
         {
             try
             {
+                Debugger.Break();
                 var itemsList = new ItemList
                 {
                     Id = id
@@ -147,6 +162,7 @@ namespace ItemsPlanning.Pn.Services
         {
             try
             {
+                Debugger.Break();
                 var itemsList = new ItemList
                 {
                     Id = updateModel.Id,
@@ -157,8 +173,22 @@ namespace ItemsPlanning.Pn.Services
                     Description = updateModel.Description,
                     Name = updateModel.Name,
                     UpdatedAt = DateTime.UtcNow,
-                    UpdatedByUserId = UserId,
+                    UpdatedByUserId = UserId
+                    
                 };
+
+                //foreach (var listItem in updateModel.Items)
+                //{
+                //    itemsList.Items.Add(new Item()
+                //    {
+                //        CreatedAt = DateTime.UtcNow,
+                //        CreatedByUserId = UserId,
+                //        ItemNumber = listItem.ItemNumber,
+                //        LocationCode = listItem.LocationCode,
+                //        Name = listItem.Name
+                //    });
+                //}
+
                 await itemsList.Update(_dbContext);
 
                 return new OperationResult(
@@ -178,6 +208,7 @@ namespace ItemsPlanning.Pn.Services
         {
             try
             {
+                Debugger.Break();
                 var itemList = await _dbContext.ItemLists
                     .Where(x => x.WorkflowState != eFormShared.Constants.WorkflowStates.Removed)
                     .Select(x => new ItemsListPnModel()
