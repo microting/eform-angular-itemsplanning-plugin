@@ -13,6 +13,7 @@ using ItemsPlanning.Pn.Abstractions;
 namespace ItemsPlanning.Pn.Services
 {
     using System.Security.Claims;
+    using eFormShared;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Http;
 
@@ -60,7 +61,7 @@ namespace ItemsPlanning.Pn.Services
 
                 itemListsQuery
                     = itemListsQuery
-                        .Where(x => x.WorkflowState != eFormShared.Constants.WorkflowStates.Removed)
+                        .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                         .Skip(pnRequestModel.Offset)
                         .Take(pnRequestModel.PageSize);
 
@@ -76,7 +77,7 @@ namespace ItemsPlanning.Pn.Services
                 }).ToListAsync();
 
                 listsModel.Total = await _dbContext.ItemLists.CountAsync(x =>
-                    x.WorkflowState != eFormShared.Constants.WorkflowStates.Removed);
+                    x.WorkflowState != Constants.WorkflowStates.Removed);
                 listsModel.Lists = lists;
 
                 return new OperationDataResult<ItemsListsModel>(true, listsModel);
@@ -91,46 +92,150 @@ namespace ItemsPlanning.Pn.Services
 
         public async Task<OperationResult> CreateList(ItemsListPnModel model)
         {
-            try
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
                 Debugger.Break();
-                var itemsList = new ItemList
+                try
                 {
-                    Name = model.Name,
-                    Description = model.Description,
-                    CreatedByUserId = UserId,
-                    CreatedAt = DateTime.UtcNow,
-                    RepeatEvery = model.RepeatEvery,
-                    RepeatUntil = model.RepeatUntil,
-                    RepeatOn = model.RepeatOn,
-                    RepeatType = model.RepeatType,
-                    Enabled = true,
-                    Items = new List<Item>()
-                };
-
-                foreach (var listItem in model.Items)
-                {
-                    itemsList.Items.Add(new Item()
+                    var itemsList = new ItemList
                     {
-                        CreatedAt = DateTime.UtcNow,
+                        Name = model.Name,
+                        Description = model.Description,
                         CreatedByUserId = UserId,
-                        ItemNumber = listItem.ItemNumber,
-                        LocationCode = listItem.LocationCode,
-                        Name = listItem.Name
-                    });
+                        CreatedAt = DateTime.UtcNow,
+                        RepeatEvery = model.RepeatEvery,
+                        RepeatUntil = model.RepeatUntil,
+                        RepeatOn = model.RepeatOn,
+                        RepeatType = model.RepeatType,
+                        Enabled = true,
+                        Items = new List<Item>()
+                    };
+
+                    await itemsList.Save(_dbContext);
+
+                    foreach (var itemModel in model.Items)
+                    {
+                        var item = new Item()
+                        {
+                            LocationCode = itemModel.LocationCode,
+                            ItemNumber = itemModel.ItemNumber,
+                            Description = itemModel.Description,
+                            Name = itemModel.Name,
+                            TemplateId = itemModel.TemplateId,
+                            Version = 1,
+                            WorkflowState = Constants.WorkflowStates.Created,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow,
+                            Enabled = true,
+                            ItemListId = itemModel.Id,
+                        };
+                        await item.Save(_dbContext);
+                    }
+
+                    transaction.Commit();
+                    return new OperationResult(
+                        true,
+                        _itemsPlanningLocalizationService.GetString("ListCreatedSuccessfully"));
                 }
-
-                await itemsList.Save(_dbContext);
-
-                return new OperationResult(
-                    true,
-                    _itemsPlanningLocalizationService.GetString(""));
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    Trace.TraceError(e.Message);
+                    return new OperationResult(false,
+                        _itemsPlanningLocalizationService.GetString("ErrorWhileCreatingList"));
+                }
             }
-            catch (Exception e)
+        }
+
+        public async Task<OperationResult> UpdateList(ItemsListPnModel updateModel)
+        {
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
-                Trace.TraceError(e.Message);
-                return new OperationResult(false,
-                    _itemsPlanningLocalizationService.GetString(""));
+                try
+                {
+                    var itemsList = new ItemList
+                    {
+                        Id = updateModel.Id,
+                        RepeatUntil = updateModel.RepeatUntil,
+                        RepeatOn = updateModel.RepeatOn,
+                        RepeatEvery = updateModel.RepeatEvery,
+                        RepeatType = updateModel.RepeatType,
+                        Description = updateModel.Description,
+                        Name = updateModel.Name,
+                        UpdatedAt = DateTime.UtcNow,
+                        UpdatedByUserId = UserId,
+                    };
+                    await itemsList.Update(_dbContext);
+
+                    // update current items
+                    var items = await _dbContext.Items
+                        .Where(x => x.ItemListId == itemsList.Id)
+                        .ToListAsync();
+
+                    foreach (var item in items)
+                    {
+                        var itemModel = updateModel.Items.FirstOrDefault(x => x.Id == item.Id);
+                        if (itemModel != null)
+                        {
+                            item.Description = itemModel.Description;
+                            item.TemplateId = itemModel.TemplateId;
+                            item.ItemNumber = itemModel.ItemNumber;
+                            item.LocationCode = itemModel.LocationCode;
+                            item.Name = itemModel.Name;
+                            item.UpdatedAt = DateTime.UtcNow;
+                            item.UpdatedByUserId = UserId;
+                            await item.Update(_dbContext);
+                        }
+                    }
+
+                    // Remove old
+                    var itemModelIds = updateModel.Items.Select(x => x.Id).ToArray();
+                    var itemsForRemove = await _dbContext.Items
+                        .Where(x => !itemModelIds.Contains(x.Id) && x.ItemListId == itemsList.Id)
+                        .ToListAsync();
+
+                    foreach (var itemForRemove in itemsForRemove)
+                    {
+                        await itemForRemove.Delete(_dbContext);
+                    }
+
+                    // Create new
+                    foreach (var itemModel in updateModel.Items)
+                    {
+                        var item = items.FirstOrDefault(x => x.Id == itemModel.Id);
+                        if (item == null)
+                        {
+                            var newItem = new Item()
+                            {
+                                LocationCode = itemModel.LocationCode,
+                                ItemNumber = itemModel.ItemNumber,
+                                Description = itemModel.Description,
+                                Name = itemModel.Name,
+                                TemplateId = itemModel.TemplateId,
+                                Version = 1,
+                                WorkflowState = Constants.WorkflowStates.Created,
+                                CreatedAt = DateTime.UtcNow,
+                                UpdatedAt = DateTime.UtcNow,
+                                Enabled = true,
+                                ItemListId = itemModel.Id,
+                            };
+                            await newItem.Save(_dbContext);
+                        }
+                    }
+
+                    transaction.Commit();
+                    return new OperationResult(
+                        true,
+                        _itemsPlanningLocalizationService.GetString("ListUpdatedSuccessfully"));
+                }
+                catch (Exception e)
+                {
+                    Trace.TraceError(e.Message);
+                    transaction.Rollback();
+                    return new OperationResult(
+                        false,
+                        _itemsPlanningLocalizationService.GetString("ErrorWhileUpdatingList"));
+                }
             }
         }
 
@@ -147,60 +252,14 @@ namespace ItemsPlanning.Pn.Services
 
                 return new OperationResult(
                     true,
-                    _itemsPlanningLocalizationService.GetString(""));
+                    _itemsPlanningLocalizationService.GetString("ListDeletedSuccessfully"));
             }
             catch (Exception e)
             {
                 Trace.TraceError(e.Message);
                 return new OperationResult(
                     false,
-                    _itemsPlanningLocalizationService.GetString(""));
-            }
-        }
-
-        public async Task<OperationResult> UpdateList(ItemsListPnModel updateModel)
-        {
-            try
-            {
-                Debugger.Break();
-                var itemsList = new ItemList
-                {
-                    Id = updateModel.Id,
-                    RepeatUntil = updateModel.RepeatUntil,
-                    RepeatOn = updateModel.RepeatOn,
-                    RepeatEvery = updateModel.RepeatEvery,
-                    RepeatType = updateModel.RepeatType,
-                    Description = updateModel.Description,
-                    Name = updateModel.Name,
-                    UpdatedAt = DateTime.UtcNow,
-                    UpdatedByUserId = UserId
-                    
-                };
-
-                //foreach (var listItem in updateModel.Items)
-                //{
-                //    itemsList.Items.Add(new Item()
-                //    {
-                //        CreatedAt = DateTime.UtcNow,
-                //        CreatedByUserId = UserId,
-                //        ItemNumber = listItem.ItemNumber,
-                //        LocationCode = listItem.LocationCode,
-                //        Name = listItem.Name
-                //    });
-                //}
-
-                await itemsList.Update(_dbContext);
-
-                return new OperationResult(
-                    true,
-                    _itemsPlanningLocalizationService.GetString(""));
-            }
-            catch (Exception e)
-            {
-                Trace.TraceError(e.Message);
-                return new OperationResult(
-                    false,
-                    _itemsPlanningLocalizationService.GetString(""));
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileRemovingList"));
             }
         }
 
@@ -210,7 +269,7 @@ namespace ItemsPlanning.Pn.Services
             {
                 Debugger.Break();
                 var itemList = await _dbContext.ItemLists
-                    .Where(x => x.WorkflowState != eFormShared.Constants.WorkflowStates.Removed)
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Select(x => new ItemsListPnModel()
                     {
                         Id = x.Id,
@@ -220,7 +279,7 @@ namespace ItemsPlanning.Pn.Services
                         RepeatType = x.RepeatType,
                         Description = x.Description,
                         Name = x.Name,
-                        Items = x.Items.Select(i=> new ItemsListPnItemModel()
+                        Items = x.Items.Select(i => new ItemsListPnItemModel()
                         {
                             Id = i.Id,
                             Description = i.Description,
@@ -235,7 +294,7 @@ namespace ItemsPlanning.Pn.Services
                 {
                     return new OperationDataResult<ItemsListPnModel>(
                         false,
-                        _itemsPlanningLocalizationService.GetString(""));
+                        _itemsPlanningLocalizationService.GetString("ListNotFound"));
                 }
 
 
@@ -248,7 +307,7 @@ namespace ItemsPlanning.Pn.Services
                 Trace.TraceError(e.Message);
                 return new OperationDataResult<ItemsListPnModel>(
                     false,
-                    _itemsPlanningLocalizationService.GetString(""));
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileObtainingList"));
             }
         }
 
