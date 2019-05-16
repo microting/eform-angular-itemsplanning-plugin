@@ -74,6 +74,8 @@ namespace ItemsPlanning.Pn.Services
                     RepeatOn = x.RepeatOn,
                     RepeatType = x.RepeatType,
                     RepeatUntil = x.RepeatUntil,
+                    RelatedEFormId = x.RelatedEFormId,
+                    RelatedEFormName = x.RelatedEFormName,
                 }).ToListAsync();
 
                 listsModel.Total = await _dbContext.ItemLists.CountAsync(x =>
@@ -108,7 +110,8 @@ namespace ItemsPlanning.Pn.Services
                         RepeatOn = model.RepeatOn,
                         RepeatType = model.RepeatType,
                         Enabled = true,
-                        Items = new List<Item>()
+                        Items = new List<Item>(),
+                        RelatedEFormId = model.RelatedEFormId,
                     };
 
                     await itemsList.Save(_dbContext);
@@ -121,13 +124,13 @@ namespace ItemsPlanning.Pn.Services
                             ItemNumber = itemModel.ItemNumber,
                             Description = itemModel.Description,
                             Name = itemModel.Name,
-                            TemplateId = itemModel.TemplateId,
                             Version = 1,
                             WorkflowState = Constants.WorkflowStates.Created,
                             CreatedAt = DateTime.UtcNow,
                             UpdatedAt = DateTime.UtcNow,
                             Enabled = true,
                             ItemListId = itemsList.Id,
+                            CreatedByUserId = UserId,
                         };
                         await item.Save(_dbContext);
                     }
@@ -164,6 +167,7 @@ namespace ItemsPlanning.Pn.Services
                         Name = updateModel.Name,
                         UpdatedAt = DateTime.UtcNow,
                         UpdatedByUserId = UserId,
+                        RelatedEFormId = updateModel.RelatedEFormId,
                     };
                     await itemsList.Update(_dbContext);
 
@@ -178,7 +182,6 @@ namespace ItemsPlanning.Pn.Services
                         if (itemModel != null)
                         {
                             item.Description = itemModel.Description;
-                            item.TemplateId = itemModel.TemplateId;
                             item.ItemNumber = itemModel.ItemNumber;
                             item.LocationCode = itemModel.LocationCode;
                             item.Name = itemModel.Name;
@@ -211,10 +214,10 @@ namespace ItemsPlanning.Pn.Services
                                 ItemNumber = itemModel.ItemNumber,
                                 Description = itemModel.Description,
                                 Name = itemModel.Name,
-                                TemplateId = itemModel.TemplateId,
                                 Version = 1,
                                 WorkflowState = Constants.WorkflowStates.Created,
                                 CreatedAt = DateTime.UtcNow,
+                                CreatedByUserId = UserId,
                                 UpdatedAt = DateTime.UtcNow,
                                 Enabled = true,
                                 ItemListId = itemsList.Id,
@@ -279,6 +282,8 @@ namespace ItemsPlanning.Pn.Services
                         RepeatType = x.RepeatType,
                         Description = x.Description,
                         Name = x.Name,
+                        RelatedEFormId = x.RelatedEFormId,
+                        RelatedEFormName = x.RelatedEFormName,
                         Items = x.Items.Select(i => new ItemsListPnItemModel()
                         {
                             Id = i.Id,
@@ -286,7 +291,6 @@ namespace ItemsPlanning.Pn.Services
                             Name = i.Name,
                             LocationCode = i.LocationCode,
                             ItemNumber = i.ItemNumber,
-                            TemplateId = i.TemplateId,
                         }).ToList()
                     }).FirstOrDefaultAsync();
 
