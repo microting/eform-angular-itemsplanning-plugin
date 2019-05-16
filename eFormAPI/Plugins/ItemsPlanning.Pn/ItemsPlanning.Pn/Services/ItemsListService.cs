@@ -127,7 +127,7 @@ namespace ItemsPlanning.Pn.Services
                             CreatedAt = DateTime.UtcNow,
                             UpdatedAt = DateTime.UtcNow,
                             Enabled = true,
-                            ItemListId = itemModel.Id,
+                            ItemListId = itemsList.Id,
                         };
                         await item.Save(_dbContext);
                     }
@@ -217,7 +217,7 @@ namespace ItemsPlanning.Pn.Services
                                 CreatedAt = DateTime.UtcNow,
                                 UpdatedAt = DateTime.UtcNow,
                                 Enabled = true,
-                                ItemListId = itemModel.Id,
+                                ItemListId = itemsList.Id,
                             };
                             await newItem.Save(_dbContext);
                         }
