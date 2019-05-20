@@ -8,6 +8,7 @@ export class ItemsListPnUpdateModel {
   repeatType: number;
   repeatOn: number;
   repeatUntil: Date | null;
+  relatedEFormId: number;
   items: ItemsListPnItemModel[] = [];
 
   constructor(data?: any) {
@@ -19,6 +20,7 @@ export class ItemsListPnUpdateModel {
       this.repeatType = data.repeatType;
       this.repeatOn = data.repeatOn;
       this.repeatUntil = data.repeatUntil;
+      this.relatedEFormId = data.relatedEFormId;
       this.items = data.items;
     }
   }

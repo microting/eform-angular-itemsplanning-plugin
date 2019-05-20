@@ -62,7 +62,7 @@ export class ItemsListCreateComponent implements OnInit {
       if (data && data.success) {
         this.listCreated.emit();
         // this.submitDeployment();
-        this.newListModel = new ItemsListPnModel();
+        this.newListModel = new ItemsListPnCreateModel();
         this.frame.hide();
       } this.spinnerStatus = false;
     });
@@ -111,5 +111,9 @@ export class ItemsListCreateComponent implements OnInit {
       newItem.id = this.newListModel.items[this.newListModel.items.length - 1].id + 1;
     }
     this.newListModel.items.push(newItem);
+  }
+
+  removeItem(id: number) {
+    this.newListModel.items = this.newListModel.items.filter(x => x.id !== id);
   }
 }

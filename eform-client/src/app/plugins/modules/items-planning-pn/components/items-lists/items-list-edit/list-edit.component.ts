@@ -81,4 +81,8 @@ export class ListEditComponent implements OnInit {
     }
     this.selectedListModel.items.push(newItem);
   }
+
+  removeItem(id: number) {
+    this.selectedListModel.items = this.selectedListModel.items.filter(x => x.id !== id);
+  }
 }

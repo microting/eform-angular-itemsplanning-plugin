@@ -4,5 +4,4 @@ export class ItemsListPnItemModel {
   description: string;
   itemNumber: string;
   locationCode: string;
-  templateId: number;
 }

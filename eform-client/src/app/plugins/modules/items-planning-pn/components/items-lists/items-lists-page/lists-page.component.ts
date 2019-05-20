@@ -23,18 +23,18 @@ export class ListsPageComponent implements OnInit {
               private itemsPlanningPnListsService: ItemsPlanningPnListsService) { }
 
   ngOnInit() {
-    // this.getLocalPageSettings();
+    this.getLocalPageSettings();
   }
 
   getLocalPageSettings() {
     this.localPageSettings = this.sharedPnService.getLocalPageSettings
-    ('itemsPlanningsPnSettings', 'ItemLists').settings;
+    ('itemsPlanningPnSettings', 'ItemLists').settings;
     this.getAllInitialData();
   }
 
   updateLocalPageSettings() {
     this.sharedPnService.updateLocalPageSettings
-    ('itemsPlanningsPnSettings', this.localPageSettings, 'ItemLists');
+    ('itemsPlanningPnSettings', this.localPageSettings, 'ItemLists');
     this.getAllLists();
   }
 

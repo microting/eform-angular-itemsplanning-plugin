@@ -2,7 +2,7 @@ import {ItemsListPnItemModel} from './items-list-pn-item.model';
 
 export class ItemsListsPnModel {
   total: number;
-  List: Array<ItemsListPnModel> = [];
+  list: Array<ItemsListPnModel> = [];
 }
 
 export class ItemsListPnModel {
@@ -13,5 +13,6 @@ export class ItemsListPnModel {
   repeatType: number;
   repeatOn: number;
   repeatUntil: Date | null;
+  relatedEFormId: number;
   items: ItemsListPnItemModel[] = [];
 }

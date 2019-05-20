@@ -6,8 +6,8 @@
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <div class="row mb-3">
-            <div class="col-md-2 col-xs-6">
+          <div class="row">
+            <div class="col-md-2 col-sm-4 col-xs-6">
               <div class="md-form">
                 <input mdbInputDirective
                        [mdbValidate]="false"
@@ -17,7 +17,30 @@
                 <label for="createListItemName">{{'List Name' | translate}}</label>
               </div>
             </div>
-            <div class="col-md-2 col-xs-6">
+            <div class="col-md-2 col-sm-4 col-xs-6 ng-select-wrapper">
+              <ng-select [items]="templatesModel.templates"
+                         bindLabel="label"
+                         [placeholder]="('Selected template' | translate)"
+                         bindValue="id"
+                         [typeahead]="typeahead"
+                         [(ngModel)]="newListModel.relatedEFormId"
+                         id="createListSelector">
+              </ng-select>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-6">
+              <div class="md-form">
+                <input mdbInputDirective
+                       [mdbValidate]="false"
+                       [(ngModel)]="newListModel.description"
+                       type="text" id="createListDescription"
+                       name="createItemDescription" class="form-control">
+                <label for="createItemDescription">{{'Description' | translate}}</label>
+              </div>
+            </div>
+
+          </div>
+          <div class="row mb-1">
+            <div class="col-md-2 col-sm-4 col-xs-6">
               <div class="md-form">
                 <input mdbInputDirective
                        [mdbValidate]="false"
@@ -27,27 +50,39 @@
                 <label for="createRepeatEvery">{{'Repeat every' | translate}}</label>
               </div>
             </div>
-            <div class="col-md-2 col-xs-6">
-              <div class="md-form">
-                <input mdbInputDirective
-                       [mdbValidate]="false"
-                       [(ngModel)]="newListModel.repeatType"
-                       type="text" id="createRepeatType"
-                       name="createRepeatType" class="form-control">
-                <label for="createRepeatType">{{'Repeat type' | translate}}</label>
-              </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 ng-select-wrapper">
+                <ng-select [items]="[
+                {id: 1, name: 'Day'},
+                {id: 2, name: 'Week'},
+                {id: 3, name: 'Month'}
+                ]"
+                           bindLabel="name"
+                           [placeholder]="('Repeat Type' | translate)"
+                           bindValue="id"
+                           [typeahead]="typeahead"
+                           [(ngModel)]="newListModel.repeatType"
+                           id="createRepeatType">
+                </ng-select>
             </div>
-            <div class="col-md-2 col-xs-6">
-              <div class="md-form">
-                <input mdbInputDirective
-                       [mdbValidate]="false"
-                       [(ngModel)]="newListModel.repeatOn"
-                       type="text" id="createRepeatOn"
-                       name="createRepeatOn" class="form-control">
-                <label for="createRepeatOn">{{'Repeat on' | translate}}</label>
-              </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 ng-select-wrapper">
+                <ng-select [items]="[
+                                    {id: 1, name: 'Monday'},
+                                    {id: 2, name: 'Tuesday'},
+                                    {id: 3, name: 'Wednesday'},
+                                    {id: 4, name: 'Thursday'},
+                                    {id: 5, name: 'Friday'},
+                                    {id: 6, name: 'Saturday'},
+                                    {id: 7, name: 'Sunday'}
+                            ]"
+                           bindLabel="name"
+                           [placeholder]="('Repeat On' | translate)"
+                           bindValue="id"
+                           [typeahead]="typeahead"
+                           [(ngModel)]="newListModel.repeatOn"
+                           id="createRepeatOn">
+                </ng-select>
             </div>
-            <div class="col-md-2 col-xs-6">
+            <div class="col-md-2 col-sm-4 col-xs-6">
               <div class="md-form">
                 <input mdbInputDirective
                        [mdbValidate]="false"
@@ -58,11 +93,11 @@
               </div>
             </div>
           </div>
-          <div class="row p-1 mt-4 table-responsive no-gutters">
-            <button class="btn btn-success" (click)="addNewItem()">
-              <fa-icon icon="plus" class="mr-1"></fa-icon>
-              {{ 'Add New Item' | translate }}
-            </button>
+          <button class="btn btn-success" (click)="addNewItem()">
+            <fa-icon icon="plus"></fa-icon>
+            {{ 'Add New Item' | translate }}
+          </button>
+          <div class="row p-1 mt-2 table-responsive no-gutters">
             <table class="table table-sm text-center z-depth-1 pr-2 pl-2">
               <tbody id="tableBody">
               <tr *ngFor="let item of newListModel.items">
@@ -107,20 +142,8 @@
                   </div>
                 </td>
                 <td>
-                  <div class="md-form md-form-sm">
-                    <ng-select [items]="templatesModel.templates"
-                               bindLabel="label"
-                               [placeholder]="('Selected template' | translate)"
-                               bindValue="id"
-                               [typeahead]="typeahead"
-                               [(ngModel)]="item.templateId"
-                               id="createListSelector">
-                    </ng-select>
-                  </div>
-                </td>
-                <td>
                   <div class="d-flex flex-row justify-content-center">
-                    <button id="deleteListBtn"
+                    <button id="deleteListBtn" (click)="removeItem(item.id)"
                             class="btn btn-danger btn-icon mb-2 "
                             mdbTooltip="{{ 'Delete Item' | translate }}">
                       <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
@@ -134,10 +157,12 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="listCreateSaveBtn" class="btn btn-success" [disabled]="!newListModel.name" (click)="createItemsList()">
+        <button id="listCreateSaveBtn" class="btn btn-success" [disabled]="!newListModel.name"
+                (click)="createItemsList()">
           {{ 'Create' | translate }}
         </button>
-        <button id="listCreateCancelBtn" class="btn btn-accent text-black-50" (click)="frame.hide()">{{'Cancel' | translate}}</button>
+        <button id="listCreateCancelBtn" class="btn btn-accent text-black-50"
+                (click)="frame.hide()">{{'Cancel' | translate}}</button>
       </div>
     </div>
   </div>

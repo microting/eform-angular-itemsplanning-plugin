@@ -30,8 +30,8 @@ export class ItemsPlanningPnListsService extends BaseService {
     return this.get(ItemsPlanningPnListsMethods.Lists, model);
   }
 
-  getSingleList(fractionId: number): Observable<OperationDataResult<ItemsListPnModel>> {
-    return this.get(ItemsPlanningPnListsMethods.Lists + '/' + fractionId);
+  getSingleList(listId: number): Observable<OperationDataResult<ItemsListPnModel>> {
+    return this.get(ItemsPlanningPnListsMethods.Lists + '/' + listId);
   }
 
   updateList(model: ItemsListPnUpdateModel): Observable<OperationResult> {
