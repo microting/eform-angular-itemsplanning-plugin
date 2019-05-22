@@ -154,6 +154,7 @@ namespace ItemsPlanning.Pn.Services
         {
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
+                Debugger.Break();
                 try
                 {
                     var itemsList = new ItemList
@@ -266,13 +267,12 @@ namespace ItemsPlanning.Pn.Services
             }
         }
 
-        public async Task<OperationDataResult<ItemsListPnModel>> GetSingleList(int fractionId)
+        public async Task<OperationDataResult<ItemsListPnModel>> GetSingleList(int listId)
         {
             try
             {
-                Debugger.Break();
                 var itemList = await _dbContext.ItemLists
-                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed && x.Id == listId)
                     .Select(x => new ItemsListPnModel()
                     {
                         Id = x.Id,

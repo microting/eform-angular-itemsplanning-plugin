@@ -2,7 +2,7 @@ import {ItemsListPnItemModel} from './items-list-pn-item.model';
 
 export class ItemsListsPnModel {
   total: number;
-  list: Array<ItemsListPnModel> = [];
+  lists: Array<ItemsListPnModel> = [];
 }
 
 export class ItemsListPnModel {

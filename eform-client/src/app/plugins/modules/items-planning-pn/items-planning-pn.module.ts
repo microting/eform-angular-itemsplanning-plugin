@@ -13,6 +13,8 @@ import {ItemsPlanningSettingsComponent} from './components/items-plannings-setti
 import {RouterModule} from '@angular/router';
 import {ItemsPlanningPnRouting} from './items-planning-pn.routing.module';
 import {ItemsPlanningPnListsService, ItemsPlanningPnSettingsService} from './services';
+import {OwlDateTimeModule} from 'ng-pick-datetime';
+import {OwlMomentDateTimeModule} from 'ng-pick-datetime-moment';
 
 @NgModule({
   imports: [
@@ -25,7 +27,9 @@ import {ItemsPlanningPnListsService, ItemsPlanningPnSettingsService} from './ser
     EformSharedModule,
     FontAwesomeModule,
     RouterModule,
-    ItemsPlanningPnRouting
+    ItemsPlanningPnRouting,
+    OwlDateTimeModule,
+    OwlMomentDateTimeModule
   ],
   declarations: [
     ItemsPlanningPnLayoutComponent,

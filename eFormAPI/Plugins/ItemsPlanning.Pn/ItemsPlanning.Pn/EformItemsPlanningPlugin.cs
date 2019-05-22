@@ -121,7 +121,7 @@ namespace ItemsPlanning.Pn
             result.LeftMenu.Add(new MenuItemModel()
             {
                 Name = localizationService.GetString("ItemsPlanning"),
-                E2EId = "",
+                E2EId = "items-planning-pn",
                 Link = "",
                 MenuItems = new List<MenuItemModel>()
                 {

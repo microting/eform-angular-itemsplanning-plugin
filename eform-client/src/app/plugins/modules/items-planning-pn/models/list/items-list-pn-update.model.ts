@@ -1,4 +1,5 @@
 import {ItemsListPnItemModel} from './items-list-pn-item.model';
+import {Moment} from 'moment';
 
 export class ItemsListPnUpdateModel {
   id: number;
@@ -7,7 +8,7 @@ export class ItemsListPnUpdateModel {
   repeatEvery: number;
   repeatType: number;
   repeatOn: number;
-  repeatUntil: Date | null;
+  repeatUntil: Moment | null;
   relatedEFormId: number;
   items: ItemsListPnItemModel[] = [];
 
