@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {
   ItemsPlanningPnListsService} from 'src/app/plugins/modules/items-planning-pn/services';
-import {ListPnModel, ListPnUpdateModel} from '../../../models/list';
+import {ItemsListPnItemModel, ItemsListPnModel, ItemsListPnUpdateModel} from '../../../models/list';
 import {TemplateListModel, TemplateRequestModel} from '../../../../../../common/models/eforms';
 import {debounceTime, switchMap} from 'rxjs/operators';
 import {EFormService} from '../../../../../../common/services/eform';
@@ -15,7 +15,7 @@ export class ListEditComponent implements OnInit {
   @ViewChild('frame') frame;
   @Output() onListUpdated: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
-  selectedListModel: ListPnModel = new ListPnModel();
+  selectedListModel: ItemsListPnModel = new ItemsListPnModel();
   templateRequestModel: TemplateRequestModel = new TemplateRequestModel();
   templatesModel: TemplateListModel = new TemplateListModel();
   typeahead = new EventEmitter<string>();
@@ -39,7 +39,7 @@ export class ListEditComponent implements OnInit {
   ngOnInit() {
   }
 
-  show(listModel: ListPnModel) {
+  show(listModel: ItemsListPnModel) {
     this.getSelectedList(listModel.id);
     this.frame.show();
   }
@@ -56,11 +56,12 @@ export class ListEditComponent implements OnInit {
 
   updateList() {
     this.spinnerStatus = true;
-    this.trashInspectionPnListsService.updateList(this.selectedListModel)
+    const model = new ItemsListPnUpdateModel(this.selectedListModel);
+    this.trashInspectionPnListsService.updateList(model)
       .subscribe((data) => {
       if (data && data.success) {
         this.onListUpdated.emit();
-        this.selectedListModel = new ListPnModel();
+        this.selectedListModel = new ItemsListPnModel();
         this.frame.hide();
       } this.spinnerStatus = false;
     });
@@ -68,7 +69,20 @@ export class ListEditComponent implements OnInit {
 
   onSelectedChanged(e: any) {
     // debugger;
-    this.selectedListModel.eFormId = e.id;
+    // this.selectedListModel.eFormId = e.id;
+  }
+  addNewItem() {
+    const newItem = new ItemsListPnItemModel();
+    // set corresponding id
+    if (!this.selectedListModel.items.length) {
+      newItem.id = this.selectedListModel.items.length;
+    } else {
+      newItem.id = this.selectedListModel.items[this.selectedListModel.items.length - 1].id + 1;
+    }
+    this.selectedListModel.items.push(newItem);
   }
 
+  removeItem(id: number) {
+    this.selectedListModel.items = this.selectedListModel.items.filter(x => x.id !== id);
+  }
 }

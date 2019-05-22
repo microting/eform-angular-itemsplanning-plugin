@@ -1,23 +1,79 @@
 [
-	{
-		"Key": "ItemsPlanning",
-		"LocalizedValue": {
-			"da": "Enhedsplanlægning",
-			"en-US": "Items planning"
-		}
-	},
-	{
-		"Key": "Lists",
-		"LocalizedValue": {
-			"da": "Lister",
-			"en-US": "Lists"
-		}
-	},
-	{
-		"Key": "Settings",
-		"LocalizedValue": {
-			"da": "Indstillinger",
-			"en-US": "Settings"
-		}
-	}
+  {
+    "Key": "ItemsPlanning",
+    "LocalizedValue": {
+      "da": "Enhedsplanlægning",
+      "en-US": "Items planning"
+    }
+  },
+  {
+    "Key": "Lists",
+    "LocalizedValue": {
+      "da": "Lister",
+      "en-US": "Lists"
+    }
+  },
+  {
+    "Key": "Settings",
+    "LocalizedValue": {
+      "da": "Indstillinger",
+      "en-US": "Settings"
+    }
+  },
+  {
+    "Key": "ListCreatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Liste oprettet succesfuldt",
+      "en-US": "List created successfully"
+    }
+  },
+  {
+    "Key": "ErrorWhileCreatingList",
+    "LocalizedValue": {
+      "da": "Fejl under oprettelse af liste",
+      "en-US": "Error while creating list"
+    }
+  },
+  {
+    "Key": "ErrorWhileUpdatingList",
+    "LocalizedValue": {
+      "da": "Fejl under opdatering af liste",
+      "en-US": "Error while updating list"
+    }
+  },
+  {
+    "Key": "ListUpdatedSuccessfully",
+    "LocalizedValue": {
+      "da": "Liste opdateret med succes",
+      "en-US": "List updated successfully"
+    }
+  },
+  {
+    "Key": "ListDeletedSuccessfully",
+    "LocalizedValue": {
+      "da": "Liste slettet korrekt",
+      "en-US": "List deleted successfully"
+    }
+  },
+  {
+    "Key": "ErrorWhileRemovingList",
+    "LocalizedValue": {
+      "da": "Fejl under fjernelse af liste",
+      "en-US": "Error while removing list"
+    }
+  },
+  {
+    "Key": "ListNotFound",
+    "LocalizedValue": {
+      "da": "Liste ikke fundet",
+      "en-US": "List not found"
+    }
+  },
+  {
+    "Key": "ErrorWhileObtainingList",
+    "LocalizedValue": {
+      "da": "Fejl under opnåelse af liste",
+      "en-US": "Error while obtaining list"
+    }
+  }
 ]

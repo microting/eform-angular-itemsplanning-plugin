@@ -17,7 +17,7 @@ export class ItemsPlanningPnLayoutComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    this.sharedPnService.initLocalPageSettings('itemsPlanningsPnSettings', ItemsPlanningPnLocalSettings);
+    this.sharedPnService.initLocalPageSettings('itemsPlanningPnSettings', ItemsPlanningPnLocalSettings);
   }
 
 

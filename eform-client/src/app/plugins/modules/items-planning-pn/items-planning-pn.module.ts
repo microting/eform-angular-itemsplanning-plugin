@@ -8,11 +8,13 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {EformSharedModule} from '../../../common/modules/eform-shared/eform-shared.module';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ItemsPlanningPnLayoutComponent} from './layouts/items-planning-pn-layout.component';
-import {ListCreateComponent, ListDeleteComponent, ListEditComponent, ListsPageComponent} from './components/lists';
+import {ItemsListCreateComponent, ListDeleteComponent, ListEditComponent, ListsPageComponent} from './components/items-lists';
 import {ItemsPlanningSettingsComponent} from './components/items-plannings-setting';
 import {RouterModule} from '@angular/router';
 import {ItemsPlanningPnRouting} from './items-planning-pn.routing.module';
 import {ItemsPlanningPnListsService, ItemsPlanningPnSettingsService} from './services';
+import {OwlDateTimeModule} from 'ng-pick-datetime';
+import {OwlMomentDateTimeModule} from 'ng-pick-datetime-moment';
 
 @NgModule({
   imports: [
@@ -25,12 +27,14 @@ import {ItemsPlanningPnListsService, ItemsPlanningPnSettingsService} from './ser
     EformSharedModule,
     FontAwesomeModule,
     RouterModule,
-    ItemsPlanningPnRouting
+    ItemsPlanningPnRouting,
+    OwlDateTimeModule,
+    OwlMomentDateTimeModule
   ],
   declarations: [
     ItemsPlanningPnLayoutComponent,
     ListsPageComponent,
-    ListCreateComponent,
+    ItemsListCreateComponent,
     ListEditComponent,
     ListDeleteComponent,
     ItemsPlanningSettingsComponent

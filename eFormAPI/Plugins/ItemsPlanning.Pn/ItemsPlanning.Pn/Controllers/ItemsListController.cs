@@ -8,39 +8,39 @@ using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 namespace ItemsPlanning.Pn.Controllers
 {
     [Authorize]
-    public class ListController : Controller
+    public class ItemsListController : Controller
     {        
-        private readonly IListService _listService;
+        private readonly IItemsListService _listService;
 
-        public ListController(IListService listService)
+        public ItemsListController(IItemsListService listService)
         {
             _listService = listService;
         }
 
         [HttpGet]
         [Route("api/items-planning-pn/lists")]
-        public async Task<OperationDataResult<ListsModel>> GetAllLists(ListRequestModel requestModel)
+        public async Task<OperationDataResult<ItemsListsModel>> GetAllLists(ItemsListRequestModel requestModel)
         {
             return await _listService.GetAllLists(requestModel);
         }
 
         [HttpGet]
         [Route("api/items-planning-pn/lists/{id}")]
-        public async Task<OperationDataResult<ListModel>> GetSingleList(int id)
+        public async Task<OperationDataResult<ItemsListPnModel>> GetSingleList(int id)
         {
             return await _listService.GetSingleList(id);
         }
 
         [HttpPost]
         [Route("api/items-planning-pn/lists")]
-        public async Task<OperationResult> CreateList([FromBody] ListModel createModel)
+        public async Task<OperationResult> CreateList([FromBody] ItemsListPnModel createModel)
         {
             return await _listService.CreateList(createModel);
         }
 
         [HttpPut]
         [Route("api/items-planning-pn/lists")]
-        public async Task<OperationResult> UpdateList([FromBody] ListModel updateModel)
+        public async Task<OperationResult> UpdateList([FromBody] ItemsListPnModel updateModel)
         {
             return await _listService.UpdateList(updateModel);
         }

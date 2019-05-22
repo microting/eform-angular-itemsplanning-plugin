@@ -24,7 +24,7 @@ On front-end part plugins will be included into `eform-client/src/app/plugins/mo
 {
     path: 'items-planning-pn',
     canActivate: [AuthGuard],
-    loadChildren: './modules/items-planning-pn/items-planning-pn.module#itemsplanningPnModule'
+    loadChildren: './modules/items-planning-pn/items-planning-pn.module#ItemsPlanningPnModule'
 }
 ```
 

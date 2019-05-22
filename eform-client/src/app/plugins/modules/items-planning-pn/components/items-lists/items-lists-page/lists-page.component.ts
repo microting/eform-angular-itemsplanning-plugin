@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {PageSettingsModel} from 'src/app/common/models/settings';
 
 import {SharedPnService} from 'src/app/plugins/modules/shared/services';
-import {ListPnModel, ListPnRequestModel, ListsPnModel} from '../../../models/list';
+import {ItemsListPnModel, ItemsListPnRequestModel, ItemsListsPnModel} from '../../../models/list';
 import {ItemsPlanningPnListsService} from '../../../services';
 
 @Component({
@@ -15,8 +15,8 @@ export class ListsPageComponent implements OnInit {
   @ViewChild('editListModal') editListModal;
   @ViewChild('deleteListModal') deleteListModal;
   localPageSettings: PageSettingsModel = new PageSettingsModel();
-  listsModel: ListsPnModel = new ListsPnModel();
-  listRequestModel: ListPnRequestModel = new ListPnRequestModel();
+  listsModel: ItemsListsPnModel = new ItemsListsPnModel();
+  listRequestModel: ItemsListPnRequestModel = new ItemsListPnRequestModel();
   spinnerStatus = false;
 
   constructor(private sharedPnService: SharedPnService,
@@ -28,13 +28,13 @@ export class ListsPageComponent implements OnInit {
 
   getLocalPageSettings() {
     this.localPageSettings = this.sharedPnService.getLocalPageSettings
-    ('itemsPlanningsPnSettings', 'ItemLists').settings;
+    ('itemsPlanningPnSettings', 'ItemLists').settings;
     this.getAllInitialData();
   }
 
   updateLocalPageSettings() {
     this.sharedPnService.updateLocalPageSettings
-    ('itemsPlanningsPnSettings', this.localPageSettings, 'ItemLists');
+    ('itemsPlanningPnSettings', this.localPageSettings, 'ItemLists');
     this.getAllLists();
   }
 
@@ -53,11 +53,11 @@ export class ListsPageComponent implements OnInit {
       } this.spinnerStatus = false;
     });
   }
-  showEditListModal(list: ListPnModel) {
+  showEditListModal(list: ItemsListPnModel) {
     this.editListModal.show(list);
   }
 
-  showDeleteListModal(list: ListPnModel) {
+  showDeleteListModal(list: ItemsListPnModel) {
     this.deleteListModal.show(list);
   }
 

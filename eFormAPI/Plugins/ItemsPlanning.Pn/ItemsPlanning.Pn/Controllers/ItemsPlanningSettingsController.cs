@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using ItemsPlanning.Pn.Abstractions;
-using ItemsPlanning.Pn.Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microting.eFormApi.BasePn.Infrastructure.Database.Entities;
@@ -8,6 +7,8 @@ using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 
 namespace ItemsPlanning.Pn.Controllers
 {
+    using Infrastructure.Models.Settings;
+
     public class ItemsPlanningSettingsController : Controller
     {
         private readonly IItemsPlanningPnSettingsService _itemsPlanningPnSettingsService;

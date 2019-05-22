@@ -7,10 +7,12 @@ import {Router} from '@angular/router';
 import {OperationDataResult, OperationResult} from 'src/app/common/models/operation.models';
 import {BaseService} from 'src/app/common/services/base.service';
 
-import {ListPnModel,
-        ListsPnModel,
-        ListPnUpdateModel,
-        ListPnRequestModel} from '../models/list';
+import {
+  ItemsListPnModel,
+  ItemsListsPnModel,
+  ItemsListPnUpdateModel,
+  ItemsListPnRequestModel, ItemsListPnCreateModel
+} from '../models/list';
 
 export let ItemsPlanningPnListsMethods = {
   Lists: 'api/items-planning-pn/lists',
@@ -24,19 +26,19 @@ export class ItemsPlanningPnListsService extends BaseService {
     super(_http, router, toastrService);
   }
 
-  getAllLists(model: ListPnRequestModel): Observable<OperationDataResult<ListsPnModel>> {
+  getAllLists(model: ItemsListPnRequestModel): Observable<OperationDataResult<ItemsListsPnModel>> {
     return this.get(ItemsPlanningPnListsMethods.Lists, model);
   }
 
-  getSingleList(fractionId: number): Observable<OperationDataResult<ListPnModel>> {
-    return this.get(ItemsPlanningPnListsMethods.Lists + '/' + fractionId);
+  getSingleList(listId: number): Observable<OperationDataResult<ItemsListPnModel>> {
+    return this.get(ItemsPlanningPnListsMethods.Lists + '/' + listId);
   }
 
-  updateList(model: ListPnUpdateModel): Observable<OperationResult> {
+  updateList(model: ItemsListPnUpdateModel): Observable<OperationResult> {
     return this.put(ItemsPlanningPnListsMethods.Lists, model);
   }
 
-  createList(model: ListPnModel): Observable<OperationResult> {
+  createList(model: ItemsListPnCreateModel): Observable<OperationResult> {
     return this.post(ItemsPlanningPnListsMethods.Lists, model);
   }
 

@@ -25,7 +25,6 @@ script:
   - cd microting/eform-angular-frontend
   - cd eform-client && npm install
   - /home/travis/build/microting/eform-angular-itemsplanning-plugin/testinginstallpn.sh
-  - cat src/app/plugins/plugins.routing.ts
   - npm start &
   - sleep 40
   - dotnet run --project ../eFormAPI/eFormAPI.Web/eFormAPI.Web.csproj > dotnet_log 2>&1 &
