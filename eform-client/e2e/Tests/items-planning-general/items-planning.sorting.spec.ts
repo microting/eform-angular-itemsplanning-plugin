@@ -11,7 +11,7 @@ describe('Items planning lists table sorting', function () {
   });
   it ('should be able to sort by ID', function () {
     itemsPlanningListPage.createDummyLists();
-
+  
     const listBefore = $$('#listId').map(item => {
       return item.getText();
     });
