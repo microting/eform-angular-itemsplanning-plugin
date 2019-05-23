@@ -1,6 +1,6 @@
 import loginPage from '../../Page objects/Login.page';
-import itemsPlanningListPage, {ListRowObject} from '../../Page objects/ItemsPlanning/ItemsPlanningList.page';
-import itemsPlanningModalPage from '../../Page objects/ItemsPlanning/ItemsPlanningModal.page';
+import itemsPlanningListPage, {ListRowObject} from '../../Page objects/ItemsPlanningList.page';
+import itemsPlanningModalPage from '../../Page objects/ItemsPlanningModal.page';
 
 const expect = require('chai').expect;
 

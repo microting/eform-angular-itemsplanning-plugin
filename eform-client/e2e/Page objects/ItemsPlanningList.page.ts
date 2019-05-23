@@ -1,5 +1,5 @@
 import Page from '../Page';
-import itemsPlanningModalPage from '../../Page objects/ItemsPlanning/ItemsPlanningModal.page';
+import itemsPlanningModalPage from './ItemsPlanningModal.page';
 import {PageWithNavbarPage} from '../PageWithNavbar.page';
 import {Guid} from 'guid-typescript';
 
