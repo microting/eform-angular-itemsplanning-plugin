@@ -14,7 +14,7 @@ script:
   - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/src/app/plugins/modules/items-planning-pn microting/eform-angular-frontend/eform-client/src/app/plugins/modules/items-planning-pn
   - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/e2e/Tests/items-planning-settings microting/eform-angular-frontend/eform-client/e2e/Tests/items-planning-settings
   - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/e2e/Tests/items-planning-general microting/eform-angular-frontend/eform-client/e2e/Tests/items-planning-general
-  - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/e2e/Page\ objects/items-planning microting/eform-angular-frontend/eform-client/e2e/Page\ objects/items-planning
+  - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/e2e/Page\ objects/ItemsPlanning microting/eform-angular-frontend/eform-client/e2e/Page\ objects/ItemsPlanning
   - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/wdio-headless-plugin-step2.conf.js microting/eform-angular-frontend/eform-client/wdio-headless-plugin-step2.conf.js
   - cd microting/eform-angular-frontend
   - dotnet restore -v q eFormAPI/eFormAPI.sln > dotnet_log 2>&1 &
