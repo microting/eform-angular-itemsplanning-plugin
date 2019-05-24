@@ -18,7 +18,7 @@ describe('Items planning plugin settings page', function () {
       numberOfWorkers: '1'
     };
     itemsPlanningSettingsPage.saveSettings(settingsData);
-    browser.pause(5000);
+    browser.pause(8000);
     // Check that items planning settings saved correctly
     const savedSettings = itemsPlanningSettingsPage.getSettings();
     expect(savedSettings.sdkConnectionString, 'SDK connection string is incorrect').equal(settingsData.sdkConnectionString);

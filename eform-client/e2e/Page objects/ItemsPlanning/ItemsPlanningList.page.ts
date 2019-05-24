@@ -14,17 +14,17 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
 
   public clickIdTableHeader() {
     browser.$('#idTableHeader').click();
-    browser.pause(4000);
+    browser.pause(5000);
   }
 
   public clickNameTableHeader() {
     browser.$('#nameTableHeader').click();
-    browser.pause(4000);
+    browser.pause(5000);
   }
 
   public clickDescriptionTableHeader() {
     browser.$('#descriptionTableHeader').click();
-    browser.pause(4000);
+    browser.pause(5000);
   }
 
   public getListValue(selector: any, row: number) {
@@ -48,6 +48,7 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
   }
 
   public goToListsPage() {
+    browser.pause(5000);
     this.itemPlanningButton.click();
     browser.pause(5000);
     this.listsButton.click();
@@ -57,12 +58,12 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
   public createDummyLists() {
     for (let i = 0; i < 3; i++) {
       this.listCreateBtn.click();
-      browser.pause(2000);
+      browser.pause(5000);
 
       itemsPlanningModalPage.createListItemName.setValue(Guid.create().toString());
       itemsPlanningModalPage.createListDescription.setValue(Guid.create().toString());
       itemsPlanningModalPage.listCreateSaveBtn.click();
-      browser.pause(3000);
+      browser.pause(6000);
     }
   }
 
@@ -97,12 +98,12 @@ export class ListRowObject {
 
   public clickDeleteList() {
     this.deleteBtn.click();
-    browser.pause(2000);
+    browser.pause(5000);
   }
 
   public clickUpdateList() {
     this.updateBtn.click();
-    browser.pause(3000);
+    browser.pause(5000);
   }
 }
 

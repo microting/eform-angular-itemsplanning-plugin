@@ -66,11 +66,11 @@ describe('Items planning lists table sorting', function () {
         sorted = listBefore;
       }
 
-      browser.pause(2000);
+      browser.pause(5000);
       expect(sorted, 'Sort by Name incorrect').deep.equal(listAfter);
     }
 
-    browser.pause(2000);
+    browser.pause(5000);
     itemsPlanningListPage.clearTable();
   });
   it ('should be able to sort by Description', function () {
@@ -102,7 +102,7 @@ describe('Items planning lists table sorting', function () {
       expect(sorted, 'Sort by Description incorrect').deep.equal(listAfter);
     }
 
-    browser.pause(2000);
+    browser.pause(5000);
     itemsPlanningListPage.clearTable();
   });
 });
