@@ -5,6 +5,7 @@ import {ItemsListPnItemModel, ItemsListPnModel, ItemsListPnUpdateModel} from '..
 import {TemplateListModel, TemplateRequestModel} from '../../../../../../common/models/eforms';
 import {debounceTime, switchMap} from 'rxjs/operators';
 import {EFormService} from '../../../../../../common/services/eform';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-items-planning-pn-list-edit',
@@ -49,6 +50,7 @@ export class ListEditComponent implements OnInit {
     this.trashInspectionPnListsService.getSingleList(id).subscribe((data) => {
       if (data && data.success) {
         this.selectedListModel = data.model;
+        this.selectedListModel.repeatUntil = moment(this.selectedListModel.repeatUntil);
       } this.spinnerStatus = false;
     });
   }
@@ -56,7 +58,9 @@ export class ListEditComponent implements OnInit {
   updateList() {
     this.spinnerStatus = true;
     const model = new ItemsListPnUpdateModel(this.selectedListModel);
-    model.repeatUntil.utcOffset(0, true);
+    if (this.selectedListModel.repeatUntil) {
+      this.selectedListModel.repeatUntil.utcOffset(0, true);
+    }
     this.trashInspectionPnListsService.updateList(model)
       .subscribe((data) => {
       if (data && data.success) {

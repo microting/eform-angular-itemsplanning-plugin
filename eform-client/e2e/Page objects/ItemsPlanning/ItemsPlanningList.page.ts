@@ -51,7 +51,7 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
     this.itemPlanningButton.click();
     browser.pause(5000);
     this.listsButton.click();
-    browser.pause(5000);
+    browser.pause(10000);
   }
 
   public createDummyLists() {
@@ -72,7 +72,7 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
       const listRowObject = new ListRowObject(1);
       listRowObject.clickDeleteList();
       itemsPlanningModalPage.listDeleteDeleteBtn.click();
-      browser.pause(3000);
+      browser.pause(5000);
     }
   }
 }
