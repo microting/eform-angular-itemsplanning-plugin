@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>{{ 'New List' | translate }}</h3>
+        <h3>{{ 'Edit List' | translate }}</h3>
       </div>
       <div class="modal-body">
         <div class="container-fluid">
@@ -52,9 +52,9 @@
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 ng-select-wrapper">
               <ng-select [items]="[
-                {id: 1, name: 'Day'},
-                {id: 2, name: 'Week'},
-                {id: 3, name: 'Month'}
+                {id: 1, name: 'Day' | translate},
+                {id: 2, name: 'Week' | translate},
+                {id: 3, name: 'Month' | translate}
                 ]"
                          bindLabel="name"
                          [placeholder]="('Repeat Type' | translate)"
@@ -66,13 +66,13 @@
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 ng-select-wrapper">
               <ng-select [items]="[
-                                    {id: 1, name: 'Monday'},
-                                    {id: 2, name: 'Tuesday'},
-                                    {id: 3, name: 'Wednesday'},
-                                    {id: 4, name: 'Thursday'},
-                                    {id: 5, name: 'Friday'},
-                                    {id: 6, name: 'Saturday'},
-                                    {id: 7, name: 'Sunday'}
+                                    {id: 1, name: 'Monday' | translate},
+                                    {id: 2, name: 'Tuesday' | translate},
+                                    {id: 3, name: 'Wednesday' | translate},
+                                    {id: 4, name: 'Thursday' | translate},
+                                    {id: 5, name: 'Friday' | translate},
+                                    {id: 6, name: 'Saturday' | translate},
+                                    {id: 7, name: 'Sunday' | translate}
                             ]"
                          bindLabel="name"
                          [placeholder]="('Repeat On' | translate)"
@@ -83,23 +83,25 @@
               </ng-select>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6">
-              <div class="md-form">
+              <div class="md-form" [owlDateTimeTrigger]="dt1">
                 <input mdbInputDirective
+                       [owlDateTime]="dt1"
                        [mdbValidate]="false"
                        [(ngModel)]="selectedListModel.repeatUntil"
                        type="text" id="editRepeatUntil"
                        name="editRepeatUntil" class="form-control">
+                <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
                 <label for="editRepeatUntil">{{'Repeat until' | translate}}</label>
               </div>
             </div>
           </div>
-          <button class="btn btn-success" (click)="addNewItem()">
+          <button class="btn btn-success" id="addItemBtn" (click)="addNewItem()">
             <fa-icon icon="plus"></fa-icon>
             {{ 'Add New Item' | translate }}
           </button>
           <div class="row p-1 mt-2 table-responsive no-gutters">
             <table class="table table-sm text-center z-depth-1 pr-2 pl-2">
-              <tbody id="tableBody">
+              <tbody id="itemsTableBody">
               <tr *ngFor="let item of selectedListModel.items">
                 <td id="listId">
                   <div class="md-form md-form-sm">
@@ -143,7 +145,7 @@
                 </td>
                 <td>
                   <div class="d-flex flex-row justify-content-center">
-                    <button id="deleteListBtn" (click)="removeItem(item.id)"
+                    <button id="deleteItemBtn" (click)="removeItem(item.id)"
                             class="btn btn-danger btn-icon mb-2 "
                             mdbTooltip="{{ 'Delete Item' | translate }}">
                       <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>

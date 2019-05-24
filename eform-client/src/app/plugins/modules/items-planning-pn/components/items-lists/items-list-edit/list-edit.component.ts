@@ -45,7 +45,6 @@ export class ListEditComponent implements OnInit {
   }
 
   getSelectedList(id: number) {
-    // debugger;
     this.spinnerStatus = true;
     this.trashInspectionPnListsService.getSingleList(id).subscribe((data) => {
       if (data && data.success) {
@@ -57,6 +56,7 @@ export class ListEditComponent implements OnInit {
   updateList() {
     this.spinnerStatus = true;
     const model = new ItemsListPnUpdateModel(this.selectedListModel);
+    model.repeatUntil.utcOffset(0, true);
     this.trashInspectionPnListsService.updateList(model)
       .subscribe((data) => {
       if (data && data.success) {

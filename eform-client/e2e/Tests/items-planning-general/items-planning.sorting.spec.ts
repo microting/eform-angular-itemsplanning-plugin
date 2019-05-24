@@ -1,5 +1,5 @@
 import loginPage from '../../Page objects/Login.page';
-import itemsPlanningListPage from '../../Page objects/ItemsPlanningList.page';
+import itemsPlanningListPage from '../../Page objects/ItemsPlanning/ItemsPlanningList.page';
 
 const expect = require('chai').expect;
 

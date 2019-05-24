@@ -8,24 +8,6 @@ class ApplicationSettingsPluginsPage extends PageWithNavbarPage {
     getFirstPluginRowObj(): PluginRowObject {
         return new PluginRowObject(1);
     }
-
-
-    goToPluginSettings() {
-      browser.$('#plugin-settings-btn').click();
-      browser.pause(3000);
-    }
-
-    settingsMenu() {
-      return browser.$('#PluginDropDown');
-    }
-
-    getChoices() {
-      return browser.$$('.ng-option');
-    }
-    saveChangesBtn() {
-      browser.$('#saveBtn').click();
-      browser.pause(3000);
-    }
 }
 
 

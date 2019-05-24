@@ -1,6 +1,6 @@
 import loginPage from '../../Page objects/Login.page';
-import itemsPlanningListPage, {ListRowObject} from '../../Page objects/ItemsPlanningList.page';
-import itemsPlanningModalPage from '../../Page objects/ItemsPlanningModal.page';
+import itemsPlanningListPage, {ListRowObject} from '../../Page objects/ItemsPlanning/ItemsPlanningList.page';
+import itemsPlanningModalPage from '../../Page objects/ItemsPlanning/ItemsPlanningModal.page';
 
 const expect = require('chai').expect;
 
@@ -33,7 +33,9 @@ describe('Items planning actions', function () {
     expect(itemsPlanningModalPage.editListSelector.getValue(), 'Saved Template is incorrect').equal(listData.template);
     expect(itemsPlanningModalPage.editListDescription.getValue(), 'Saved Description is incorrect').equal(listData.description);
     expect(itemsPlanningModalPage.editRepeatEvery.getValue(), 'Saved Repeat Every is incorrect').equal(listData.repeatEvery);
-    expect(itemsPlanningModalPage.editRepeatUntil.getValue(), 'Saved Repeat Until is incorrect').equal(listData.repeatUntil);
+    const repeatUntil = new Date(listData.repeatUntil);
+    const repeatUntilSaved = new Date(itemsPlanningModalPage.editRepeatUntil.getValue());
+    expect(repeatUntilSaved.getDate(), 'Saved Repeat Until is incorrect').equal(repeatUntil.getDate());
 
     browser.element('#editRepeatType').click();
     browser.pause(2000);
@@ -70,7 +72,9 @@ describe('Items planning actions', function () {
     expect(itemsPlanningModalPage.editListSelector.getValue(), 'Saved Template is incorrect').equal(listData.template);
     expect(itemsPlanningModalPage.editListDescription.getValue(), 'Saved Description is incorrect').equal(listData.description);
     expect(itemsPlanningModalPage.editRepeatEvery.getValue(), 'Saved Repeat Every is incorrect').equal(listData.repeatEvery);
-    expect(itemsPlanningModalPage.editRepeatUntil.getValue(), 'Saved Repeat Until is incorrect').equal(listData.repeatUntil);
+    const repeatUntil = new Date(listData.repeatUntil);
+    const repeatUntilSaved = new Date(itemsPlanningModalPage.editRepeatUntil.getValue());
+    expect(repeatUntilSaved.getDate(), 'Saved Repeat Until is incorrect').equal(repeatUntil.getDate());
 
     browser.element('#editRepeatType').click();
     browser.pause(2000);
