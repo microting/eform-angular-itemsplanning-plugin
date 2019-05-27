@@ -14,17 +14,17 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
 
   public clickIdTableHeader() {
     browser.$('#idTableHeader').click();
-    browser.pause(5000);
+    browser.pause(4000);
   }
 
   public clickNameTableHeader() {
     browser.$('#nameTableHeader').click();
-    browser.pause(5000);
+    browser.pause(4000);
   }
 
   public clickDescriptionTableHeader() {
     browser.$('#descriptionTableHeader').click();
-    browser.pause(5000);
+    browser.pause(4000);
   }
 
   public getListValue(selector: any, row: number) {
@@ -35,8 +35,8 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
     }
   }
 
-  public itemPlanningDropdown() {
-    browser.element(`//*[contains(@class, 'dropdown')]//*[contains(text(), 'Enhedsplanlægning')]`).click();
+  public get itemPlanningButton() {
+    return browser.element('#items-planning-pn');
   }
 
   public get listCreateBtn() {
@@ -48,22 +48,21 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
   }
 
   public goToListsPage() {
-    browser.pause(10000);
-    this.itemPlanningDropdown();
-    browser.pause(1000);
+    this.itemPlanningButton.click();
+    browser.pause(5000);
     this.listsButton.click();
-    browser.pause(30000);
+    browser.pause(5000);
   }
 
   public createDummyLists() {
     for (let i = 0; i < 3; i++) {
       this.listCreateBtn.click();
-      browser.pause(5000);
+      browser.pause(2000);
 
       itemsPlanningModalPage.createListItemName.setValue(Guid.create().toString());
       itemsPlanningModalPage.createListDescription.setValue(Guid.create().toString());
       itemsPlanningModalPage.listCreateSaveBtn.click();
-      browser.pause(6000);
+      browser.pause(3000);
     }
   }
 
@@ -73,7 +72,7 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
       const listRowObject = new ListRowObject(1);
       listRowObject.clickDeleteList();
       itemsPlanningModalPage.listDeleteDeleteBtn.click();
-      browser.pause(5000);
+      browser.pause(3000);
     }
   }
 }
@@ -98,12 +97,12 @@ export class ListRowObject {
 
   public clickDeleteList() {
     this.deleteBtn.click();
-    browser.pause(5000);
+    browser.pause(2000);
   }
 
   public clickUpdateList() {
     this.updateBtn.click();
-    browser.pause(5000);
+    browser.pause(3000);
   }
 }
 

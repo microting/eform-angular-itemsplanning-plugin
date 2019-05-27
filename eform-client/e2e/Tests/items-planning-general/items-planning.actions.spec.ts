@@ -12,7 +12,7 @@ describe('Items planning actions', function () {
   });
   it ('should create list with all fields', function () {
     itemsPlanningListPage.listCreateBtn.click();
-    browser.pause(6000);
+    browser.pause(3000);
     const listData = {
       name: 'Test list',
       template: '',
@@ -38,19 +38,18 @@ describe('Items planning actions', function () {
     expect(repeatUntilSaved.getDate(), 'Saved Repeat Until is incorrect').equal(repeatUntil.getDate());
 
     browser.element('#editRepeatType').click();
-    browser.pause(5000);
+    browser.pause(2000);
     const editRepeatTypeSelected = browser.$$('#editRepeatType .ng-option')[listData.repeatType];
     expect(editRepeatTypeSelected.getAttribute('class'), 'Saved Repeat Type is incorrect').contains('ng-option-selected');
 
     browser.element('#editRepeatOn').click();
-    browser.pause(5000);
+    browser.pause(2000);
     const editRepeatOnSelected = browser.$$('#editRepeatOn .ng-option')[listData.repeatOn];
     expect(editRepeatOnSelected.getAttribute('class'), 'Saved Repeat On is incorrect').contains('ng-option-selected');
     itemsPlanningModalPage.listEditCancelBtn.click();
-    browser.pause(5000);
   });
   it ('should change all fields after edit', function () {
-    browser.pause(6000);
+    browser.pause(3000);
     let listRowObject = new ListRowObject(itemsPlanningListPage.rowNum());
     listRowObject.clickUpdateList();
     const listData = {
@@ -78,23 +77,22 @@ describe('Items planning actions', function () {
     expect(repeatUntilSaved.getDate(), 'Saved Repeat Until is incorrect').equal(repeatUntil.getDate());
 
     browser.element('#editRepeatType').click();
-    browser.pause(5000);
+    browser.pause(2000);
     const editRepeatTypeSelected = browser.$$('#editRepeatType .ng-option')[listData.repeatType];
     expect(editRepeatTypeSelected.getAttribute('class'), 'Saved Repeat Type is incorrect').contains('ng-option-selected');
 
     browser.element('#editRepeatOn').click();
-    browser.pause(5000);
+    browser.pause(2000);
     const editRepeatOnSelected = browser.$$('#editRepeatOn .ng-option')[listData.repeatOn];
     expect(editRepeatOnSelected.getAttribute('class'), 'Saved Repeat On is incorrect').contains('ng-option-selected');
     itemsPlanningModalPage.listEditCancelBtn.click();
-    browser.pause(5000);
   });
   it ('should delete existing list', function () {
-    browser.pause(10000);
+    browser.pause(3000);
     let listRowObject = new ListRowObject(itemsPlanningListPage.rowNum());
     listRowObject.clickDeleteList();
     itemsPlanningModalPage.listDeleteDeleteBtn.click();
-    browser.pause(5000);
+    browser.pause(3000);
     listRowObject = new ListRowObject(1);
     expect(listRowObject.id === null, 'List is not deleted');
   });
