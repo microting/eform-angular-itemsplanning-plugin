@@ -35,8 +35,8 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
     }
   }
 
-  public get itemPlanningButton() {
-    return browser.element('#items-planning-pn');
+  public itemPlanningDropdown() {
+    browser.element(`//*[contains(@class, 'dropdown')]//*[contains(text(), 'Enhedsplanlægning')]`).click();
   }
 
   public get listCreateBtn() {
@@ -49,7 +49,7 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
 
   public goToListsPage() {
     browser.pause(5000);
-    this.itemPlanningButton.click();
+    this.itemPlanningDropdown();
     browser.pause(5000);
     this.listsButton.click();
     browser.pause(10000);
