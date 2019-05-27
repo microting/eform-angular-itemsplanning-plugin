@@ -48,6 +48,7 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
   }
 
   public goToListsPage() {
+    browser.pause(5000);
     this.itemPlanningButton.click();
     browser.pause(5000);
     this.listsButton.click();
