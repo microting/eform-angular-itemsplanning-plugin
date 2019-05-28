@@ -23,7 +23,7 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
       <PackageReference Include="Microting.eForm" Version="3.0.246" />
       <PackageReference Include="Microting.eFormApi.BasePn" Version="1.1.150" />
-      <PackageReference Include="Microting.ItemsPlanningBase" Version="1.1.15" />
+      <PackageReference Include="Microting.ItemsPlanningBase" Version="1.1.16" />
       <PackageReference Include="McMaster.NETCore.Plugins" Version="0.2.1" />
     </ItemGroup>
 
