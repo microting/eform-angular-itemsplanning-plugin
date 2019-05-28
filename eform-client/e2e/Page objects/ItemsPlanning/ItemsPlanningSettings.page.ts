@@ -6,7 +6,7 @@ export class ItemsPlanningSettingsPage extends Page {
   }
 
   public get saveSettingsBtn() {
-    return browser.$('#saveBtn');
+    return browser.$('#saveSettingsBtn');
   }
 
   public get sdkConnectionString() {
@@ -29,19 +29,13 @@ export class ItemsPlanningSettingsPage extends Page {
     return browser.$('#numberOfWorkers');
   }
 
-  public get itemsPlanningBtn() {
-    return browser.$('#items-planning-pn');
-  }
-
   public get itemsPlanningSettingsBtn() {
-    return browser.$('#items-planning-pn-settings');
+    return browser.$('##items-planning-pn');
   }
 
   public goToSettingsPage() {
-    this.itemsPlanningBtn.click();
-    browser.pause(5000);
     this.itemsPlanningSettingsBtn.click();
-    browser.pause(10000);
+    browser.pause(20000);
   }
 
   public saveSettings(data: any) {
@@ -64,11 +58,11 @@ export default itemsPlanningSettingsPage;
 
 export class ItemsPlanningSettings {
   constructor() {
-    this.sdkConnectionString = itemsPlanningSettingsPage.sdkConnectionString.getValue();
-    this.logLevel = itemsPlanningSettingsPage.logLevel.getValue();
-    this.logLimit = itemsPlanningSettingsPage.logLimit.getValue();
-    this.maxParallelism = itemsPlanningSettingsPage.maxParallelism.getValue();
-    this.numberOfWorkers = itemsPlanningSettingsPage.numberOfWorkers.getValue();
+    this.sdkConnectionString = itemsPlanningSettingsPage.sdkConnectionString.getText();
+    this.logLevel = itemsPlanningSettingsPage.logLevel.getText();
+    this.logLimit = itemsPlanningSettingsPage.logLimit.getText();
+    this.maxParallelism = itemsPlanningSettingsPage.maxParallelism.getText();
+    this.numberOfWorkers = itemsPlanningSettingsPage.numberOfWorkers.getText();
   }
 
   public sdkConnectionString;
