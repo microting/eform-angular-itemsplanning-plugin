@@ -24,18 +24,18 @@ export class ItemsPlanningModalPage extends Page {
 
   public selectCreateRepeatType(n: number) {
     browser.element('#createRepeatType').click();
-    browser.pause(3000);
+    browser.pause(5000);
     const choices = browser.$$('#createRepeatType .ng-option');
     choices[n].click();
-    browser.pause(1000);
+    browser.pause(3000);
   }
 
   public selectCreateRepeatOn(n: number) {
     browser.element('#createRepeatOn').click();
-    browser.pause(3000);
+    browser.pause(5000);
     const choices = browser.$$('#createRepeatOn .ng-option');
     choices[n].click();
-    browser.pause(1000);
+    browser.pause(3000);
   }
 
   public get createRepeatUntil() {
@@ -69,18 +69,18 @@ export class ItemsPlanningModalPage extends Page {
 
   public selectEditRepeatType(n: number) {
     browser.element('#editRepeatType').click();
-    browser.pause(3000);
+    browser.pause(5000);
     const choices = browser.$$('#editRepeatType .ng-option');
     choices[n].click();
-    browser.pause(1000);
+    browser.pause(3000);
   }
 
   public selectEditRepeatOn(n: number) {
     browser.element('#editRepeatOn').click();
-    browser.pause(3000);
+    browser.pause(5000);
     const choices = browser.$$('#editRepeatOn .ng-option');
     choices[n].click();
-    browser.pause(1000);
+    browser.pause(3000);
   }
 
   public get editRepeatUntil() {
@@ -118,7 +118,7 @@ export class ItemsPlanningModalPage extends Page {
     this.selectCreateRepeatOn(data.repeatOn);
     this.createRepeatUntil.setValue(data.repeatUntil);
     this.listCreateSaveBtn.click();
-    browser.pause(5000);
+    browser.pause(8000);
   }
 
   public editList(data: any) {
@@ -130,12 +130,12 @@ export class ItemsPlanningModalPage extends Page {
     this.selectEditRepeatOn(data.repeatOn);
     this.editRepeatUntil.setValue(data.repeatUntil);
     this.listEditSaveBtn.click();
-    browser.pause(5000);
+    browser.pause(8000);
   }
 
   public addNewItem() {
     this.addItemBtn.click();
-    browser.pause(2000);
+    browser.pause(5000);
   }
 
 }
@@ -160,6 +160,6 @@ export class ListItemRowObject {
 
   public deleteItem() {
     this.deleteBtn.click();
-    browser.pause(2000);
+    browser.pause(5000);
   }
 }
