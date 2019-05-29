@@ -11,7 +11,20 @@ describe('Items planning actions', function () {
         itemsPlanningListPage.goToListsPage();
     });
     it ('should delete existing list', function () {
-        browser.pause(10000);
+        browser.pause(5000);
+        itemsPlanningListPage.listCreateBtn.click();
+        browser.pause(6000);
+        const listData = {
+            name: 'Test list',
+            template: '',
+            description: 'Description',
+            repeatEvery: '1',
+            repeatType: '1',
+            repeatOn: '1',
+            repeatUntil: '5/15/2020'
+        };
+        itemsPlanningModalPage.createList(listData);
+        browser.pause(5000);
         let listRowObject = new ListRowObject(itemsPlanningListPage.rowNum());
         listRowObject.clickDeleteList();
         itemsPlanningModalPage.listDeleteDeleteBtn.click();
