@@ -154,7 +154,6 @@ namespace ItemsPlanning.Pn.Services
         {
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
-                Debugger.Break();
                 try
                 {
                     var itemsList = new ItemList
