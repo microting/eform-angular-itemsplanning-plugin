@@ -15,6 +15,7 @@ describe('Application settings page - site header section', function () {
         myEformsPage.Navbar.clickonSubMenuItem('Plugins');
         browser.pause(8000);
 
+
         const plugin = pluginsPage.getFirstPluginRowObj();
         expect(plugin.id).equal(1);
         expect(plugin.name).equal('Microting Items Planning Plugin');
