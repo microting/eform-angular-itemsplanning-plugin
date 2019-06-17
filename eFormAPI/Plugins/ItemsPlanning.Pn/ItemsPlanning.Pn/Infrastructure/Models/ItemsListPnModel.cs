@@ -12,8 +12,10 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         public string Description { get; set; }
         public int RepeatEvery { get; set; }
         public RepeatType RepeatType { get; set; }
-        public RepeatOn RepeatOn { get; set; }
         public DateTime? RepeatUntil { get; set; }
+        public DayOfWeek? DayOfWeek { get; set; }
+        public int? DayOfMonth { get; set; }
+        public DateTime? LastExecutedTime { get; set; }
         public int RelatedEFormId { get; set; }
         public string RelatedEFormName { get; set; }
 

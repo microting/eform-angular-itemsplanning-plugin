@@ -64,24 +64,38 @@
                          id="editRepeatType">
               </ng-select>
             </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 ng-select-wrapper">
-              <ng-select [items]="[
-                                    {id: 1, name: 'Monday' | translate},
-                                    {id: 2, name: 'Tuesday' | translate},
-                                    {id: 3, name: 'Wednesday' | translate},
-                                    {id: 4, name: 'Thursday' | translate},
-                                    {id: 5, name: 'Friday' | translate},
-                                    {id: 6, name: 'Saturday' | translate},
-                                    {id: 7, name: 'Sunday' | translate}
-                            ]"
-                         bindLabel="name"
-                         [placeholder]="('Repeat On' | translate)"
-                         bindValue="id"
-                         [typeahead]="typeahead"
-                         [(ngModel)]="selectedListModel.repeatOn"
-                         id="editRepeatOn">
-              </ng-select>
-            </div>
+            <ng-template [ngIf]="selectedListModel.repeatType == 2">
+              <div class="col-md-2 col-sm-4 col-xs-6 ng-select-wrapper">
+                <ng-select [items]="[
+                                      {id: 1, name: 'Monday' | translate},
+                                      {id: 2, name: 'Tuesday' | translate},
+                                      {id: 3, name: 'Wednesday' | translate},
+                                      {id: 4, name: 'Thursday' | translate},
+                                      {id: 5, name: 'Friday' | translate},
+                                      {id: 6, name: 'Saturday' | translate},
+                                      {id: 0, name: 'Sunday' | translate}
+                              ]"
+                           bindLabel="name"
+                           [placeholder]="('Day of week' | translate)"
+                           bindValue="id"
+                           [typeahead]="typeahead"
+                           [(ngModel)]="selectedListModel.dayOfWeek"
+                           id="editDayOfWeek">
+                </ng-select>
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="selectedListModel.repeatType == 3">
+              <div class="col-md-2 col-sm-4 col-xs-6">
+                <div class="md-form">
+                  <input mdbInputDirective
+                         [mdbValidate]="false"
+                         [(ngModel)]="selectedListModel.dayOfMonth"
+                         type="text" id="editDayOfMonth"
+                         name="editDayOfMonth" class="form-control">
+                  <label for="editDayOfMonth">{{'Day of month' | translate}}</label>
+                </div>
+              </div>
+            </ng-template>
             <div class="col-md-2 col-sm-4 col-xs-6">
               <div class="md-form" [owlDateTimeTrigger]="dt1">
                 <input mdbInputDirective

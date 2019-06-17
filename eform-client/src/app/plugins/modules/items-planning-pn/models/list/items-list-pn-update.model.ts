@@ -7,7 +7,8 @@ export class ItemsListPnUpdateModel {
   description: string;
   repeatEvery: number;
   repeatType: number;
-  repeatOn: number;
+  dayOfWeek: number;
+  dayOfMonth: number;
   repeatUntil: Moment | null;
   relatedEFormId: number;
   items: ItemsListPnItemModel[] = [];
@@ -19,7 +20,8 @@ export class ItemsListPnUpdateModel {
       this.description = data.description;
       this.repeatEvery = data.repeatEvery;
       this.repeatType = data.repeatType;
-      this.repeatOn = data.repeatOn;
+      this.dayOfWeek = data.dayOfWeek;
+      this.dayOfMonth = data.dayOfMonth;
       this.repeatUntil = data.repeatUntil;
       this.relatedEFormId = data.relatedEFormId;
       this.items = data.items;

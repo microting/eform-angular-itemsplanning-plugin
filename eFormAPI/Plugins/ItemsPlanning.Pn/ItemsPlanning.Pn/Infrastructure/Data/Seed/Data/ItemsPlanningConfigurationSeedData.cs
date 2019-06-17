@@ -55,6 +55,11 @@ namespace ItemsPlanning.Pn.Infrastructure.Data.Seed.Data
             {
                 Name = "ItemsPlanningBaseSettings:NumberOfWorkers",
                 Value = "1"
+            },
+            new PluginConfigurationValue()
+            {
+                Name = "ItemsPlanningBaseSettings:SiteIds",
+                Value = ""
             }
         };
     }

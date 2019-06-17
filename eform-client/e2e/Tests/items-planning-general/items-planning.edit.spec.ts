@@ -19,8 +19,7 @@ describe('Items planning actions', function () {
             template: '',
             description: 'Description 2',
             repeatEvery: '2',
-            repeatType: '2',
-            repeatOn: '2',
+            repeatType: '1',
             repeatUntil: '5/15/2023'
         };
         itemsPlanningModalPage.editList(listData);
@@ -43,10 +42,6 @@ describe('Items planning actions', function () {
         const editRepeatTypeSelected = browser.$$('#editRepeatType .ng-option')[listData.repeatType];
         expect(editRepeatTypeSelected.getAttribute('class'), 'Saved Repeat Type is incorrect').contains('ng-option-selected');
 
-        browser.element('#editRepeatOn').click();
-        browser.pause(5000);
-        const editRepeatOnSelected = browser.$$('#editRepeatOn .ng-option')[listData.repeatOn];
-        expect(editRepeatOnSelected.getAttribute('class'), 'Saved Repeat On is incorrect').contains('ng-option-selected');
         itemsPlanningModalPage.listEditCancelBtn.click();
         browser.pause(5000);
     });

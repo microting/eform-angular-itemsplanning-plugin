@@ -36,5 +36,7 @@ namespace ItemsPlanning.Pn.Infrastructure.Models.Settings
         
         public int NumberOfWorkers { get; set; }
         
+        public string SiteIds { get; set; }
+        
     }
 }
