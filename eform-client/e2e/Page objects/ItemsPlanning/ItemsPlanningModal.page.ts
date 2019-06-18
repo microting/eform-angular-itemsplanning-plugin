@@ -30,14 +30,6 @@ export class ItemsPlanningModalPage extends Page {
     browser.pause(3000);
   }
 
-  public selectCreateRepeatOn(n: number) {
-    browser.element('#createRepeatOn').click();
-    browser.pause(5000);
-    const choices = browser.$$('#createRepeatOn .ng-option');
-    choices[n].click();
-    browser.pause(3000);
-  }
-
   public get createRepeatUntil() {
     return browser.element('#createRepeatUntil');
   }
@@ -75,14 +67,6 @@ export class ItemsPlanningModalPage extends Page {
     browser.pause(3000);
   }
 
-  public selectEditRepeatOn(n: number) {
-    browser.element('#editRepeatOn').click();
-    browser.pause(5000);
-    const choices = browser.$$('#editRepeatOn .ng-option');
-    choices[n].click();
-    browser.pause(3000);
-  }
-
   public get editRepeatUntil() {
     return browser.element('#editRepeatUntil');
   }
@@ -115,7 +99,6 @@ export class ItemsPlanningModalPage extends Page {
     this.createListDescription.setValue(data.description);
     this.createRepeatEvery.setValue(data.repeatEvery);
     this.selectCreateRepeatType(data.repeatType);
-    this.selectCreateRepeatOn(data.repeatOn);
     this.createRepeatUntil.setValue(data.repeatUntil);
     this.listCreateSaveBtn.click();
     browser.pause(8000);
@@ -127,7 +110,6 @@ export class ItemsPlanningModalPage extends Page {
     this.editListDescription.setValue(data.description);
     this.editRepeatEvery.setValue(data.repeatEvery);
     this.selectEditRepeatType(data.repeatType);
-    this.selectEditRepeatOn(data.repeatOn);
     this.editRepeatUntil.setValue(data.repeatUntil);
     this.listEditSaveBtn.click();
     browser.pause(8000);

@@ -20,7 +20,6 @@ describe('Items planning actions', function () {
             description: 'Description',
             repeatEvery: '1',
             repeatType: '1',
-            repeatOn: '1',
             repeatUntil: '5/15/2020'
         };
         itemsPlanningModalPage.createList(listData);
