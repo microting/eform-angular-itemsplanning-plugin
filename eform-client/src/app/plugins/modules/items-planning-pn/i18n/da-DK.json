@@ -1,9 +1,9 @@
 {
 	"Actions": "Handlinger",
-	"Add New Item": "Tilføj nyt produkt",
+	"Add New Item": "Tilføj ny enhed",
 	"Are you sure you want to delete": "Er du sikker på, at du vil slette",
-	"Cancel": "afbestille",
-	"Create": "skab",
+	"Cancel": "Annuller",
+	"Create": "Opret",
 	"Create List": "Opret liste",
 	"Creation Date": "Oprettelsesdato",
   "Day of week": "Ugedag",
@@ -27,8 +27,8 @@
 	"Repeat every": "Gentag hver gang",
 	"Repeat until": "Gentag indtil",
 	"SDK connection string": "SDK-forbindelsesstreng",
-	"Save": "Gemme",
-  "Selected template": "Udvalgt skabelon",
+	"Save": "Gem",
+  "Selected template": "Valgt skabelon",
 
   "Monday": "Mandag",
   "Tuesday": "Tirsdag",
