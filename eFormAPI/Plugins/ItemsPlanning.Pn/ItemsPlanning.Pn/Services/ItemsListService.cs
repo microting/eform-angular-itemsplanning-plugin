@@ -9,6 +9,7 @@ using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Entities;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using ItemsPlanning.Pn.Abstractions;
+using Microting.eFormApi.BasePn.Abstractions;
 
 namespace ItemsPlanning.Pn.Services
 {
@@ -22,15 +23,17 @@ namespace ItemsPlanning.Pn.Services
         private readonly ItemsPlanningPnDbContext _dbContext;
         private readonly IItemsPlanningLocalizationService _itemsPlanningLocalizationService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IEFormCoreService _core;
 
         public ItemsListService(
             ItemsPlanningPnDbContext dbContext,
             IItemsPlanningLocalizationService itemsPlanningLocalizationService,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor, IEFormCoreService core)
         {
             _dbContext = dbContext;
             _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
             _httpContextAccessor = httpContextAccessor;
+            _core = core;
         }
 
         public async Task<OperationDataResult<ItemsListsModel>> GetAllLists(ItemsListRequestModel pnRequestModel)
@@ -100,6 +103,7 @@ namespace ItemsPlanning.Pn.Services
                 Debugger.Break();
                 try
                 {
+                    var template = _core.GetCore().TemplateItemRead(model.RelatedEFormId);
                     var itemsList = new ItemList
                     {
                         Name = model.Name,
@@ -114,6 +118,7 @@ namespace ItemsPlanning.Pn.Services
                         Enabled = true,
                         Items = new List<Item>(),
                         RelatedEFormId = model.RelatedEFormId,
+                        RelatedEFormName = template.Label
                     };
 
                     await itemsList.Save(_dbContext);
@@ -158,6 +163,7 @@ namespace ItemsPlanning.Pn.Services
             {
                 try
                 {
+                    var template = _core.GetCore().TemplateItemRead(updateModel.RelatedEFormId);
                     var itemsList = new ItemList
                     {
                         Id = updateModel.Id,
@@ -171,6 +177,7 @@ namespace ItemsPlanning.Pn.Services
                         UpdatedAt = DateTime.UtcNow,
                         UpdatedByUserId = UserId,
                         RelatedEFormId = updateModel.RelatedEFormId,
+                        RelatedEFormName = template.Label,
                     };
                     await itemsList.Update(_dbContext);
 
