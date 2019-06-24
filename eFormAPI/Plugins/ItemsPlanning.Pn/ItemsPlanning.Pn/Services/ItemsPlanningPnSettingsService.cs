@@ -102,6 +102,7 @@ namespace ItemsPlanning.Pn.Services
                     settings.MaxParallelism = itemsPlanningBaseSettings.MaxParallelism;
                     settings.NumberOfWorkers = itemsPlanningBaseSettings.NumberOfWorkers;
                     settings.SdkConnectionString = itemsPlanningBaseSettings.SdkConnectionString;
+                    settings.SiteIds = itemsPlanningBaseSettings.SiteIds;
                 }, _dbContext, UserId);
                 
                 return new OperationResult(true,

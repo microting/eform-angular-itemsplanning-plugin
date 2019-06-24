@@ -4,4 +4,5 @@ export class ItemsPlanningBaseSettingsModel {
   sdkConnectionString: string;
   maxParallelism: string;
   numberOfWorkers: number;
+  siteIds: string;
 }
