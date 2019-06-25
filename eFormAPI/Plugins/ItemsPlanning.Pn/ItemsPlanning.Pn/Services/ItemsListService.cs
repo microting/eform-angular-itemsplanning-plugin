@@ -118,7 +118,7 @@ namespace ItemsPlanning.Pn.Services
                         Enabled = true,
                         Items = new List<Item>(),
                         RelatedEFormId = model.RelatedEFormId,
-                        RelatedEFormName = template.Label
+                        RelatedEFormName = template?.Label
                     };
 
                     await itemsList.Save(_dbContext);
@@ -177,7 +177,7 @@ namespace ItemsPlanning.Pn.Services
                         UpdatedAt = DateTime.UtcNow,
                         UpdatedByUserId = UserId,
                         RelatedEFormId = updateModel.RelatedEFormId,
-                        RelatedEFormName = template.Label,
+                        RelatedEFormName = template?.Label,
                     };
                     await itemsList.Update(_dbContext);
 
