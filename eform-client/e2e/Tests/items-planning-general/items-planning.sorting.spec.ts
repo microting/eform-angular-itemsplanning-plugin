@@ -44,7 +44,7 @@ describe('Items planning lists table sorting', function () {
     itemsPlanningListPage.createDummyLists();
 
     const listBefore = $$('#listName').map(item => {
-      return parseInt(item.getText(), 10);
+      return item.getText();
     });
 
     // check that sorting is correct in both directions
@@ -52,7 +52,7 @@ describe('Items planning lists table sorting', function () {
       itemsPlanningListPage.clickNameTableHeader();
 
       const listAfter = $$('#listName').map(item => {
-        return parseInt(item.getText(), 10);
+        return item.getText();
       });
 
       // get current direction of sorting
@@ -77,7 +77,7 @@ describe('Items planning lists table sorting', function () {
     itemsPlanningListPage.createDummyLists();
 
     const listBefore = $$('#listDescription').map(item => {
-      return parseInt(item.getText(), 10);
+      return item.getText();
     });
 
     // check that sorting is correct in both directions
@@ -85,7 +85,7 @@ describe('Items planning lists table sorting', function () {
       itemsPlanningListPage.clickDescriptionTableHeader();
 
       const listAfter = $$('#listDescription').map(item => {
-        return parseInt(item.getText(), 10);
+        return item.getText();
       });
 
       // get current direction of sorting
