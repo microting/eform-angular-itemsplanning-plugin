@@ -60,6 +60,8 @@ namespace ItemsPlanning.Pn
         {
             services.AddSingleton<IItemsPlanningLocalizationService, ItemsPlanningLocalizationService>();
             services.AddTransient<IItemsPlanningPnSettingsService, ItemsPlanningPnSettingsService>();
+            services.AddTransient<IItemsPlanningReportService, ItemsPlanningReportService>();
+            services.AddTransient<IExcelService, ExcelService>();
             services.AddTransient<IItemsListService, ItemsListService>();
             services.AddSingleton<IRebusService, RebusService>();
         }

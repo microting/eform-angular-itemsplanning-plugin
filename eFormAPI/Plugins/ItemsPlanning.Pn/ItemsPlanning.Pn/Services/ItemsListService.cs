@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microting.eFormApi.BasePn.Infrastructure.Extensions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
@@ -60,6 +61,11 @@ namespace ItemsPlanning.Pn.Services
                 {
                     itemListsQuery = _dbContext.ItemLists
                         .OrderBy(x => x.Id);
+                }
+
+                if (!pnRequestModel.NameFilter.IsNullOrEmpty())
+                {
+                    itemListsQuery = itemListsQuery.Where(x => x.Name.Contains(pnRequestModel.NameFilter));
                 }
 
                 itemListsQuery
