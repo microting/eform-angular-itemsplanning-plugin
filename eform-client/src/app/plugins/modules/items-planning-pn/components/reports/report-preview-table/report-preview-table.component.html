@@ -1,0 +1,27 @@
+<div class="row p-1 mt-2 table-responsive no-gutters">
+  <table class="table table-sm table-striped table-bordered text-center z-depth-1" *ngIf="reportData.formFields.length > 0">
+    <thead>
+    <tr>
+      <th scope="colgroup" colspan="2"></th>
+      <th scope="col" *ngFor="let date of reportData.dates">
+        <date-formatter [date]="date" [Format]="'datetime'"></date-formatter>
+      </th>
+    </tr>
+    </thead>
+    <tbody id="tableBody">
+      <ng-container *ngFor="let field of reportData.formFields">
+        <ng-container *ngFor="let option of field.options; let first = first">
+          <tr>
+            <ng-container *ngIf="first">
+              <th [attr.rowspan]="field.options.length" scope="rowgroup">{{field.label}}</th>
+            </ng-container>
+            <th scope="row">{{option.label}}</th>
+            <ng-container *ngFor="let val of option.values">
+              <td>{{val}}</td>
+            </ng-container>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
