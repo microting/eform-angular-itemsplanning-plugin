@@ -67,11 +67,11 @@ namespace ItemsPlanning.Pn.Services
             {
                 Debugger.Break();
                 var core = _coreHelper.GetCore();
-                var itemList = await _dbContext.ItemLists.FirstAsync(x => x.Id == model.ItemListId);
-                var item = await _dbContext.Items.FirstAsync(x => x.Id == model.ItemId);
+                var itemList = await _dbContext.ItemLists.FirstAsync(x => x.Id == model.ItemList);
+                var item = await _dbContext.Items.FirstAsync(x => x.Id == model.Item);
                 var template = core.TemplateRead(itemList.RelatedEFormId);
 
-                var casesQuery = _dbContext.ItemCases.Where(x => x.ItemId == model.ItemId);
+                var casesQuery = _dbContext.ItemCases.Where(x => x.ItemId == model.Item);
 
                 if (model.DateFrom != null)
                 {

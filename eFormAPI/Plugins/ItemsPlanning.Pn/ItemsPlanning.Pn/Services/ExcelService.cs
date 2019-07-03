@@ -32,6 +32,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microting.eFormApi.BasePn.Infrastructure.Helpers;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace ItemsPlanning.Pn.Services
 {
@@ -73,39 +74,55 @@ namespace ItemsPlanning.Pn.Services
                 worksheet.Cells[6, 2].Value = periodToTitle;
                 worksheet.Cells[6, 3].Value = reportModel.DateTo?.ToString("MM/dd/yyyy HH:mm");
 
-                // Fill form fields and options labels
-                var row = 9;
+                var col = 4;
+                var row = 8;
+
+                // Fill dates headers
+                foreach (var date in reportModel.Dates)
+                {
+                    worksheet.Cells[row, col].Value = date.ToString("MM/dd/yyyy HH:mm");
+                    worksheet.Cells[row, col].Style.Font.Bold = true;
+                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells[row, col].AutoFitColumns();
+                    col++;
+                }
+
+                worksheet.Cells[row, 2, row, col - 1].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+
+                row++;
+
+                // Fill form fields and options with data
                 foreach (var field in reportModel.FormFields)
                 {
                     worksheet.Cells[row, 2].Value = field.Label;
+                    worksheet.Cells[row, 2, row + field.Options.Count - 1, 2].Merge = true;
+
+                    var fRow = row;
 
                     foreach (var option in field.Options)
                     {
-                        worksheet.Cells[row++, 3].Value = option.Label;
-                    }
-                }
+                        col = 4;
 
-                // Fill columns for each reply
-                var col = 4;
-                foreach (var caseCol in reportModel.CaseColumns)
-                {
-                    worksheet.Cells[8, col].Value = caseCol.Date?.ToString("MM/dd/yyyy HH:mm");
-                    worksheet.Cells[8, col].Style.Font.Bold = true;
-                    worksheet.Cells[8, col].AutoFitColumns();
-                    row = 9;
-                    
-                    foreach (var field in caseCol.Fields)
-                    foreach (var value in field.Values)
-                    {
-                        if (value?.GetType() == typeof(decimal))
+                        foreach (var value in option.Values)
                         {
-                            worksheet.Cells[row, col].Style.Numberformat.Format = "0.00";
+                            if (value?.GetType() == typeof(decimal))
+                            {
+                                worksheet.Cells[row, col].Style.Numberformat.Format = "0.00";
+                            }
+
+                            worksheet.Cells[row, col].Value = value;
+                            worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                            col++;
                         }
 
-                        worksheet.Cells[row++, col].Value = value;
+                        worksheet.Cells[row, 3].Value = option.Label;
+                        worksheet.Cells[row, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                        row++;
                     }
 
-                    col++;
+                    worksheet.Cells[fRow, 2, row - 1, col - 1].Style.Border.BorderAround(ExcelBorderStyle.Medium);
                 }
 
                 package.Save(); //Save the workbook.

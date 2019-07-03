@@ -136,6 +136,13 @@ namespace ItemsPlanning.Pn
                     },
                     new MenuItemModel()
                     {
+                        Name = localizationService.GetString("Reports"),
+                        E2EId = "items-planning-pn-reports",
+                        Link = "/plugins/items-planning-pn/reports",
+                        Position = 2,
+                    },
+                    new MenuItemModel()
+                    {
                         Name = localizationService.GetString("Settings"),
                         E2EId = "items-planning-pn-settings",
                         Link = "/plugins/items-planning-pn/settings",

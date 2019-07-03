@@ -77,11 +77,7 @@ namespace ItemsPlanning.Pn.Infrastructure.Helpers
             // Go through all replies
             foreach (var r in replies)
             {
-                var caseColumnModel = new ReportCaseColumnModel()
-                {
-                    Id = r.Id,
-                    Date = r.DoneAt
-                };
+                finalModel.Dates.Add(r.DoneAt);
                 
                 foreach (var element in r.ElementList)
                 {
@@ -94,11 +90,6 @@ namespace ItemsPlanning.Pn.Infrastructure.Helpers
                         if (!(checkListValue.DataItemList.First(x => x.Id == fieldModel.DataItemId) is Field field))
                             continue;
 
-                        var reportCaseFieldModel = new ReportCaseFieldModel()
-                        {
-                            Id = field.Id
-                        };
-
                         // Fill values for field options
                         foreach (var optionModel in fieldModel.Options)
                         {
@@ -106,19 +97,15 @@ namespace ItemsPlanning.Pn.Infrastructure.Helpers
                             {
                                 var selectedKeys = field.FieldValues[0].Value.Split('|');
 
-                                reportCaseFieldModel.Values.Add(selectedKeys.Contains(optionModel.Key) ? "+" : "");
+                                optionModel.Values.Add(selectedKeys.Contains(optionModel.Key) ? "+" : "");
                             }
                             else
                             {
-                                reportCaseFieldModel.Values.Add(field.FieldValue);
+                                optionModel.Values.Add(field.FieldValue);
                             }
                         }
-
-                        caseColumnModel.Fields.Add(reportCaseFieldModel);
                     }
                 }
-
-                finalModel.CaseColumns.Add(caseColumnModel);
             }
 
             return finalModel;
