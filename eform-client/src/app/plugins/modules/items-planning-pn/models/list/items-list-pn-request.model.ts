@@ -4,6 +4,7 @@ export class ItemsListPnRequestModel {
   pageIndex: number;
   isSortDsc: boolean;
   offset: number;
+  nameFilter: string;
 
   constructor() {
     this.sort = 'Id';
@@ -11,5 +12,6 @@ export class ItemsListPnRequestModel {
     this.pageSize = 10;
     this.pageIndex = 1;
     this.offset = 0;
+    this.nameFilter = '';
   }
 }

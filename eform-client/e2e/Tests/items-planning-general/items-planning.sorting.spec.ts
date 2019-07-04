@@ -13,7 +13,7 @@ describe('Items planning lists table sorting', function () {
     itemsPlanningListPage.createDummyLists();
 
     const listBefore = $$('#listId').map(item => {
-      return item.getText();
+      return parseInt(item.getText(), 10);
     });
 
     // check that sorting is correct in both directions
@@ -21,7 +21,7 @@ describe('Items planning lists table sorting', function () {
       itemsPlanningListPage.clickIdTableHeader();
 
       const listAfter = $$('#listId').map(item => {
-        return item.getText();
+        return parseInt(item.getText(), 10);
       });
 
       // get current direction of sorting

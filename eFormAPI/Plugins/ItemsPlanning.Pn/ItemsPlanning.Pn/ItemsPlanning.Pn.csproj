@@ -17,6 +17,8 @@
     </PropertyGroup>
     
     <ItemGroup>
+      <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+      <PackageReference Include="ExcelDataReader" Version="3.6.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
       <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.5" />
@@ -30,6 +32,10 @@
     <ItemGroup>
       <Folder Include="Handlers" />
       <Folder Include="Messages" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\Templates\report_template.xlsx" />
     </ItemGroup>
 
     <ItemGroup>
