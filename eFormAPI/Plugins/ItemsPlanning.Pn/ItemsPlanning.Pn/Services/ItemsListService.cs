@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microting.eFormApi.BasePn.Infrastructure.Extensions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
@@ -62,6 +63,11 @@ namespace ItemsPlanning.Pn.Services
                         .OrderBy(x => x.Id);
                 }
 
+                if (!pnRequestModel.NameFilter.IsNullOrEmpty())
+                {
+                    itemListsQuery = itemListsQuery.Where(x => x.Name.Contains(pnRequestModel.NameFilter));
+                }
+
                 itemListsQuery
                     = itemListsQuery
                         .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
@@ -117,7 +123,7 @@ namespace ItemsPlanning.Pn.Services
                         Enabled = true,
                         Items = new List<Item>(),
                         RelatedEFormId = model.RelatedEFormId,
-                        RelatedEFormName = template.Label
+                        RelatedEFormName = template?.Label
                     };
 
                     await itemsList.Save(_dbContext);
@@ -176,7 +182,7 @@ namespace ItemsPlanning.Pn.Services
                         UpdatedAt = DateTime.UtcNow,
                         UpdatedByUserId = UserId,
                         RelatedEFormId = updateModel.RelatedEFormId,
-                        RelatedEFormName = template.Label,
+                        RelatedEFormName = template?.Label,
                     };
                     await itemsList.Update(_dbContext);
 
