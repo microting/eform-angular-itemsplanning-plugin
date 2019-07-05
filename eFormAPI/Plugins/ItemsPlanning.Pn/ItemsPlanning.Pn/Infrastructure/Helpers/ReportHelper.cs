@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Castle.Core.Internal;
 using eFormData;
 using ItemsPlanning.Pn.Infrastructure.Models.Report;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Entities;
@@ -40,14 +41,6 @@ namespace ItemsPlanning.Pn.Infrastructure.Helpers
 
                     switch (dataItem)
                     {
-                        case SingleSelect singleSelect:
-                            // Add label for each option
-                            reportFieldModel.Options = singleSelect.KeyValuePairList.Select(x => new ReportFormFieldOptionModel()
-                            {
-                                Key = x.Key,
-                                Label = x.Value
-                            }).ToList();
-                            break;
                         case MultiSelect multiSelect:
                             // Add label for each option
                             reportFieldModel.Options = multiSelect.KeyValuePairList.Select(x => new ReportFormFieldOptionModel()
@@ -56,6 +49,7 @@ namespace ItemsPlanning.Pn.Infrastructure.Helpers
                                 Label = x.Value
                             }).ToList();
                             break;
+                        case SingleSelect singleSelect:
                         case CheckBox checkBox:
                         case Number number:
                         case Text text:
@@ -93,15 +87,15 @@ namespace ItemsPlanning.Pn.Infrastructure.Helpers
                         // Fill values for field options
                         foreach (var optionModel in fieldModel.Options)
                         {
-                            if (field.KeyValuePairList.Count > 0)
+                            if (optionModel.Key.IsNullOrEmpty())
+                            {
+                                optionModel.Values.Add(field.FieldValues[0].ValueReadable);
+                            }
+                            else
                             {
                                 var selectedKeys = field.FieldValues[0].Value.Split('|');
 
                                 optionModel.Values.Add(selectedKeys.Contains(optionModel.Key) ? "+" : "");
-                            }
-                            else
-                            {
-                                optionModel.Values.Add(field.FieldValue);
                             }
                         }
                     }
