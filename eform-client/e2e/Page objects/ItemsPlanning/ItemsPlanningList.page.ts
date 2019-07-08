@@ -2,6 +2,7 @@ import Page from '../Page';
 import itemsPlanningModalPage from './ItemsPlanningModal.page';
 import {PageWithNavbarPage} from '../PageWithNavbar.page';
 import {Guid} from 'guid-typescript';
+import XMLForEformFractions from '../../Constants/XMLForEformFractions';
 
 export class ItemsPlanningListPage extends PageWithNavbarPage {
   constructor() {
@@ -11,7 +12,21 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
   public rowNum(): number {
     return browser.$$('#tableBody > tr').length;
   }
-
+  public get newEformBtn() {
+    return browser.element('#newEFormBtn');
+  }
+  public get xmlTextArea() {
+    return browser.element('#eFormXml');
+  }
+  public get createEformBtn() {
+    return browser.element('#createEformBtn');
+  }
+  public get createEformTagSelector() {
+    return browser.element('#createEFormMultiSelector');
+  }
+  public get createEformNewTagInput() {
+    return browser.element('#addTagInput');
+  }
   public clickIdTableHeader() {
     browser.$('#idTableHeader').click();
     browser.pause(5000);
@@ -75,6 +90,38 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
       itemsPlanningModalPage.listDeleteDeleteBtn.click();
       browser.pause(5000);
     }
+  }
+  createNewEform(eFormLabel, newTagsList = [], tagAddedNum = 0) {
+    this.newEformBtn.click();
+    browser.pause(5000);
+    // Create replaced xml and insert it in textarea
+    const xml = XMLForEformFractions.XML.replace('TEST_LABEL', eFormLabel);
+    browser.execute(function (xmlText) {
+      (<HTMLInputElement>document.getElementById('eFormXml')).value = xmlText;
+    }, xml);
+    this.xmlTextArea.addValue(' ');
+    // Create new tags
+    const addedTags: string[] = newTagsList;
+    if (newTagsList.length > 0) {
+      this.createEformNewTagInput.setValue(newTagsList.join(','));
+      browser.pause(5000);
+    }
+    // Add existing tags
+    const selectedTags: string[] = [];
+    if (tagAddedNum > 0) {
+      browser.pause(5000);
+      for (let i = 0; i < tagAddedNum; i++) {
+        this.createEformTagSelector.click();
+        const selectedTag = $('.ng-option:not(.ng-option-selected)');
+        selectedTags.push(selectedTag.getText());
+        console.log('selectedTags is ' + JSON.stringify(selectedTags));
+        selectedTag.click();
+        browser.pause(5000);
+      }
+    }
+    this.createEformBtn.click();
+    browser.pause(14000);
+    return {added: addedTags, selected: selectedTags};
   }
 }
 

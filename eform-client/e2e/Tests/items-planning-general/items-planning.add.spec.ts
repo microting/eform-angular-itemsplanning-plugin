@@ -8,6 +8,8 @@ describe('Items planning actions', function () {
     before(function () {
         loginPage.open('/auth');
         loginPage.login();
+        const newEformLabel = 'Number 1';
+        // itemsPlanningListPage.createNewEform(newEformLabel);
         itemsPlanningListPage.goToListsPage();
     });
     it ('should create list with all fields', function () {
@@ -15,7 +17,7 @@ describe('Items planning actions', function () {
         browser.pause(6000);
         const listData = {
             name: 'Test list',
-            template: '',
+            template: 'Number 1',
             description: 'Description',
             repeatEvery: '1',
             repeatType: '1',
@@ -29,7 +31,7 @@ describe('Items planning actions', function () {
         // Check that all list fields are saved
         listRowObject.clickUpdateList();
         expect(itemsPlanningModalPage.editListItemName.getValue(), 'Saved Name is incorrect').equal(listData.name);
-        expect(itemsPlanningModalPage.editListSelector.getValue(), 'Saved Template is incorrect').equal(listData.template);
+        expect(itemsPlanningModalPage.editListSelectorValue.getText(), 'Saved Template is incorrect').equal(listData.template);
         expect(itemsPlanningModalPage.editListDescription.getValue(), 'Saved Description is incorrect').equal(listData.description);
         expect(itemsPlanningModalPage.editRepeatEvery.getValue(), 'Saved Repeat Every is incorrect').equal(listData.repeatEvery);
         const repeatUntil = new Date(listData.repeatUntil);
