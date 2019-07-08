@@ -23,12 +23,15 @@ SOFTWARE.
 */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
+using eFormData;
+using eFormShared;
 using ItemsPlanning.Pn.Abstractions;
-using ItemsPlanning.Pn.Infrastructure.Helpers;
 using ItemsPlanning.Pn.Infrastructure.Models;
 using ItemsPlanning.Pn.Infrastructure.Models.Report;
 using ItemsPlanning.Pn.Infrastructure.Models.Settings;
@@ -38,6 +41,7 @@ using Microting.eFormApi.BasePn.Abstractions;
 using Microting.eFormApi.BasePn.Infrastructure.Helpers.PluginDbOptions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
+using Microting.ItemsPlanningBase.Infrastructure.Data.Entities;
 
 namespace ItemsPlanning.Pn.Services
 {
@@ -71,27 +75,29 @@ namespace ItemsPlanning.Pn.Services
                 var item = await _dbContext.Items.FirstAsync(x => x.Id == model.Item);
                 var template = core.TemplateRead(itemList.RelatedEFormId);
 
-                var casesQuery = _dbContext.ItemCases.Where(x => x.ItemId == model.Item);
+                var casesQuery = _dbContext.ItemCases.Where(x => x.ItemId == item.Id);
+
+                DateTime? dateFrom = null, dateTo = null;
 
                 if (model.DateFrom != null)
                 {
-                    DateTime? dateFrom = model.DateFrom.Value;
+                    dateFrom = model.DateFrom.Value;
                     casesQuery = casesQuery.Where(x => 
                         x.CreatedAt >= new DateTime(dateFrom.Value.Year, dateFrom.Value.Month, dateFrom.Value.Day, 0, 0, 0));
                 }
 
                 if (model.DateTo != null)
                 {
-                    DateTime? dateTo = model.DateTo.Value;
+                    dateTo = model.DateTo.Value;
                     casesQuery = casesQuery.Where(x => 
                         x.CreatedAt <= new DateTime(dateTo.Value.Year, dateTo.Value.Month, dateTo.Value.Day, 23, 59, 59));
                 }
-
-                var itemCases = await casesQuery.ToListAsync();
-                var cases = itemCases.Select(x => core.CaseLookupMUId(x.MicrotingSdkCaseId.ToString())).ToList();
-                var replies = cases.Select(x => core.CaseRead(x.MicrotingUId, x.CheckUId)).Where(x => x != null).ToList();
                 
-                var reportModel = ReportsHelper.GetReportData(model, item, replies, template);
+                var itemCases = await casesQuery.ToListAsync();
+                var cases = core.CaseReadAll(template.Id, dateFrom, dateTo)
+                    .Where(c => itemCases.Select(ic => ic.MicrotingSdkCaseId.ToString()).Contains(c.MicrotingUId));
+
+                var reportModel = GetReportData(model, item, cases, template);
 
                 return new OperationDataResult<ReportModel>(true, reportModel);
             }
@@ -147,6 +153,108 @@ namespace ItemsPlanning.Pn.Services
                     false,
                     _machineAreaLocalizationService.GetString("ErrorWhileGeneratingReportFile"));
             }
+        }
+        
+        private ReportModel GetReportData(
+            GenerateReportModel model, 
+            Item item, 
+            IEnumerable<Case> cases,
+            CoreElement template)
+        {
+            var core = _coreHelper.GetCore();
+
+            var finalModel = new ReportModel
+            {
+                Name = item.Name,
+                Description = item.Description,
+                DateFrom = model.DateFrom,
+                DateTo = model.DateTo
+            };
+
+            // Go through template elements and get fields and options labels
+            foreach (var element in template.ElementList)
+            {
+                if (!(element is DataElement dataElement)) 
+                    continue;
+
+                var dataItems = dataElement.DataItemList;
+
+                foreach (var dataItem in dataItems)
+                {
+                    var reportFieldModel = new ReportFormFieldModel()
+                    {
+                        DataItemId = dataItem.Id,
+                        Label = dataItem.Label
+                    };
+
+                    switch (dataItem)
+                    {
+                        case MultiSelect multiSelect:
+                            // Add label for each option
+                            reportFieldModel.Options = multiSelect.KeyValuePairList.Select(x => new ReportFormFieldOptionModel()
+                            {
+                                Key = x.Key,
+                                Label = x.Value
+                            }).ToList();
+                            break;
+                        case SingleSelect singleSelect:
+                        case CheckBox checkBox:
+                        case Number number:
+                        case Text text:
+                            // No option label needed for these types
+                            reportFieldModel.Options.Add(new ReportFormFieldOptionModel()
+                            {
+                                Key = string.Empty,
+                                Label = string.Empty
+                            });
+                            break;
+                        default:
+                            continue;
+                    }
+
+                    finalModel.FormFields.Add(reportFieldModel);
+                }
+            }
+            
+            // Go through all cases
+            foreach (var c in cases)
+            {
+                var reply = core.CaseRead(c.MicrotingUId, c.CheckUIid);
+
+                finalModel.Dates.Add(c.CreatedAt);
+
+                if (reply == null) continue;
+
+                foreach (var element in reply.ElementList)
+                {
+                    if (!(element is CheckListValue checkListValue)) 
+                        continue;
+
+                    // Get the values for each field from the reply
+                    foreach (var fieldModel in finalModel.FormFields)
+                    {
+                        if (!(checkListValue.DataItemList.First(x => x.Id == fieldModel.DataItemId) is Field field))
+                            continue;
+
+                        // Fill values for field options
+                        foreach (var optionModel in fieldModel.Options)
+                        {
+                            if (optionModel.Key.IsNullOrEmpty())
+                            {
+                                optionModel.Values.Add(field.FieldValues[0].ValueReadable);
+                            }
+                            else
+                            {
+                                var selectedKeys = field.FieldValues[0].Value.Split('|');
+
+                                optionModel.Values.Add(selectedKeys.Contains(optionModel.Key) ? "+" : "");
+                            }
+                        }
+                    }
+                }
+            }
+
+            return finalModel;
         }
     }
 }
