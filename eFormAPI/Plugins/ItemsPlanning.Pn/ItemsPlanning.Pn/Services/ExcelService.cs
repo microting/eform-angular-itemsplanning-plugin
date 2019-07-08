@@ -80,7 +80,7 @@ namespace ItemsPlanning.Pn.Services
                 // Fill dates headers
                 foreach (var date in reportModel.Dates)
                 {
-                    worksheet.Cells[row, col].Value = date.ToString("MM/dd/yyyy HH:mm");
+                    worksheet.Cells[row, col].Value = date?.ToString("MM/dd/yyyy");
                     worksheet.Cells[row, col].Style.Font.Bold = true;
                     worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                     worksheet.Cells[row, col].AutoFitColumns();
