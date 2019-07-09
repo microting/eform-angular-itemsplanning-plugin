@@ -30,15 +30,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
 using eFormData;
-using eFormShared;
 using ItemsPlanning.Pn.Abstractions;
 using ItemsPlanning.Pn.Infrastructure.Models;
 using ItemsPlanning.Pn.Infrastructure.Models.Report;
-using ItemsPlanning.Pn.Infrastructure.Models.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microting.eFormApi.BasePn.Abstractions;
-using Microting.eFormApi.BasePn.Infrastructure.Helpers.PluginDbOptions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Entities;
@@ -48,21 +45,19 @@ namespace ItemsPlanning.Pn.Services
     public class ItemsPlanningReportService : IItemsPlanningReportService
     {
         private readonly ILogger<ItemsPlanningReportService> _logger;
-        private readonly IItemsPlanningLocalizationService _machineAreaLocalizationService;
+        private readonly IItemsPlanningLocalizationService _itemsPlanningLocalizationService;
         private readonly IExcelService _excelService;
         private readonly ItemsPlanningPnDbContext _dbContext;
         private readonly IEFormCoreService _coreHelper;
-        private readonly IPluginDbOptions<ItemsPlanningBaseSettings> _options;
 
         // ReSharper disable once SuggestBaseTypeForParameter
-        public ItemsPlanningReportService(IItemsPlanningLocalizationService machineAreaLocalizationService, ILogger<ItemsPlanningReportService> logger, IExcelService excelService, ItemsPlanningPnDbContext dbContext, IEFormCoreService coreHelper, IPluginDbOptions<ItemsPlanningBaseSettings> options)
+        public ItemsPlanningReportService(IItemsPlanningLocalizationService itemsPlanningLocalizationService, ILogger<ItemsPlanningReportService> logger, IExcelService excelService, ItemsPlanningPnDbContext dbContext, IEFormCoreService coreHelper)
         {
-            _machineAreaLocalizationService = machineAreaLocalizationService;
+            _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
             _logger = logger;
             _excelService = excelService;
             _dbContext = dbContext;
             _coreHelper = coreHelper;
-            _options = options;
         }
 
         public async Task<OperationDataResult<ReportModel>> GenerateReport(GenerateReportModel model)
@@ -77,27 +72,21 @@ namespace ItemsPlanning.Pn.Services
 
                 var casesQuery = _dbContext.ItemCases.Where(x => x.ItemId == item.Id);
 
-                DateTime? dateFrom = null, dateTo = null;
-
                 if (model.DateFrom != null)
                 {
-                    dateFrom = model.DateFrom.Value;
                     casesQuery = casesQuery.Where(x => 
-                        x.CreatedAt >= new DateTime(dateFrom.Value.Year, dateFrom.Value.Month, dateFrom.Value.Day, 0, 0, 0));
+                        x.CreatedAt >= new DateTime(model.DateFrom.Value.Year, model.DateFrom.Value.Month, model.DateFrom.Value.Day, 0, 0, 0));
                 }
 
                 if (model.DateTo != null)
                 {
-                    dateTo = model.DateTo.Value;
                     casesQuery = casesQuery.Where(x => 
-                        x.CreatedAt <= new DateTime(dateTo.Value.Year, dateTo.Value.Month, dateTo.Value.Day, 23, 59, 59));
+                        x.CreatedAt <= new DateTime(model.DateTo.Value.Year, model.DateTo.Value.Month, model.DateTo.Value.Day, 23, 59, 59));
                 }
                 
                 var itemCases = await casesQuery.ToListAsync();
-                var cases = core.CaseReadAll(template.Id, dateFrom, dateTo)
-                    .Where(c => itemCases.Select(ic => ic.MicrotingSdkCaseId.ToString()).Contains(c.MicrotingUId));
 
-                var reportModel = GetReportData(model, item, cases, template);
+                var reportModel = GetReportData(model, item, itemCases, template);
 
                 return new OperationDataResult<ReportModel>(true, reportModel);
             }
@@ -106,7 +95,7 @@ namespace ItemsPlanning.Pn.Services
                 Trace.TraceError(e.Message);
                 _logger.LogError(e.Message);
                 return new OperationDataResult<ReportModel>(false,
-                    _machineAreaLocalizationService.GetString("ErrorWhileGeneratingReport"));
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileGeneratingReport"));
             }
         }
 
@@ -151,14 +140,14 @@ namespace ItemsPlanning.Pn.Services
                 _logger.LogError(e.Message);
                 return new OperationDataResult<FileStreamModel>(
                     false,
-                    _machineAreaLocalizationService.GetString("ErrorWhileGeneratingReportFile"));
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileGeneratingReportFile"));
             }
         }
         
         private ReportModel GetReportData(
             GenerateReportModel model, 
             Item item, 
-            IEnumerable<Case> cases,
+            IEnumerable<ItemCase> itemCases,
             CoreElement template)
         {
             var core = _coreHelper.GetCore();
@@ -216,16 +205,34 @@ namespace ItemsPlanning.Pn.Services
                 }
             }
             
-            // Go through all cases
-            foreach (var c in cases)
+            // Get all answered cases
+            var casesList = core.CaseReadAll(template.Id, null, null)
+                .Where(c => itemCases.Select(ic => ic.MicrotingSdkCaseId.ToString()).Contains(c.MicrotingUId))
+                .ToList();
+
+            // Go through all itemCases
+            foreach (var ic in itemCases)
             {
-                var reply = core.CaseRead(c.MicrotingUId, c.CheckUIid);
+                finalModel.Dates.Add(ic.CreatedAt);
 
-                finalModel.Dates.Add(c.CreatedAt);
+                var @case = casesList.FirstOrDefault(c => c.MicrotingUId == ic.MicrotingSdkCaseId.ToString());
+                
+                // Fill with empty values, if this itemCase was not replied
+                if (@case == null)
+                {
+                    foreach (var fieldModel in finalModel.FormFields)
+                    {
+                        foreach (var optionModel in fieldModel.Options)
+                        {
+                            optionModel.Values.Add("");
+                        }
+                    }
 
-                if (reply == null) continue;
+                    continue;
+                }
 
-                foreach (var element in reply.ElementList)
+                // Get the reply and work with its ElementList
+                foreach (var element in core.CaseRead(@case.MicrotingUId, @case.CheckUIid).ElementList)
                 {
                     if (!(element is CheckListValue checkListValue)) 
                         continue;
@@ -247,7 +254,11 @@ namespace ItemsPlanning.Pn.Services
                             {
                                 var selectedKeys = field.FieldValues[0].Value.Split('|');
 
-                                optionModel.Values.Add(selectedKeys.Contains(optionModel.Key) ? "+" : "");
+                                optionModel.Values.Add(
+                                    selectedKeys.Contains(optionModel.Key) 
+                                        ? _itemsPlanningLocalizationService.GetString("Yes") 
+                                        : _itemsPlanningLocalizationService.GetString("No")
+                                );
                             }
                         }
                     }
