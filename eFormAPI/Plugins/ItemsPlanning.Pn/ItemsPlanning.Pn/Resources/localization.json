@@ -75,5 +75,19 @@
       "da": "Fejl under opnåelse af liste",
       "en-US": "Error while obtaining list"
     }
+  },
+  {
+    "Key": "Yes",
+    "LocalizedValue": {
+      "da": "Ja",
+      "en-US": "Yes"
+    }
+  },
+  {
+    "Key": "No",
+    "LocalizedValue": {
+      "da": "Nej",
+      "en-US": "No"
+    }
   }
 ]
