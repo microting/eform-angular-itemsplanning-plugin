@@ -257,7 +257,7 @@ namespace ItemsPlanning.Pn.Services
                                 optionModel.Values.Add(
                                     selectedKeys.Contains(optionModel.Key) 
                                         ? _itemsPlanningLocalizationService.GetString("Yes") 
-                                        : _itemsPlanningLocalizationService.GetString("No")
+                                        : ""
                                 );
                             }
                         }
