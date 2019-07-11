@@ -141,6 +141,8 @@ namespace ItemsPlanning.Pn.Services
                             CreatedAt = DateTime.UtcNow,
                             UpdatedAt = DateTime.UtcNow,
                             Enabled = true,
+                            BuildYear = itemModel.BuildYear,
+                            Type = itemModel.Type,
                             ItemListId = itemsList.Id,
                             CreatedByUserId = UserId,
                         };
@@ -202,6 +204,8 @@ namespace ItemsPlanning.Pn.Services
                             item.Name = itemModel.Name;
                             item.UpdatedAt = DateTime.UtcNow;
                             item.UpdatedByUserId = UserId;
+                            item.BuildYear = itemModel.BuildYear;
+                            item.Type = itemModel.Type;
                             await item.Update(_dbContext);
                         }
                     }
@@ -235,6 +239,8 @@ namespace ItemsPlanning.Pn.Services
                                 CreatedByUserId = UserId,
                                 UpdatedAt = DateTime.UtcNow,
                                 Enabled = true,
+                                BuildYear = itemModel.BuildYear,
+                                Type = itemModel.Type,
                                 ItemListId = itemsList.Id,
                             };
                             await newItem.Save(_dbContext);
@@ -306,6 +312,8 @@ namespace ItemsPlanning.Pn.Services
                             Name = i.Name,
                             LocationCode = i.LocationCode,
                             ItemNumber = i.ItemNumber,
+                            BuildYear = i.BuildYear,
+                            Type = i.Type
                         }).ToList()
                     }).FirstOrDefaultAsync();
 

@@ -117,6 +117,16 @@
             <table class="table table-sm text-center z-depth-1 pr-2 pl-2">
               <tbody id="itemsTableBody">
               <tr *ngFor="let item of selectedListModel.items">
+                <td>
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
+                           [(ngModel)]="item.itemNumber"
+                           type="text" id="editItemNumber"
+                           name="editItemNumber" class="form-control">
+                    <label for="editItemNumber">{{'Number' | translate}}</label>
+                  </div>
+                </td>
                 <td id="listId">
                   <div class="md-form md-form-sm">
                     <input mdbInputDirective
@@ -141,20 +151,30 @@
                   <div class="md-form md-form-sm">
                     <input mdbInputDirective
                            [mdbValidate]="false"
-                           [(ngModel)]="item.itemNumber"
-                           type="text" id="editItemNumber"
-                           name="editItemNumber" class="form-control">
-                    <label for="editItemNumber">{{'Number' | translate}}</label>
+                           [(ngModel)]="item.locationCode"
+                           type="text" id="editItemLocationCode"
+                           name="editItemLocationCode" class="form-control">
+                    <label for="editItemLocationCode">{{'Location code' | translate}}</label>
                   </div>
                 </td>
                 <td>
                   <div class="md-form md-form-sm">
                     <input mdbInputDirective
                            [mdbValidate]="false"
-                           [(ngModel)]="item.locationCode"
-                           type="text" id="editItemLocationCode"
-                           name="editItemLocationCode" class="form-control">
-                    <label for="editItemLocationCode">{{'Location code' | translate}}</label>
+                           [(ngModel)]="item.buildYear"
+                           type="text" id="editItemBuildYear"
+                           name="editItemBuildYear" class="form-control">
+                    <label for="editItemBuildYear">{{'Build year' | translate}}</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
+                           [(ngModel)]="item.type"
+                           type="text" id="editItemType"
+                           name="editItemType" class="form-control">
+                    <label for="editItemType">{{'Type' | translate}}</label>
                   </div>
                 </td>
                 <td>

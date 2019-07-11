@@ -87,7 +87,7 @@ namespace ItemsPlanning.Pn.Services
                     col++;
                 }
 
-                worksheet.Cells[row, 2, row, col - 1].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                worksheet.Cells[row, 2, row, col - 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
                 row++;
 
@@ -122,7 +122,7 @@ namespace ItemsPlanning.Pn.Services
                         row++;
                     }
 
-                    worksheet.Cells[fRow, 2, row - 1, col - 1].Style.Border.BorderAround(ExcelBorderStyle.Medium);
+                    worksheet.Cells[fRow, 2, row - 1, col - 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                 }
 
                 package.Save(); //Save the workbook.
