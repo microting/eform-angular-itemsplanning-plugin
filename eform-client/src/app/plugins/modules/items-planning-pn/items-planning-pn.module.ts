@@ -18,7 +18,10 @@ import {
 import {ItemsPlanningSettingsComponent} from './components/items-plannings-setting';
 import {RouterModule} from '@angular/router';
 import {ItemsPlanningPnRouting} from './items-planning-pn.routing.module';
-import {ItemsPlanningPnListsService, ItemsPlanningPnSettingsService, ItemsPlanningPnReportsService} from './services';
+import {ItemsPlanningPnListsService,
+  ItemsPlanningPnSettingsService,
+  ItemsPlanningPnReportsService,
+  ItemsPlanningPnCasesService} from './services';
 import {OwlDateTimeModule} from 'ng-pick-datetime';
 import {OwlMomentDateTimeModule} from 'ng-pick-datetime-moment';
 import {
@@ -58,7 +61,8 @@ import {
   providers: [
     ItemsPlanningPnSettingsService,
     ItemsPlanningPnListsService,
-    ItemsPlanningPnReportsService
+    ItemsPlanningPnReportsService,
+    ItemsPlanningPnCasesService
   ]
 })
 
