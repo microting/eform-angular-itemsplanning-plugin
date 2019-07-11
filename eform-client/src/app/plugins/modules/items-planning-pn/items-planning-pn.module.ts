@@ -8,7 +8,13 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {EformSharedModule} from '../../../common/modules/eform-shared/eform-shared.module';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ItemsPlanningPnLayoutComponent} from './layouts';
-import {ItemsListCreateComponent, ListDeleteComponent, ListEditComponent, ListsPageComponent} from './components/items-lists';
+import {
+  ItemsListCreateComponent,
+  ListCasePageComponent,
+  ListDeleteComponent,
+  ListEditComponent,
+  ListsPageComponent
+} from './components/items-lists';
 import {ItemsPlanningSettingsComponent} from './components/items-plannings-setting';
 import {RouterModule} from '@angular/router';
 import {ItemsPlanningPnRouting} from './items-planning-pn.routing.module';
@@ -41,6 +47,7 @@ import {
     ItemsPlanningPnLayoutComponent,
     ListsPageComponent,
     ItemsListCreateComponent,
+    ListCasePageComponent,
     ListEditComponent,
     ListDeleteComponent,
     ItemsPlanningSettingsComponent,

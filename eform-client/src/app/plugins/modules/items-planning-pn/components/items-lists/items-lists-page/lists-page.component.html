@@ -170,6 +170,13 @@
                     (click)="showEditListModal(list)">
               <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
             </button>
+            <button class="btn btn-success btn-icon mb-2"
+                    id="itemlist-cases-btn"
+                    [routerLink]="['/item-cases', list.id]"
+                    routerLinkActive="active"
+                    mdbTooltip="{{ 'Show cases' | translate }}">
+              <fa-icon icon="briefcase" [fixedWidth]="true" size="lg"></fa-icon>
+            </button>
             <button id="deleteListBtn"
               class="btn btn-danger btn-icon mb-2 "
                     mdbTooltip="{{ 'Delete List' | translate }}"

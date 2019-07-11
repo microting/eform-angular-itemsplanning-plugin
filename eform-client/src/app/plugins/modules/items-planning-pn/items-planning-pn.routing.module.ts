@@ -2,7 +2,10 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AdminGuard, AuthGuard} from 'src/app/common/guards';
 import {ItemsPlanningPnLayoutComponent} from './layouts';
-import {ListsPageComponent, ItemsPlanningSettingsComponent, ReportGeneratorContainerComponent} from './components';
+import {ListsPageComponent,
+  ItemsPlanningSettingsComponent,
+  ReportGeneratorContainerComponent,
+  ListCasePageComponent} from './components';
 
 export const routes: Routes = [
   {
@@ -13,6 +16,11 @@ export const routes: Routes = [
         path: 'lists',
         canActivate: [AuthGuard],
         component: ListsPageComponent
+      },
+      {
+        path: 'item-cases',
+        canActivate: [AuthGuard],
+        component: ListCasePageComponent
       },
       {
         path: 'settings',
