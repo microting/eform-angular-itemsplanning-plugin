@@ -16,7 +16,7 @@ describe('Items planning actions', function () {
         browser.pause(6000);
         const listData = {
             name: 'Test list',
-            template: '',
+            template: 'Number 1',
             description: 'Description',
             repeatEvery: '1',
             repeatType: '1',

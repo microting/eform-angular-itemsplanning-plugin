@@ -10,7 +10,20 @@ describe('Items planning actions', function () {
         loginPage.login();
         itemsPlanningListPage.goToListsPage();
     });
-    it ('should change all fields after edit', function () {
+  it('should create a new list', function () {
+      itemsPlanningListPage.listCreateBtn.click();
+      browser.pause(6000);
+      const listData = {
+        name: 'Test list',
+        template: 'Number 1',
+        description: 'Description',
+        repeatEvery: '1',
+        repeatType: '1',
+        repeatUntil: '5/15/2020'
+      };
+    itemsPlanningModalPage.createList(listData);
+  });
+  it ('should change all fields after edit', function () {
         browser.pause(6000);
         let listRowObject = new ListRowObject(itemsPlanningListPage.rowNum());
         listRowObject.clickUpdateList();
@@ -43,6 +56,9 @@ describe('Items planning actions', function () {
         expect(editRepeatTypeSelected.getAttribute('class'), 'Saved Repeat Type is incorrect').contains('ng-option-selected');
 
         itemsPlanningModalPage.listEditCancelBtn.click();
+        browser.pause(5000);
+        listRowObject.clickDeleteList();
+        itemsPlanningModalPage.listDeleteDeleteBtn.click();
         browser.pause(5000);
     });
 });
