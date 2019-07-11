@@ -83,9 +83,7 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
       itemsPlanningModalPage.selectCreateRepeatType(1);
       itemsPlanningModalPage.createRepeatUntil.setValue('5/15/2020');
       itemsPlanningModalPage.listCreateSaveBtn.click();
-      browser.pause(8000);
-      itemsPlanningModalPage.listCreateSaveBtn.click();
-      browser.pause(6000);
+      browser.pause(10000);
     }
   }
 
@@ -137,11 +135,20 @@ export default itemsPlanningListPage;
 
 export class ListRowObject {
   constructor(rowNumber) {
-    this.id = $$('#listId')[rowNumber - 1].getText();
-    this.name = $$('#listName')[rowNumber - 1].getText();
-    this.description = $$('#listDescription')[rowNumber - 1].getText();
-    this.updateBtn = $$('#updateListBtn')[rowNumber - 1];
-    this.deleteBtn = $$('#deleteListBtn')[rowNumber - 1];
+    if ($$('#listId')[rowNumber - 1]) {
+      try {
+        this.name = $$('#listName')[rowNumber - 1].getText();
+      } catch (e) {}
+      try {
+        this.description = $$('#listDescription')[rowNumber - 1].getText();
+      } catch (e) {}
+      try {
+        this.updateBtn = $$('#updateListBtn')[rowNumber - 1];
+      } catch (e) {}
+      try {
+        this.deleteBtn = $$('#deleteListBtn')[rowNumber - 1];
+      } catch (e) {}
+    }
   }
 
   public id;
