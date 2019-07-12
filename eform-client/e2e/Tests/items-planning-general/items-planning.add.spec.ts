@@ -42,8 +42,10 @@ describe('Items planning actions', function () {
         browser.pause(5000);
         const editRepeatTypeSelected = browser.$$('#editRepeatType .ng-option')[listData.repeatType];
         expect(editRepeatTypeSelected.getAttribute('class'), 'Saved Repeat Type is incorrect').contains('ng-option-selected');
-
         itemsPlanningModalPage.listEditCancelBtn.click();
+        browser.pause(5000);
+        listRowObject.clickDeleteList();
+        itemsPlanningModalPage.listDeleteDeleteBtn.click();
         browser.pause(5000);
     });
 });

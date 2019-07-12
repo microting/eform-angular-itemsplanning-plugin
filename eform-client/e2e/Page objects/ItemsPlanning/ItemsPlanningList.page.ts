@@ -28,17 +28,17 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
     return browser.element('#addTagInput');
   }
   public clickIdTableHeader() {
-    browser.$('#idTableHeader').click();
+    browser.element(`//*[contains(@id, 'idTableHeader')]`).click();
     browser.pause(5000);
   }
 
   public clickNameTableHeader() {
-    browser.$('#nameTableHeader').click();
+    browser.element(`//*[contains(@id, 'nameTableHeader')]`).click();
     browser.pause(5000);
   }
 
   public clickDescriptionTableHeader() {
-    browser.$('#descriptionTableHeader').click();
+    browser.element(`//*[contains(@id, 'descriptionTableHeader')]`).click();
     browser.pause(5000);
   }
 
@@ -73,12 +73,17 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
   public createDummyLists() {
     for (let i = 0; i < 3; i++) {
       this.listCreateBtn.click();
-      browser.pause(5000);
-
       itemsPlanningModalPage.createListItemName.setValue(Guid.create().toString());
       itemsPlanningModalPage.createListDescription.setValue(Guid.create().toString());
+      browser.pause(5000);
+      itemsPlanningModalPage.createListSelector.addValue('Number 1');
+      browser.pause(2000);
+      itemsPlanningModalPage.createListSelectorOption.click();
+      itemsPlanningModalPage.createRepeatEvery.setValue(1);
+      itemsPlanningModalPage.selectCreateRepeatType(1);
+      itemsPlanningModalPage.createRepeatUntil.setValue('5/15/2020');
       itemsPlanningModalPage.listCreateSaveBtn.click();
-      browser.pause(6000);
+      browser.pause(10000);
     }
   }
 
@@ -130,11 +135,20 @@ export default itemsPlanningListPage;
 
 export class ListRowObject {
   constructor(rowNumber) {
-    this.id = $$('#listId')[rowNumber - 1].getText();
-    this.name = $$('#listName')[rowNumber - 1].getText();
-    this.description = $$('#listDescription')[rowNumber - 1].getText();
-    this.updateBtn = $$('#updateListBtn')[rowNumber - 1];
-    this.deleteBtn = $$('#deleteListBtn')[rowNumber - 1];
+    if ($$('#listId')[rowNumber - 1]) {
+      try {
+        this.name = $$('#listName')[rowNumber - 1].getText();
+      } catch (e) {}
+      try {
+        this.description = $$('#listDescription')[rowNumber - 1].getText();
+      } catch (e) {}
+      try {
+        this.updateBtn = $$('#updateListBtn')[rowNumber - 1];
+      } catch (e) {}
+      try {
+        this.deleteBtn = $$('#deleteListBtn')[rowNumber - 1];
+      } catch (e) {}
+    }
   }
 
   public id;
