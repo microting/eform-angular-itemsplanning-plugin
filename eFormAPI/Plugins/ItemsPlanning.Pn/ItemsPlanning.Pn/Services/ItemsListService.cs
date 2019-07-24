@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microting.eFormApi.BasePn.Infrastructure.Extensions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Entities;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using ItemsPlanning.Pn.Abstractions;
+using Microting.eForm.Infrastructure.Constants;
 using Microting.eFormApi.BasePn.Abstractions;
 
 namespace ItemsPlanning.Pn.Services
 {
     using System.Security.Claims;
-    using eFormShared;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Http;
 
@@ -63,7 +62,7 @@ namespace ItemsPlanning.Pn.Services
                         .OrderBy(x => x.Id);
                 }
 
-                if (!pnRequestModel.NameFilter.IsNullOrEmpty())
+                if (!string.IsNullOrEmpty(pnRequestModel.NameFilter))
                 {
                     itemListsQuery = itemListsQuery.Where(x => x.Name.Contains(pnRequestModel.NameFilter));
                 }
