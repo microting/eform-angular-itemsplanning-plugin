@@ -64,7 +64,6 @@ namespace ItemsPlanning.Pn.Services
         {
             try
             {
-                Debugger.Break();
                 var core = _coreHelper.GetCore();
                 var itemList = await _dbContext.ItemLists.FirstAsync(x => x.Id == model.ItemList);
                 var item = await _dbContext.Items.FirstAsync(x => x.Id == model.Item);

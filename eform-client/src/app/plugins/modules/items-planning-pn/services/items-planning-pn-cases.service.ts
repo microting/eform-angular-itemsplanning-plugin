@@ -8,6 +8,7 @@ import {ItemsPlanningPnListsMethods} from './items-planning-pn-lists.service';
 import {ItemsListCasePnModel} from '../models/list/items-list-case-pn.model';
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
+import {ItemListCasesPnRequestModel} from '../models/list/item-list-cases-pn-request.model';
 
 export let ItemsPlanningPnCasesMethods = {
   Cases: 'api/items-planning-pn/list-cases',
@@ -22,8 +23,8 @@ export class ItemsPlanningPnCasesService extends BaseService {
     super(_http, router, toastrService);
   }
 
-  getAllCases(listId: number): Observable<OperationDataResult<ItemsListCasePnModel>> {
-    return this.get(ItemsPlanningPnCasesMethods.Cases + '/' + listId);
+  getAllCases(model: ItemListCasesPnRequestModel): Observable<OperationDataResult<ItemsListCasePnModel>> {
+    return this.get(ItemsPlanningPnCasesMethods.Cases, model);
   }
 
 }

@@ -14,6 +14,7 @@ export class ItemsListPnItemCaseModel {
   type: string;
   location: string;
   status: number;
+  fieldStatus: string;
   comment: string;
   numberOfImages: number;
   sdkCaseId: number;

@@ -19,10 +19,10 @@ namespace ItemsPlanning.Pn.Controllers
 
 
         [HttpGet]
-        [Route("api/items-planning-pn/list-cases/{id}")]
-        public async Task<OperationDataResult<ItemsListCasePnModel>> GetSingleList(int itemListId)
+        [Route("api/items-planning-pn/list-cases/")]
+        public async Task<OperationDataResult<ItemsListCasePnModel>> GetSingleList(ItemListCasesPnRequestModel requestModel)
         {
-            return await _listService.GetSingleList(itemListId);
+            return await _listService.GetSingleList(requestModel);
         }
         
     }

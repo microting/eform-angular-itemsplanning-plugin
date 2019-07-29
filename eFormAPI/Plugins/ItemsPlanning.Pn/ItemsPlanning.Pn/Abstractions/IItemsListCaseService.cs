@@ -6,7 +6,7 @@ namespace ItemsPlanning.Pn.Abstractions
 {
     public interface IItemsListCaseService
     {
-        Task<OperationDataResult<ItemsListCasePnModel>> GetSingleList(int itemListId);
+        Task<OperationDataResult<ItemsListCasePnModel>> GetSingleList(ItemListCasesPnRequestModel requestModel);
 
     }
 }

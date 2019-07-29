@@ -97,7 +97,7 @@ namespace ItemsPlanning.Pn.Services
             {
                 Trace.TraceError(e.Message);
                 return new OperationDataResult<ItemsListsModel>(false,
-                    _itemsPlanningLocalizationService.GetString("ErrorObtainingFractions"));
+                    _itemsPlanningLocalizationService.GetString("ErrorObtainingLists"));
             }
         }
 
@@ -125,7 +125,7 @@ namespace ItemsPlanning.Pn.Services
                         RelatedEFormName = template?.Label
                     };
 
-                    await itemsList.Save(_dbContext);
+                    await itemsList.Create(_dbContext);
 
                     foreach (var itemModel in model.Items)
                     {

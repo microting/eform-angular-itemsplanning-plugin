@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {SharedPnService} from '../../../../shared/services';
 import {ActivatedRoute} from '@angular/router';
 import {PageSettingsModel} from '../../../../../../common/models/settings';
-import {ItemsListPnRequestModel} from '../../../models/list';
 import {ItemsListCasePnModel} from '../../../models/list/items-list-case-pn.model';
 import {ItemsPlanningPnCasesService} from '../../../services/items-planning-pn-cases.service';
+import {ItemListCasesPnRequestModel} from '../../../models/list/item-list-cases-pn-request.model';
 
 @Component({
   selector: 'app-items-planning-pn-list-case-page',
@@ -14,27 +14,46 @@ import {ItemsPlanningPnCasesService} from '../../../services/items-planning-pn-c
 
 export class ListCasePageComponent implements OnInit {
   localPageSettings: PageSettingsModel = new PageSettingsModel();
-  listRequestModel: ItemsListPnRequestModel = new ItemsListPnRequestModel();
+  listCaseRequestModel: ItemListCasesPnRequestModel = new ItemListCasesPnRequestModel();
   casesModel: ItemsListCasePnModel = new ItemsListCasePnModel();
   spinnerStatus = false;
+  id: number;
 
-  constructor(private sharedPnService: SharedPnService, private itemsPlanningPnCasesService: ItemsPlanningPnCasesService) { }
+  constructor(private activateRoute: ActivatedRoute,
+              private sharedPnService: SharedPnService,
+              private itemsPlanningPnCasesService: ItemsPlanningPnCasesService) {
+    const activatedRouteSub = this.activateRoute.params.subscribe(params => {
+      this.id = +params['id'];
+    });
+  }
 
   ngOnInit(): void {
+    this.getLocalPageSettings();
+  }
+
+  getLocalPageSettings() {
+    this.localPageSettings = this.sharedPnService.getLocalPageSettings
+    ('itemsPlanningPnSettings', 'ItemListCases').settings;
+    this.getAllInitialData();
   }
 
   updateLocalPageSettings() {
     this.sharedPnService.updateLocalPageSettings
-    ('itemsPlanningPnSettings', this.localPageSettings, 'ItemLists');
+    ('itemsPlanningPnSettings', this.localPageSettings, 'ItemListCases');
+    this.getAllCases();
+  }
+
+  getAllInitialData() {
     this.getAllCases();
   }
 
   getAllCases() {
     this.spinnerStatus = true;
-    this.listRequestModel.isSortDsc = this.localPageSettings.isSortDsc;
-    this.listRequestModel.sort = this.localPageSettings.sort;
-    this.listRequestModel.pageSize = this.localPageSettings.pageSize;
-    this.itemsPlanningPnCasesService.getAllCases(1).subscribe((data) => {
+    this.listCaseRequestModel.isSortDsc = this.localPageSettings.isSortDsc;
+    this.listCaseRequestModel.sort = this.localPageSettings.sort;
+    this.listCaseRequestModel.pageSize = this.localPageSettings.pageSize;
+    this.listCaseRequestModel.listId = this.id;
+    this.itemsPlanningPnCasesService.getAllCases(this.listCaseRequestModel).subscribe((data) => {
       if (data && data.success) {
         this.casesModel = data.model;
       } this.spinnerStatus = false;
@@ -53,12 +72,12 @@ export class ListCasePageComponent implements OnInit {
 
   changePage(e: any) {
     if (e || e === 0) {
-      this.listRequestModel.offset = e;
+      this.listCaseRequestModel.offset = e;
       if (e === 0) {
-        this.listRequestModel.pageIndex = 0;
+        this.listCaseRequestModel.pageIndex = 0;
       } else {
-        this.listRequestModel.pageIndex
-          = Math.floor(e / this.listRequestModel.pageSize);
+        this.listCaseRequestModel.pageIndex
+          = Math.floor(e / this.listCaseRequestModel.pageSize);
       }
       this.getAllCases();
     }
