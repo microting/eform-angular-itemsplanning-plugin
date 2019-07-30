@@ -18,5 +18,6 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         public string Comment { get; set; }
         public int NumberOfImages { get; set; }
         public int SdkCaseId { get; set; }
+        public int SdkeFormId { get; set; }
     }
 }

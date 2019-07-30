@@ -162,7 +162,7 @@
         <td></td>
         <td>
           <button class="btn btn-success btn-icon mb-2"
-                  [routerLink]="['/cases/edit/' + case.id]"
+                  [routerLink]="['/cases/edit/' + case.sdkCaseId + '/' + case.sdkeFormId]"
                   mdbTooltip="{{ 'Edit Case' | translate }}">
             <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
 

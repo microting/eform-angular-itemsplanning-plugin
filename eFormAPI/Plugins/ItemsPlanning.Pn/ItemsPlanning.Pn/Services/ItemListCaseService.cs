@@ -54,7 +54,8 @@ namespace ItemsPlanning.Pn.Services
                             itemCase.NumberOfImages,
                             itemCase.WorkflowState,
                             itemCase.CreatedAt,
-                            itemCase.MicrotingSdkCaseId
+                            itemCase.MicrotingSdkCaseId,
+                            itemCase.MicrotingSdkeFormId
                         }));
                 
                 if (!string.IsNullOrEmpty(requestModel.Sort))
@@ -125,12 +126,20 @@ namespace ItemsPlanning.Pn.Services
                         FieldStatus = x.FieldStatus,
                         NumberOfImages = x.NumberOfImages,
                         SdkCaseId = x.MicrotingSdkCaseId,
+                        SdkeFormId = x.MicrotingSdkeFormId
 //                        Status = x.Status
                     }).ToListAsync();
                     
-                    itemsListCasePnModel.Total = await _dbContext.ItemCases.CountAsync(x =>
-                        x.WorkflowState != Constants.WorkflowStates.Removed);
+//                    itemsListCasePnModel.Total = await _dbContext.ItemCases.CountAsync(x =>
+//                        x.WorkflowState != Constants.WorkflowStates.Removed);
                     
+                    itemsListCasePnModel.Total = await (_dbContext.Items.Where(item => item.ItemListId == requestModel.ListId)
+                        .Join(_dbContext.ItemCases, item => item.Id, itemCase => itemCase.ItemId,
+                            (item, itemCase) => new
+                            {
+                                itemCase.Id
+                            })).CountAsync();
+
                     return new OperationDataResult<ItemsListCasePnModel>(
                         true,
                         itemsListCasePnModel);

@@ -18,4 +18,5 @@ export class ItemsListPnItemCaseModel {
   comment: string;
   numberOfImages: number;
   sdkCaseId: number;
+  sdkeFormId: number;
 }
