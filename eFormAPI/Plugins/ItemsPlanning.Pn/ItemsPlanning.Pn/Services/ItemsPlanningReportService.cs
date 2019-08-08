@@ -206,7 +206,7 @@ namespace ItemsPlanning.Pn.Services
             
             // Get all answered cases
             var casesList = core.CaseReadAll(template.Id, null, null)
-                .Where(c => itemCases.Select(ic => ic.MicrotingSdkCaseId.ToString()).Contains(c.MicrotingUId))
+                .Where(c => itemCases.Select(ic => ic.MicrotingSdkCaseId).Contains(c.Id))
                 .ToList();
 
             // Go through all itemCases
@@ -214,7 +214,7 @@ namespace ItemsPlanning.Pn.Services
             {
                 finalModel.Dates.Add(ic.CreatedAt);
 
-                var @case = casesList.FirstOrDefault(c => c.MicrotingUId == ic.MicrotingSdkCaseId.ToString());
+                var @case = casesList.FirstOrDefault(c => c.Id == ic.MicrotingSdkCaseId);
                 
                 // Fill with empty values, if this itemCase was not replied
                 if (@case == null)
