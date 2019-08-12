@@ -42,5 +42,11 @@
 
   "Day": "Dag",
   "Week": "Uge",
-  "Month": "Måned"
+  "Month": "Måned",
+  "Issued on": "Udsendt den",
+  "Done at": "Udført den",
+  "Selected date range": "Valgt datointerval",
+  "Generate": "Generer",
+  "Item List": "Gruppe",
+  "Item": "Enhed"
 }

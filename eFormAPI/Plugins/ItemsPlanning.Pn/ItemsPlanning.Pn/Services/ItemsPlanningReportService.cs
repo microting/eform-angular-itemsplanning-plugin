@@ -215,7 +215,7 @@ namespace ItemsPlanning.Pn.Services
                 finalModel.Dates.Add(ic.CreatedAt);
 
                 var @case = casesList.FirstOrDefault(c => c.Id == ic.MicrotingSdkCaseId);
-                
+
                 // Fill with empty values, if this itemCase was not replied
                 if (@case == null)
                 {
@@ -227,7 +227,13 @@ namespace ItemsPlanning.Pn.Services
                         }
                     }
 
+                    finalModel.DatesDoneAt.Add(null);
+
                     continue;
+                }
+                else
+                {
+                    finalModel.DatesDoneAt.Add(@case.DoneAt);
                 }
 
                 // Get the reply and work with its ElementList
