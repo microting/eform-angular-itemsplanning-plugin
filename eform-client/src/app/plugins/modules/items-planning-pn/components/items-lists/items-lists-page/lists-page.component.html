@@ -176,6 +176,12 @@
                     mdbTooltip="{{ 'Show cases' | translate }}">
               <fa-icon icon="briefcase" [fixedWidth]="true" size="lg"></fa-icon>
             </button>
+            <button class="btn btn-success btn-icon mb-2"
+                    id="itemlist-case-results-btn"
+                    [routerLink]="['/plugins/items-planning-pn/item-case-results', list.id]"
+                    mdbTooltip="{{ 'Show case results' | translate }}">
+              <fa-icon icon="briefcase" [fixedWidth]="true" size="lg"></fa-icon>
+            </button>
             <button id="deleteListBtn"
               class="btn btn-danger btn-icon mb-2 "
                     mdbTooltip="{{ 'Delete List' | translate }}"

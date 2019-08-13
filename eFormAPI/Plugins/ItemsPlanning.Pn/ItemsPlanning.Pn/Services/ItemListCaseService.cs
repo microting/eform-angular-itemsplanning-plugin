@@ -55,7 +55,8 @@ namespace ItemsPlanning.Pn.Services
                             itemCase.WorkflowState,
                             itemCase.CreatedAt,
                             itemCase.MicrotingSdkCaseId,
-                            itemCase.MicrotingSdkeFormId
+                            itemCase.MicrotingSdkeFormId,
+                            itemCase.Status
                         }));
                 
                 if (!string.IsNullOrEmpty(requestModel.Sort))
@@ -87,31 +88,6 @@ namespace ItemsPlanning.Pn.Services
                 {
                     
                     ItemsListCasePnModel itemsListCasePnModel = new ItemsListCasePnModel();
-//                    
-//                    IQueryable<ItemCase> itemCaseQuery = _dbContext.ItemCases.Where(x => itemIds.Contains(x.ItemId)).AsQueryable();
-
-                    
-                    
-//                    foreach (ItemCase itemCase in itemCaseQuery)
-//                    {
-//                        var item = items.SingleOrDefault(x => x.Id == itemCase.ItemId);
-//                        ItemsListPnItemCaseModel model = new ItemsListPnItemCaseModel()
-//                        {
-//                            Id = itemCase.Id,
-//                            Date = itemCase.CreatedAt,
-//                            Name = item.Name,
-//                            Description = item.Description,
-//                            ItemNumber = item.ItemNumber,
-//                            LocationCode = item.LocationCode,
-//                            Location = itemCase.Location,
-//                            BuildYear = item.BuildYear,
-//                            Type = item.Type,
-//                            Status = itemCase.Status,
-//                            Comment = itemCase.Comment,
-//                            NumberOfImages = itemCase.NumberOfImages,
-//                            SdkCaseId = itemCase.MicrotingSdkCaseId
-//                        }; 
-//                        itemsListCasePnModel.Items.Add(model);
                     itemsListCasePnModel.Items = await newItems.Select(x => new ItemsListPnItemCaseModel()
                     {
                         Id = x.Id,
@@ -126,12 +102,9 @@ namespace ItemsPlanning.Pn.Services
                         FieldStatus = x.FieldStatus,
                         NumberOfImages = x.NumberOfImages,
                         SdkCaseId = x.MicrotingSdkCaseId,
-                        SdkeFormId = x.MicrotingSdkeFormId
-//                        Status = x.Status
+                        SdkeFormId = x.MicrotingSdkeFormId,
+                        Status = x.Status
                     }).ToListAsync();
-                    
-//                    itemsListCasePnModel.Total = await _dbContext.ItemCases.CountAsync(x =>
-//                        x.WorkflowState != Constants.WorkflowStates.Removed);
                     
                     itemsListCasePnModel.Total = await (_dbContext.Items.Where(item => item.ItemListId == requestModel.ListId)
                         .Join(_dbContext.ItemCases, item => item.Id, itemCase => itemCase.ItemId,
@@ -155,6 +128,15 @@ namespace ItemsPlanning.Pn.Services
                 return new OperationDataResult<ItemsListCasePnModel>(
                     false, ex.Message);
             }
+        }
+
+        public async Task<OperationDataResult<ItemListPnCaseResultListModel>> GetSingleListResults(ItemListCasesPnRequestModel requestModel)
+        {
+            ItemListPnCaseResultListModel itemListPnCaseResultListModel = new ItemListPnCaseResultListModel();
+            itemListPnCaseResultListModel.Total = 0;
+            itemListPnCaseResultListModel.FieldEnabled1 = true;
+            
+            return new OperationDataResult<ItemListPnCaseResultListModel>(true, itemListPnCaseResultListModel);
         }
     }
 }

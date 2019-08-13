@@ -8,5 +8,9 @@ namespace ItemsPlanning.Pn.Abstractions
     {
         Task<OperationDataResult<ItemsListCasePnModel>> GetSingleList(ItemListCasesPnRequestModel requestModel);
 
+        Task<OperationDataResult<ItemListPnCaseResultListModel>> GetSingleListResults(
+            ItemListCasesPnRequestModel requestModel);
+
+
     }
 }
