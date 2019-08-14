@@ -6,9 +6,13 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
     {
         public int Id { get; set; }
         
-        public DateTime DoneAt { get; set; }
+        public DateTime? DoneAt { get; set; }
         
         public string DoneByUserName { get; set; }
+        
+        public string Label { get; set; }
+        
+        public string Description { get; set; }
         
         public string Field1 { get; set; }
 
@@ -49,5 +53,11 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         public string Field19 { get; set; }
 
         public string Field20 { get; set; }
+        
+        public int Status { get; set; }
+        
+        public int SdkCaseId { get; set; }
+        
+        public int SdkeFormId { get; set; }
     }
 }

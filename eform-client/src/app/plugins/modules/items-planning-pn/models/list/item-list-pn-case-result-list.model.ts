@@ -46,6 +46,8 @@ export class ItemListPnCaseResultListModel {
 export class ItemsListPnCaseResultModel {
   id: number;
   doneAt: string;
+  label: string;
+  description: string;
   doneByUserName: string;
   field1: string;
   field2: string;
@@ -67,4 +69,7 @@ export class ItemsListPnCaseResultModel {
   field18: string;
   field19: string;
   field20: string;
+  status: number;
+  sdkCaseId: number;
+  sdkeFormId: number;
 }

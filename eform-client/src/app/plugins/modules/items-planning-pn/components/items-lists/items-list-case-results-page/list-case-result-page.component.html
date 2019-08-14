@@ -26,6 +26,28 @@
                *ngIf="localPageSettings.sort == 'DoneAt' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
+        <th scope="col" class="table-header-sortable" id="doneByUserNameTableHeader"
+            (click)="sortTable('doneByUserName')">
+          <div class="d-flex align-items-center justify-content-center">
+            {{'Done by' | translate}}
+            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'doneByUserName'">unfold_more</i>
+            <i class="material-icons"
+               *ngIf="localPageSettings.sort == 'doneByUserName' && !listCaseRequestModel.isSortDsc">expand_less</i>
+            <i class="material-icons"
+               *ngIf="localPageSettings.sort == 'doneByUserName' && listCaseRequestModel.isSortDsc">expand_more</i>
+          </div>
+        </th>
+        <th scope="col" class="table-header-sortable" id="labelTableHeader"
+            (click)="sortTable('Label')">
+          <div class="d-flex align-items-center justify-content-center">
+            {{'Name' | translate}}
+            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'Label'">unfold_more</i>
+            <i class="material-icons"
+               *ngIf="localPageSettings.sort == 'Label' && !listCaseRequestModel.isSortDsc">expand_less</i>
+            <i class="material-icons"
+               *ngIf="localPageSettings.sort == 'Label' && listCaseRequestModel.isSortDsc">expand_more</i>
+          </div>
+        </th>
         <th scope="col" class="table-header-sortable" id="field1TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled1">
           <div class="d-flex align-items-center justify-content-center">
@@ -40,7 +62,7 @@
         <th scope="col" class="table-header-sortable" id="field2TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled2">
           <div class="d-flex align-items-center justify-content-center">
-            {{casesModel.fieldName1}}
+            {{casesModel.fieldName2}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'fieldEnabled2'">unfold_more</i>
             <i class="material-icons"
                *ngIf="localPageSettings.sort == 'fieldEnabled2' && !listCaseRequestModel.isSortDsc">expand_less</i>
@@ -51,7 +73,7 @@
         <th scope="col" class="table-header-sortable" id="field3TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled3">
           <div class="d-flex align-items-center justify-content-center">
-            {{casesModel.fieldName1}}
+            {{casesModel.fieldName3}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'fieldEnabled3'">unfold_more</i>
             <i class="material-icons"
                *ngIf="localPageSettings.sort == 'fieldEnabled3' && !listCaseRequestModel.isSortDsc">expand_less</i>
@@ -62,7 +84,7 @@
         <th scope="col" class="table-header-sortable" id="field4TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled4">
           <div class="d-flex align-items-center justify-content-center">
-            {{casesModel.fieldName1}}
+            {{casesModel.fieldName4}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'fieldEnabled4'">unfold_more</i>
             <i class="material-icons"
                *ngIf="localPageSettings.sort == 'fieldEnabled4' && !listCaseRequestModel.isSortDsc">expand_less</i>
@@ -73,7 +95,7 @@
         <th scope="col" class="table-header-sortable" id="field5TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled5">
           <div class="d-flex align-items-center justify-content-center">
-            {{casesModel.fieldName1}}
+            {{casesModel.fieldName5}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'fieldEnabled5'">unfold_more</i>
             <i class="material-icons"
                *ngIf="localPageSettings.sort == 'fieldEnabled5' && !listCaseRequestModel.isSortDsc">expand_less</i>
@@ -84,7 +106,7 @@
         <th scope="col" class="table-header-sortable" id="field6TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled6">
           <div class="d-flex align-items-center justify-content-center">
-            {{casesModel.fieldName1}}
+            {{casesModel.fieldName6}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'fieldEnabled6'">unfold_more</i>
             <i class="material-icons"
                *ngIf="localPageSettings.sort == 'fieldEnabled6' && !listCaseRequestModel.isSortDsc">expand_less</i>
@@ -95,7 +117,7 @@
         <th scope="col" class="table-header-sortable" id="field7TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled7">
           <div class="d-flex align-items-center justify-content-center">
-            {{casesModel.fieldName1}}
+            {{casesModel.fieldName7}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'fieldEnabled7'">unfold_more</i>
             <i class="material-icons"
                *ngIf="localPageSettings.sort == 'fieldEnabled7' && !listCaseRequestModel.isSortDsc">expand_less</i>
@@ -106,7 +128,7 @@
         <th scope="col" class="table-header-sortable" id="field8TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled8">
           <div class="d-flex align-items-center justify-content-center">
-            {{casesModel.fieldName1}}
+            {{casesModel.fieldName8}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'fieldEnabled8'">unfold_more</i>
             <i class="material-icons"
                *ngIf="localPageSettings.sort == 'fieldEnabled8' && !listCaseRequestModel.isSortDsc">expand_less</i>
@@ -117,7 +139,7 @@
         <th scope="col" class="table-header-sortable" id="field9TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled9">
           <div class="d-flex align-items-center justify-content-center">
-            {{casesModel.fieldName1}}
+            {{casesModel.fieldName9}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'fieldEnabled9'">unfold_more</i>
             <i class="material-icons"
                *ngIf="localPageSettings.sort == 'fieldEnabled9' && !listCaseRequestModel.isSortDsc">expand_less</i>
@@ -128,7 +150,7 @@
         <th scope="col" class="table-header-sortable" id="field10TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled10">
           <div class="d-flex align-items-center justify-content-center">
-            {{casesModel.fieldName1}}
+            {{casesModel.fieldName10}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'fieldEnabled10'">unfold_more</i>
             <i class="material-icons"
                *ngIf="localPageSettings.sort == 'fieldEnabled10' && !listCaseRequestModel.isSortDsc">expand_less</i>
@@ -136,8 +158,64 @@
                *ngIf="localPageSettings.sort == 'fieldEnabled10' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
+        <th scope="col">
+          {{ 'Actions' | translate }}
+        </th>
       </tr>
       </thead>
+      <tbody id="tableBody">
+      <tr *ngFor="let case of casesModel.items">
+        <td id="caseId">
+          {{case.id}}
+        </td>
+        <td>
+          <date-formatter [date]="case.doneAt" [Format]="'datetime'"></date-formatter>
+        </td>
+        <td>
+          {{case.doneByUserName}}
+        </td>
+        <td>
+          {{case.label}}
+        </td>
+        <td *ngIf="casesModel.fieldEnabled1">
+          {{case.field1}}
+        </td>
+        <td *ngIf="casesModel.fieldEnabled2">
+          {{case.field2}}
+        </td>
+        <td *ngIf="casesModel.fieldEnabled3">
+          {{case.field3}}
+        </td>
+        <td *ngIf="casesModel.fieldEnabled4">
+          {{case.field4}}
+        </td>
+        <td *ngIf="casesModel.fieldEnabled5">
+          {{case.field5}}
+        </td>
+        <td *ngIf="casesModel.fieldEnabled6">
+          {{case.field6}}
+        </td>
+        <td *ngIf="casesModel.fieldEnabled7">
+          {{case.field7}}
+        </td>
+        <td *ngIf="casesModel.fieldEnabled8">
+          {{case.field8}}
+        </td>
+        <td *ngIf="casesModel.fieldEnabled9">
+          {{case.field9}}
+        </td>
+        <td *ngIf="casesModel.fieldEnabled10">
+          {{case.field10}}
+        </td>
+        <td>
+          <button class="btn btn-success btn-icon mb-2" *ngIf="case.status === 100"
+                  [routerLink]="['/cases/edit/' + case.sdkCaseId + '/' + case.sdkeFormId]"
+                  mdbTooltip="{{ 'Edit Case' | translate }}">
+            <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
+          </button>
+        </td>
+      </tr>
+      </tbody>
     </table>
   </div>
 </div>
