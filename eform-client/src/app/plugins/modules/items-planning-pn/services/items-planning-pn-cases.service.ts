@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
 import {Observable} from 'rxjs';
 import {OperationDataResult} from '../../../../common/models';
-import {ItemsListPnModel} from '../models/list';
+import {ItemListPnCaseResultListModel, ItemsListPnModel} from '../models/list';
 import {ItemsPlanningPnListsMethods} from './items-planning-pn-lists.service';
 import {ItemsListCasePnModel} from '../models/list/items-list-case-pn.model';
 import {Router} from '@angular/router';
@@ -12,6 +12,7 @@ import {ItemListCasesPnRequestModel} from '../models/list/item-list-cases-pn-req
 
 export let ItemsPlanningPnCasesMethods = {
   Cases: 'api/items-planning-pn/list-cases',
+  CaseResults: 'api/items-planning-pn/list-case-results'
 };
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,10 @@ export class ItemsPlanningPnCasesService extends BaseService {
 
   getAllCases(model: ItemListCasesPnRequestModel): Observable<OperationDataResult<ItemsListCasePnModel>> {
     return this.get(ItemsPlanningPnCasesMethods.Cases, model);
+  }
+
+  getAllCaseResults(model: ItemListCasesPnRequestModel): Observable<OperationDataResult<ItemListPnCaseResultListModel>> {
+    return this.get(ItemsPlanningPnCasesMethods.CaseResults, model);
   }
 
 }

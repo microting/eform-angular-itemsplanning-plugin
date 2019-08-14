@@ -10,7 +10,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ItemsPlanningPnLayoutComponent} from './layouts';
 import {
   ItemsListCreateComponent,
-  ListCasePageComponent,
+  ListCasePageComponent, ListCaseResultPageComponent,
   ListDeleteComponent,
   ListEditComponent,
   ListsPageComponent
@@ -49,6 +49,7 @@ import {
   declarations: [
     ItemsPlanningPnLayoutComponent,
     ListsPageComponent,
+    ListCaseResultPageComponent,
     ItemsListCreateComponent,
     ListCasePageComponent,
     ListEditComponent,
