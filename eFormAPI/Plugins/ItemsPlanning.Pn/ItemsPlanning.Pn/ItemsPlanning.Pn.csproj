@@ -30,11 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Handlers" />
-      <Folder Include="Messages" />
-    </ItemGroup>
-
-    <ItemGroup>
       <EmbeddedResource Include="Resources\Templates\report_template.xlsx" />
     </ItemGroup>
 

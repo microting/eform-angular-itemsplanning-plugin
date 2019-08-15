@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ItemsPlanning.Pn.Abstractions;
 using ItemsPlanning.Pn.Infrastructure.Models;
+using ItemsPlanning.Pn.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microting.eForm.Dto;
@@ -14,6 +15,7 @@ using Microting.eFormApi.BasePn.Infrastructure.Extensions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Entities;
+using Rebus.Bus;
 
 namespace ItemsPlanning.Pn.Services
 {
@@ -23,16 +25,21 @@ namespace ItemsPlanning.Pn.Services
         private readonly IItemsPlanningLocalizationService _itemsPlanningLocalizationService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IEFormCoreService _core;
+        private readonly IRebusService _rebusService;
+        private readonly IBus _bus;
 
         public ItemListCaseService(
             ItemsPlanningPnDbContext dbContext,
             IItemsPlanningLocalizationService itemsPlanningLocalizationService,
-            IHttpContextAccessor httpContextAccessor, IEFormCoreService core)
+            IHttpContextAccessor httpContextAccessor, IEFormCoreService core, 
+            IRebusService rebusService)
         {
             _dbContext = dbContext;
             _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
             _httpContextAccessor = httpContextAccessor;
             _core = core;
+            _rebusService = rebusService;
+            _bus = rebusService.GetBus();
         }
 
         public async Task<OperationDataResult<ItemsListCasePnModel>> GetSingleList(ItemListCasesPnRequestModel requestModel)
@@ -269,7 +276,10 @@ namespace ItemsPlanning.Pn.Services
 
                 try
                 {
-                
+                    if (item.Status == 100)
+                    {
+                        _bus.SendLocal(new eFormCaseUpdated(item.MicrotingSdkCaseId));
+                    }
                     ItemsListPnCaseResultModel newItem = new ItemsListPnCaseResultModel()
                     {
                         Id = item.Id,
