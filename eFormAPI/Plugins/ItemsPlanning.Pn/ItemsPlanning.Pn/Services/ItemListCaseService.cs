@@ -265,38 +265,37 @@ namespace ItemsPlanning.Pn.Services
             
             foreach (var item in newItems.ToList())
             {
-                if (item.Status == 100)
+                Console.WriteLine($"[DBG] ItemListCaseService.GetSingleListResults: Looking at case with id {item.Id} with status {item.Status}");
+
+                try
                 {
-                    try
+                
+                    ItemsListPnCaseResultModel newItem = new ItemsListPnCaseResultModel()
                     {
-                    
-                        ItemsListPnCaseResultModel newItem = new ItemsListPnCaseResultModel()
-                        {
-                            Id = item.Id,
-                            DoneAt = item.MicrotingSdkCaseDoneAt,
-                            DoneByUserName = item.DoneByUserName,
-                            Label = item.Name,
-                            Description = item.Description,
-                            Field1 = item.SdkFieldValue1,
-                            Field2 = item.SdkFieldValue2,
-                            Field3 = item.SdkFieldValue3,
-                            Field4 = item.SdkFieldValue4,
-                            Field5 = item.SdkFieldValue5,
-                            Field6 = item.SdkFieldValue6,
-                            Field7 = item.SdkFieldValue7,
-                            Field8 = item.SdkFieldValue8,
-                            Field9 = item.SdkFieldValue9,
-                            Field10 = item.SdkFieldValue10,
-                            SdkCaseId = item.MicrotingSdkCaseId,
-                            SdkeFormId = itemList.RelatedEFormId,
-                            Status = item.Status
-                        };
-                        itemListPnCaseResultListModel.Items.Add(newItem);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
+                        Id = item.Id,
+                        DoneAt = item.MicrotingSdkCaseDoneAt,
+                        DoneByUserName = item.DoneByUserName,
+                        Label = item.Name,
+                        Description = item.Description,
+                        Field1 = item.SdkFieldValue1,
+                        Field2 = item.SdkFieldValue2,
+                        Field3 = item.SdkFieldValue3,
+                        Field4 = item.SdkFieldValue4,
+                        Field5 = item.SdkFieldValue5,
+                        Field6 = item.SdkFieldValue6,
+                        Field7 = item.SdkFieldValue7,
+                        Field8 = item.SdkFieldValue8,
+                        Field9 = item.SdkFieldValue9,
+                        Field10 = item.SdkFieldValue10,
+                        SdkCaseId = item.MicrotingSdkCaseId,
+                        SdkeFormId = itemList.RelatedEFormId,
+                        Status = item.Status
+                    };
+                    itemListPnCaseResultListModel.Items.Add(newItem);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
             }
             
