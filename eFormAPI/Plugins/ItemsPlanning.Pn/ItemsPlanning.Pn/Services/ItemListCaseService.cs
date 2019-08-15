@@ -86,6 +86,7 @@ namespace ItemsPlanning.Pn.Services
                         .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                         .Skip(requestModel.Offset)
                         .Take(requestModel.PageSize);
+                
                 if (newItems.Any())
                 {
                     
@@ -157,45 +158,55 @@ namespace ItemsPlanning.Pn.Services
             
             ItemListPnCaseResultListModel itemListPnCaseResultListModel = new ItemListPnCaseResultListModel();
             itemListPnCaseResultListModel.Total = 0;
-            itemListPnCaseResultListModel.FieldEnabled1 = allFields.Any();
+            itemListPnCaseResultListModel.LabelEnabled = itemList.LabelEnabled;
+            itemListPnCaseResultListModel.DescriptionEnabled = itemList.DescriptionEnabled;
+            itemListPnCaseResultListModel.DoneAtEnabled = itemList.DoneAtEnabled;
+            itemListPnCaseResultListModel.DoneByUserNameEnabled = itemList.DoneByUserNameEnabled;
+            itemListPnCaseResultListModel.UploadedDataEnabled = itemList.UploadedDataEnabled;
+            itemListPnCaseResultListModel.ItemNumberEnabled = itemList.ItemNumberEnabled;
+            itemListPnCaseResultListModel.LocationCodeEnabled = itemList.LocationCodeEnabled;
+            itemListPnCaseResultListModel.BuildYearEnabled = itemList.BuildYearEnabled;
+            itemListPnCaseResultListModel.TypeEnabled = itemList.TypeEnabled;
+            
+            itemListPnCaseResultListModel.FieldEnabled1 = itemList.SdkFieldEnabled1;
             if ( itemListPnCaseResultListModel.FieldEnabled1)
-                itemListPnCaseResultListModel.FieldName1 = allFields[0].Label;
+                itemListPnCaseResultListModel.FieldName1 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId1)?.Label;
             
-            itemListPnCaseResultListModel.FieldEnabled2 = allFields.Count() > 1;
+            itemListPnCaseResultListModel.FieldEnabled2 = itemList.SdkFieldEnabled2;
             if (itemListPnCaseResultListModel.FieldEnabled2)
-                itemListPnCaseResultListModel.FieldName2 = allFields[1].Label;
+                itemListPnCaseResultListModel.FieldName2 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId2)?.Label;
             
-            itemListPnCaseResultListModel.FieldEnabled3 = allFields.Count() > 1;
+            itemListPnCaseResultListModel.FieldEnabled3 = itemList.SdkFieldEnabled3;
             if (itemListPnCaseResultListModel.FieldEnabled3)
-                itemListPnCaseResultListModel.FieldName3 = allFields[2].Label;
+                itemListPnCaseResultListModel.FieldName3 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId3)?.Label;
             
-            itemListPnCaseResultListModel.FieldEnabled4 = allFields.Count() > 1;
+            itemListPnCaseResultListModel.FieldEnabled4 = itemList.SdkFieldEnabled4;
             if (itemListPnCaseResultListModel.FieldEnabled4)
-                itemListPnCaseResultListModel.FieldName4 = allFields[3].Label;
+                itemListPnCaseResultListModel.FieldName4 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId4)?.Label;
             
-            itemListPnCaseResultListModel.FieldEnabled5 = allFields.Count() > 1;
+            itemListPnCaseResultListModel.FieldEnabled5 = itemList.SdkFieldEnabled5;
             if (itemListPnCaseResultListModel.FieldEnabled5)
-                itemListPnCaseResultListModel.FieldName5 = allFields[4].Label;
+                itemListPnCaseResultListModel.FieldName5 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId5)?.Label;
             
-            itemListPnCaseResultListModel.FieldEnabled6 = allFields.Count() > 1;
+            itemListPnCaseResultListModel.FieldEnabled6 = itemList.SdkFieldEnabled6;
             if (itemListPnCaseResultListModel.FieldEnabled6)
-                itemListPnCaseResultListModel.FieldName6 = allFields[5].Label;
+                itemListPnCaseResultListModel.FieldName6 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId6)?.Label;
             
-            itemListPnCaseResultListModel.FieldEnabled7 = allFields.Count() > 1;
+            itemListPnCaseResultListModel.FieldEnabled7 = itemList.SdkFieldEnabled7;
             if (itemListPnCaseResultListModel.FieldEnabled7)
-                itemListPnCaseResultListModel.FieldName7 = allFields[6].Label;
+                itemListPnCaseResultListModel.FieldName7 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId7)?.Label;
             
-            itemListPnCaseResultListModel.FieldEnabled8 = allFields.Count() > 1;
+            itemListPnCaseResultListModel.FieldEnabled8 = itemList.SdkFieldEnabled8;
             if (itemListPnCaseResultListModel.FieldEnabled8)
-                itemListPnCaseResultListModel.FieldName8 = allFields[7].Label;
+                itemListPnCaseResultListModel.FieldName8 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId8)?.Label;
             
-            itemListPnCaseResultListModel.FieldEnabled9 = allFields.Count() > 1;
+            itemListPnCaseResultListModel.FieldEnabled9 = itemList.SdkFieldEnabled9;
             if (itemListPnCaseResultListModel.FieldEnabled9)
-                itemListPnCaseResultListModel.FieldName9 = allFields[8].Label;
+                itemListPnCaseResultListModel.FieldName9 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId9)?.Label;
             
-            itemListPnCaseResultListModel.FieldEnabled10 = allFields.Count() > 1;
+            itemListPnCaseResultListModel.FieldEnabled10 = itemList.SdkFieldEnabled10;
             if (itemListPnCaseResultListModel.FieldEnabled10)
-                itemListPnCaseResultListModel.FieldName10 = allFields[9].Label;
+                itemListPnCaseResultListModel.FieldName10 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId10)?.Label;
             
             var newItems = (_dbContext.Items.Where(item => item.ItemListId == requestModel.ListId)
                 .Join(_dbContext.ItemCases, item => item.Id, itemCase => itemCase.ItemId,
@@ -204,64 +215,80 @@ namespace ItemsPlanning.Pn.Services
                         itemCase.Id,
                         item.Name,
                         item.Description,
+                        item.BuildYear,
+                        item.LocationCode,
+                        item.ItemNumber,
+                        item.Type,
                         itemCase.MicrotingSdkCaseDoneAt,
                         itemCase.MicrotingSdkCaseId,
-                        itemCase.Status
-                    })).ToList();
+                        itemCase.Status,
+                        itemCase.DoneByUserName,
+                        itemCase.SdkFieldValue1,
+                        itemCase.SdkFieldValue2,
+                        itemCase.SdkFieldValue3,
+                        itemCase.SdkFieldValue4,
+                        itemCase.SdkFieldValue5,
+                        itemCase.SdkFieldValue6,
+                        itemCase.SdkFieldValue7,
+                        itemCase.SdkFieldValue8,
+                        itemCase.SdkFieldValue9,
+                        itemCase.SdkFieldValue10,
+                        itemCase.WorkflowState
+                    }));
+            
+            if (!string.IsNullOrEmpty(requestModel.Sort))
+            {
+                if (requestModel.IsSortDsc)
+                {
+                    newItems = newItems
+                        .CustomOrderByDescending(requestModel.Sort);
+                }
+                else
+                {
+                    newItems = newItems
+                        .CustomOrderBy(requestModel.Sort);
+                }
+            }
+            else
+            {
+                newItems = newItems
+                    .OrderBy(x => x.Id);
+            }
+
+            newItems
+                = newItems
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Skip(requestModel.Offset)
+                    .Take(requestModel.PageSize);
 
             itemListPnCaseResultListModel.Items = new List<ItemsListPnCaseResultModel>();
             
-            foreach (var item in newItems)
+            foreach (var item in newItems.ToList())
             {
                 if (item.Status == 100)
                 {
                     try
                     {
-                        DateTime? doneAt = null;
-
-                        string doneByUserName = "";
-
-                        int? sdkeFormId = null;
-
-                        var caseDto = _core.GetCore().CaseReadByCaseId(item.MicrotingSdkCaseId);
-                        if (caseDto.CheckUId != null)
-                        {
-                            var microtingUId = caseDto.MicrotingUId;
-                            var microtingCheckUId = caseDto.CheckUId;
-                            var theCase = _core.GetCore().CaseRead(microtingUId, microtingCheckUId);
-                            doneAt = theCase.DoneAt;
-                            sdkeFormId = caseDto.CheckListId;
-                        }
                     
                         ItemsListPnCaseResultModel newItem = new ItemsListPnCaseResultModel()
                         {
                             Id = item.Id,
-                            DoneAt = doneAt,
-                            DoneByUserName = doneByUserName,
+                            DoneAt = item.MicrotingSdkCaseDoneAt,
+                            DoneByUserName = item.DoneByUserName,
                             Label = item.Name,
                             Description = item.Description,
-                            Field1 = "",
-                            Field2 = "",
-                            Field3 = "",
-                            Field4 = "",
-                            Field5 = "",
-                            Field6 = "",
-                            Field7 = "",
-                            Field8 = "",
-                            Field9 = "",
-                            Field10 = "",
-                            Field11 = "",
-                            Field12 = "",
-                            Field13 = "",
-                            Field14 = "",
-                            Field15 = "",
-                            Field16 = "",
-                            Field17 = "",
-                            Field18 = "",
-                            Field19 = "",
-                            Field20 = "",
+                            Field1 = item.SdkFieldValue1,
+                            Field2 = item.SdkFieldValue2,
+                            Field3 = item.SdkFieldValue3,
+                            Field4 = item.SdkFieldValue4,
+                            Field5 = item.SdkFieldValue5,
+                            Field6 = item.SdkFieldValue6,
+                            Field7 = item.SdkFieldValue7,
+                            Field8 = item.SdkFieldValue8,
+                            Field9 = item.SdkFieldValue9,
+                            Field10 = item.SdkFieldValue10,
                             SdkCaseId = item.MicrotingSdkCaseId,
-                            SdkeFormId = (int)sdkeFormId,
+                            SdkeFormId = itemList.RelatedEFormId,
                             Status = item.Status
                         };
                         itemListPnCaseResultListModel.Items.Add(newItem);

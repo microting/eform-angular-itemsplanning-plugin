@@ -41,6 +41,15 @@ export class ItemListPnCaseResultListModel {
   fieldName18: string;
   fieldName19: string;
   fieldName20: string;
+  labelEnabled: boolean;
+  descriptionEnabled: boolean;
+  doneAtEnabled: boolean;
+  doneByUserNameEnabled: boolean;
+  uploadedDataEnabled: boolean;
+  ItemNumberEnabled: boolean;
+  LocationCodeEnabled: boolean;
+  BuildYearEnabled: boolean;
+  TypeEnabled: boolean;
 }
 
 export class ItemsListPnCaseResultModel {

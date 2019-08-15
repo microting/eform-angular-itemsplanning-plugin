@@ -9,6 +9,7 @@ import {EformSharedModule} from '../../../common/modules/eform-shared/eform-shar
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ItemsPlanningPnLayoutComponent} from './layouts';
 import {
+  ItemListCaseColumnsModalComponent,
   ItemsListCreateComponent,
   ListCasePageComponent, ListCaseResultPageComponent,
   ListDeleteComponent,
@@ -48,6 +49,7 @@ import {
   ],
   declarations: [
     ItemsPlanningPnLayoutComponent,
+    ItemListCaseColumnsModalComponent,
     ListsPageComponent,
     ListCaseResultPageComponent,
     ItemsListCreateComponent,
