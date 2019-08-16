@@ -32,6 +32,8 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         public bool LabelEnabled { get; set; }
         
         public bool DescriptionEnabled { get; set; }
+        
+        public bool DeployedAtEnabled { get; set; }
 
         public bool DoneAtEnabled { get; set; }
 

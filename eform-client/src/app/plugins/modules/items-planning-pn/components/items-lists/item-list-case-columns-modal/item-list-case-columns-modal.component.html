@@ -9,6 +9,14 @@
           <div class="row">
             <div class="col-md-2">
               <label class="md-checkbox">
+                <input [(ngModel)]="selectedListModel.deployedAtEnabled" [checked]="selectedListModel.deployedAtEnabled" value="{{selectedListModel.deployedAtEnabled}}" type="checkbox"/>
+                <span class="md-checkbox--fake"></span>
+                <div></div>
+              </label>
+              {{'Deployed at enabled' | translate}}
+            </div>
+            <div class="col-md-2">
+              <label class="md-checkbox">
                 <input [(ngModel)]="selectedListModel.doneAtEnabled" [checked]="selectedListModel.doneAtEnabled" value="{{selectedListModel.doneAtEnabled}}" type="checkbox"/>
                 <span class="md-checkbox--fake"></span>
                 <div></div>

@@ -14,6 +14,7 @@ export class ItemListPnCaseResultListModel {
   numberOfImagesEnabled: boolean;
   labelEnabled: boolean;
   descriptionEnabled: boolean;
+  deployedAtEnabled: boolean;
   doneAtEnabled: boolean;
   doneByUserNameEnabled: boolean;
   uploadedDataEnabled: boolean;
@@ -38,6 +39,7 @@ export class ItemListPnCaseResultListModel {
 
 export class ItemsListPnCaseResultModel {
   id: number;
+  deployedAt: string;
   doneAt: string;
   label: string;
   description: string;

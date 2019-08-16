@@ -18,6 +18,7 @@ export class ItemsListPnModel {
   relatedEFormId: number;
   relatedEFormName: string;
   items: ItemsListPnItemModel[] = [];
+  deployedAtEnabled: boolean;
   doneAtEnabled: boolean;
   doneByUserNameEnabled: boolean;
   uploadedDataEnabled: boolean;

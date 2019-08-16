@@ -6,6 +6,8 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
     {
         public int Id { get; set; }
         
+        public DateTime? DeployedAt { get; set; }
+        
         public DateTime? DoneAt { get; set; }
         
         public string DoneByUserName { get; set; }

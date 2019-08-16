@@ -102,6 +102,7 @@ namespace ItemsPlanning.Pn.Services
                     {
                         Id = x.Id,
                         Date = x.CreatedAt,
+                        CreatedAt = x.CreatedAt,
                         Name = x.Name,
                         ItemNumber = x.ItemNumber,
                         BuildYear = x.BuildYear,
@@ -167,6 +168,7 @@ namespace ItemsPlanning.Pn.Services
             itemListPnCaseResultListModel.Total = 0;
             itemListPnCaseResultListModel.LabelEnabled = itemList.LabelEnabled;
             itemListPnCaseResultListModel.DescriptionEnabled = itemList.DescriptionEnabled;
+            itemListPnCaseResultListModel.DeployedAtEnabled = itemList.DeployedAtEnabled;
             itemListPnCaseResultListModel.DoneAtEnabled = itemList.DoneAtEnabled;
             itemListPnCaseResultListModel.DoneByUserNameEnabled = itemList.DoneByUserNameEnabled;
             itemListPnCaseResultListModel.UploadedDataEnabled = itemList.UploadedDataEnabled;
@@ -230,6 +232,7 @@ namespace ItemsPlanning.Pn.Services
                         itemCase.MicrotingSdkCaseDoneAt,
                         itemCase.MicrotingSdkCaseId,
                         itemCase.Status,
+                        itemCase.CreatedAt,
                         itemCase.DoneByUserName,
                         itemCase.SdkFieldValue1,
                         itemCase.SdkFieldValue2,
@@ -263,6 +266,8 @@ namespace ItemsPlanning.Pn.Services
                 newItems = newItems
                     .OrderBy(x => x.Id);
             }
+            
+            itemListPnCaseResultListModel.Total = newItems.Count(x => x.WorkflowState != Constants.WorkflowStates.Removed);
 
             newItems
                 = newItems
@@ -286,6 +291,7 @@ namespace ItemsPlanning.Pn.Services
                     {
                         Id = item.Id,
                         DoneAt = item.MicrotingSdkCaseDoneAt,
+                        DeployedAt = item.CreatedAt,
                         DoneByUserName = item.DoneByUserName,
                         Label = item.Name,
                         Description = item.Description,

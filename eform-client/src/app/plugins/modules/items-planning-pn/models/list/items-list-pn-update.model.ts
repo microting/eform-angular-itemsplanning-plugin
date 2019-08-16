@@ -11,6 +11,7 @@ export class ItemsListPnUpdateModel {
   dayOfMonth: number;
   repeatUntil: Moment | null;
   relatedEFormId: number;
+  deployedAtEnabled: boolean;
   doneAtEnabled: boolean;
   doneByUserNameEnabled: boolean;
   uploadedDataEnabled: boolean;
@@ -46,6 +47,7 @@ export class ItemsListPnUpdateModel {
       this.relatedEFormId = data.relatedEFormId;
       this.items = data.items;
       this.doneAtEnabled = data.doneAtEnabled;
+      this.deployedAtEnabled = data.deployedAtEnabled;
       this.doneByUserNameEnabled = data.doneByUserNameEnabled;
       this.uploadedDataEnabled = data.uploadedDataEnabled;
       this.labelEnabled = data.labelEnabled;
