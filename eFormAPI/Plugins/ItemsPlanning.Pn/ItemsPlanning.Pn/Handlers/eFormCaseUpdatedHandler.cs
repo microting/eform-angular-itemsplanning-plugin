@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ItemsPlanning.Pn.Messages;
 using Microsoft.EntityFrameworkCore;
+using Microting.eForm.Infrastructure.Constants;
 using Microting.eForm.Infrastructure.Models;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Entities;
@@ -97,6 +98,20 @@ namespace ItemsPlanning.Pn.Handlers
             {
                 itemCase.SdkFieldValue10 =
                     fieldValues.SingleOrDefault(x => x.FieldId == itemList.SdkFieldId10)?.ValueReadable;
+            }
+            if (itemList.NumberOfImagesEnabled)
+            {
+                itemCase.NumberOfImages = 0;
+                foreach (FieldValue fieldValue in fieldValues)
+                {
+                    if (fieldValue.FieldType == Constants.FieldTypes.Picture)
+                    {
+                        if (fieldValue.UploadedData != null)
+                        {
+                            itemCase.NumberOfImages += 1;
+                        }
+                    }
+                }
             }
 
             return itemCase;
