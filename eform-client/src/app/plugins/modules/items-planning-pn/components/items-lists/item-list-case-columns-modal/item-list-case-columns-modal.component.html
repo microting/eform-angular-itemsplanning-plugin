@@ -79,6 +79,14 @@
               </label>
               {{'Type enabled' | translate}}
             </div>
+            <div class="col-md-2">
+              <label class="md-checkbox">
+                <input [(ngModel)]="selectedListModel.numberOfImagesEnabled"  [checked]="selectedListModel.numberOfImagesEnabled" value="{{selectedListModel.numberOfImagesEnabled}}" type="checkbox"/>
+                <span class="md-checkbox--fake"></span>
+                <div></div>
+              </label>
+              {{'Number of images enabled' | translate}}
+            </div>
           </div>
           <div class="row">
             <div class="col-md-6">

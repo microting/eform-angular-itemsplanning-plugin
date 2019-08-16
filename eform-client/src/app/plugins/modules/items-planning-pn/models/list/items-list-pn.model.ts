@@ -37,6 +37,7 @@ export class ItemsListPnModel {
   locationCodeEnabled: boolean;
   buildYearEnabled: boolean;
   typeEnabled: boolean;
+  numberOfImagesEnabled: boolean;
   sdkFieldId1: number;
   sdkFieldId2: number;
   sdkFieldId3: number;

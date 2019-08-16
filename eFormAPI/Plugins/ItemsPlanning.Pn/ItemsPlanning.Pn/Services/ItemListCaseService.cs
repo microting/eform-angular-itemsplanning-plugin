@@ -174,6 +174,7 @@ namespace ItemsPlanning.Pn.Services
             itemListPnCaseResultListModel.LocationCodeEnabled = itemList.LocationCodeEnabled;
             itemListPnCaseResultListModel.BuildYearEnabled = itemList.BuildYearEnabled;
             itemListPnCaseResultListModel.TypeEnabled = itemList.TypeEnabled;
+            itemListPnCaseResultListModel.NumberOfImagesEnabled = itemList.NumberOfImagesEnabled;
             
             itemListPnCaseResultListModel.FieldEnabled1 = itemList.SdkFieldEnabled1;
             if ( itemListPnCaseResultListModel.FieldEnabled1)
@@ -240,7 +241,8 @@ namespace ItemsPlanning.Pn.Services
                         itemCase.SdkFieldValue8,
                         itemCase.SdkFieldValue9,
                         itemCase.SdkFieldValue10,
-                        itemCase.WorkflowState
+                        itemCase.WorkflowState,
+                        itemCase.NumberOfImages
                     }));
             
             if (!string.IsNullOrEmpty(requestModel.Sort))
@@ -287,6 +289,11 @@ namespace ItemsPlanning.Pn.Services
                         DoneByUserName = item.DoneByUserName,
                         Label = item.Name,
                         Description = item.Description,
+                        ItemNumber = item.ItemNumber,
+                        LocationCode = item.LocationCode,
+                        BuildYear = item.BuildYear,
+                        Type = item.Type,
+                        NumberOfImages = item.NumberOfImages,
                         Field1 = item.SdkFieldValue1,
                         Field2 = item.SdkFieldValue2,
                         Field3 = item.SdkFieldValue3,

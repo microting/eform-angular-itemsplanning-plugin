@@ -20,6 +20,7 @@ export class ItemsListPnUpdateModel {
   locationCodeEnabled: boolean;
   buildYearEnabled: boolean;
   typeEnabled: boolean;
+  numberOfImagesEnabled: boolean;
   sdkFieldId1: number;
   sdkFieldId2: number;
   sdkFieldId3: number;
@@ -53,6 +54,7 @@ export class ItemsListPnUpdateModel {
       this.locationCodeEnabled = data.locationCodeEnabled;
       this.buildYearEnabled = data.buildYearEnabled;
       this.typeEnabled = data.typeEnabled;
+      this.numberOfImagesEnabled = data.numberOfImagesEnabled;
       this.sdkFieldId1 = data.sdkFieldId1;
       this.sdkFieldId2 = data.sdkFieldId2;
       this.sdkFieldId3 = data.sdkFieldId3;

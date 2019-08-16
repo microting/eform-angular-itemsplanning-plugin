@@ -47,6 +47,8 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         
         public bool TypeEnabled { get; set; }
         
+        public bool NumberOfImagesEnabled { get; set; }
+        
         public string FieldName1 { get; set; }
 
         public string FieldName2 { get; set; }

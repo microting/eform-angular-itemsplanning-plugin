@@ -60,7 +60,7 @@
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="itemNumberTableHeader"
-            (click)="sortTable('ItemNumber')" *ngIf="casesModel.descriptionEnabled">
+            (click)="sortTable('ItemNumber')" *ngIf="casesModel.itemNumberEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Item number' | translate}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'ItemNumber'">unfold_more</i>
@@ -71,7 +71,7 @@
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="locationCodeTableHeader"
-            (click)="sortTable('LocationCode')" *ngIf="casesModel.descriptionEnabled">
+            (click)="sortTable('LocationCode')" *ngIf="casesModel.locationCodeEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Location code' | translate}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'LocationCode'">unfold_more</i>
@@ -82,7 +82,7 @@
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="buildYearTableHeader"
-            (click)="sortTable('BuildYear')" *ngIf="casesModel.descriptionEnabled">
+            (click)="sortTable('BuildYear')" *ngIf="casesModel.buildYearEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Build year' | translate}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'BuildYear'">unfold_more</i>
@@ -93,7 +93,7 @@
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="typeTableHeader"
-            (click)="sortTable('Type')" *ngIf="casesModel.descriptionEnabled">
+            (click)="sortTable('Type')" *ngIf="casesModel.typeEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Type' | translate}}
             <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'Type'">unfold_more</i>
@@ -101,6 +101,17 @@
                *ngIf="localPageSettings.sort == 'Type' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
                *ngIf="localPageSettings.sort == 'Type' && listCaseRequestModel.isSortDsc">expand_more</i>
+          </div>
+        </th>
+        <th scope="col" class="table-header-sortable" id="numberOfImagesTableHeader"
+            (click)="sortTable('NumberOfImages')" *ngIf="casesModel.numberOfImagesEnabled">
+          <div class="d-flex align-items-center justify-content-center">
+            {{'Number of images' | translate}}
+            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'NumberOfImages'">unfold_more</i>
+            <i class="material-icons"
+               *ngIf="localPageSettings.sort == 'NumberOfImages' && !listCaseRequestModel.isSortDsc">expand_less</i>
+            <i class="material-icons"
+               *ngIf="localPageSettings.sort == 'NumberOfImages' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field1TableHeader"
@@ -231,6 +242,24 @@
         </td>
         <td *ngIf="casesModel.labelEnabled">
           {{case.label}}
+        </td>
+        <td *ngIf="casesModel.descriptionEnabled">
+          {{case.description}}
+        </td>
+        <td *ngIf="casesModel.itemNumberEnabled">
+          {{case.itemNumber}}
+        </td>
+        <td *ngIf="casesModel.locationCodeEnabled">
+          {{case.locationCode}}
+        </td>
+        <td *ngIf="casesModel.buildYearEnabled">
+          {{case.buildYear}}
+        </td>
+        <td *ngIf="casesModel.typeEnabled">
+          {{case.type}}
+        </td>
+        <td *ngIf="casesModel.numberOfImagesEnabled">
+          {{case.numberOfImages}}
         </td>
         <td *ngIf="casesModel.fieldEnabled1">
           {{case.field1}}
