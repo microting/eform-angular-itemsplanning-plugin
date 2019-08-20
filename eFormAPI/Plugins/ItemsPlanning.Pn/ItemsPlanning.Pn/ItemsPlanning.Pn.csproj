@@ -31,6 +31,7 @@
 
     <ItemGroup>
       <EmbeddedResource Include="Resources\Templates\report_template.xlsx" />
+      <EmbeddedResource Include="Resources\Templates\report_template_lists.xlsx" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,3 +1,5 @@
+using System;
+
 namespace ItemsPlanning.Pn.Infrastructure.Models
 {
     public class ItemListCasesPnRequestModel
@@ -9,5 +11,7 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         public bool IsSortDsc { get; set; }
         public int PageSize { get; set; }
         public int ListId { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
     }
 }

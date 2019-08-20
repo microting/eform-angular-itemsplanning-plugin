@@ -23,10 +23,12 @@ SOFTWARE.
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Security.Claims;
 using ItemsPlanning.Pn.Abstractions;
+using ItemsPlanning.Pn.Infrastructure.Models;
 using ItemsPlanning.Pn.Infrastructure.Models.Report;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -130,6 +132,287 @@ namespace ItemsPlanning.Pn.Services
             return true;
         }
 
+        public bool WriteTableToExcel(string name, string description, ItemListPnCaseResultListModel reportModel,
+            ItemListCasesPnRequestModel requestModel, string destFile)
+        {
+            var file = new FileInfo(destFile);
+            using (var package = new ExcelPackage(file))
+            {
+                var worksheet = package.Workbook.Worksheets[1];
+                // Fill base info
+                var nameTitle = _itemsPlanningLocalizationService.GetString("Name");
+                worksheet.Cells[2, 2].Value = nameTitle;
+                worksheet.Cells[2, 3].Value = name;
+
+                var descriptionTitle = _itemsPlanningLocalizationService.GetString("Description");
+                worksheet.Cells[3, 2].Value = descriptionTitle;
+                worksheet.Cells[3, 3].Value = description;
+
+                var periodFromTitle = _itemsPlanningLocalizationService.GetString("DateFrom");
+                worksheet.Cells[5, 2].Value = periodFromTitle;
+                worksheet.Cells[5, 3].Value = requestModel.DateFrom?.ToString("MM/dd/yyyy");
+
+                var periodToTitle = _itemsPlanningLocalizationService.GetString("DateTo");
+                worksheet.Cells[6, 2].Value = periodToTitle;
+                worksheet.Cells[6, 3].Value = requestModel.DateTo?.ToString("MM/dd/yyyy");
+
+                var col = 2;
+                var row = 8;
+                
+                // Fill headers
+
+                worksheet = SetHeaders(worksheet, row, col, reportModel);
+
+                row = 9;
+
+                worksheet = SetRows(worksheet, row, col, reportModel);
+
+                package.Save(); //Save the workbook.
+            }
+
+            return true;
+        }
+
+        private ExcelWorksheet SetHeaders(ExcelWorksheet worksheet, int row, int col, ItemListPnCaseResultListModel reportModel)
+        {
+            worksheet = SetRow(worksheet, row, col, true, true, false, _itemsPlanningLocalizationService.GetString("Id"));
+            col += 1;
+            
+            if (reportModel.DeployedAtEnabled) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Deployed at"));
+                col += 1;
+            }
+            if (reportModel.DoneAtEnabled) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Date of doing"));
+                col += 1;
+            }
+            if (reportModel.DoneByUserNameEnabled) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Done by"));
+                col += 1;
+            }
+            if (reportModel.LabelEnabled) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Name"));
+                col += 1;
+            }
+            if (reportModel.DescriptionEnabled) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Description"));
+                col += 1;
+            }
+            if (reportModel.ItemNumberEnabled) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Item number"));
+                col += 1;
+            }
+            if (reportModel.LocationCodeEnabled) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Location code"));
+                col += 1;
+            }
+            if (reportModel.BuildYearEnabled) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Build year"));
+                col += 1;
+            }
+            if (reportModel.TypeEnabled) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Type"));
+                col += 1;
+            }
+            
+            if (reportModel.FieldEnabled1) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName1);
+                col += 1;
+            }
+            if (reportModel.FieldEnabled2) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName2);
+                col += 1;
+            }
+            if (reportModel.FieldEnabled3) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName3);
+                col += 1;
+            }
+            if (reportModel.FieldEnabled4) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName4);
+                col += 1;
+            }
+            if (reportModel.FieldEnabled5) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName5);
+                col += 1;
+            }
+            if (reportModel.FieldEnabled6) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName6);
+                col += 1;
+            }
+            if (reportModel.FieldEnabled7) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName7);
+                col += 1;
+            }
+            if (reportModel.FieldEnabled8) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName8);
+                col += 1;
+            }
+            if (reportModel.FieldEnabled9) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName9);
+                col += 1;
+            }
+            if (reportModel.FieldEnabled10) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName10);
+                col += 1;
+            }
+            if (reportModel.NumberOfImagesEnabled) {
+                worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Number of images"));
+                col += 1;
+            }
+
+            return worksheet;
+        }
+
+        private ExcelWorksheet SetRows(ExcelWorksheet worksheet, int row, int col, ItemListPnCaseResultListModel reportModel)
+        {
+            int startColNo = col;
+            foreach (ItemsListPnCaseResultModel itemsListPnCaseResultModel in reportModel.Items)
+            {
+                col = startColNo;
+                worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Id);
+                col += 1;
+
+                if (reportModel.DeployedAtEnabled)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, true, itemsListPnCaseResultModel.DeployedAt?.ToString("MM/dd/yyyy hh:mm"));
+                    col += 1;
+                }
+
+                if (reportModel.DoneAtEnabled)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, true, itemsListPnCaseResultModel.DoneAt?.ToString("MM/dd/yyyy hh:mm"));
+                    col += 1;
+                }
+
+                if (reportModel.DoneByUserNameEnabled)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, true, itemsListPnCaseResultModel.DoneByUserName);
+                    col += 1;
+                }
+
+                if (reportModel.LabelEnabled)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, true, itemsListPnCaseResultModel.Label);
+                    col += 1;
+                }
+
+                if (reportModel.DescriptionEnabled)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, true, itemsListPnCaseResultModel.Description);
+                    col += 1;
+                }
+
+                if (reportModel.ItemNumberEnabled)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.ItemNumber);
+                    col += 1;
+                }
+
+                if (reportModel.LocationCodeEnabled)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.LocationCode);
+                    col += 1;
+                }
+
+                if (reportModel.BuildYearEnabled)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.BuildYear);
+                    col += 1;
+                }
+
+                if (reportModel.TypeEnabled)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Type);
+                    col += 1;
+                }
+
+                if (reportModel.FieldEnabled1)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Field1);
+                    col += 1;
+                }
+
+                if (reportModel.FieldEnabled2)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Field2);
+                    col += 1;
+                }
+
+                if (reportModel.FieldEnabled3)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Field3);
+                    col += 1;
+                }
+
+                if (reportModel.FieldEnabled4)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Field4);
+                    col += 1;
+                }
+
+                if (reportModel.FieldEnabled5)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Field5);
+                    col += 1;
+                }
+
+                if (reportModel.FieldEnabled6)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Field6);
+                    col += 1;
+                }
+
+                if (reportModel.FieldEnabled7)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Field7);
+                    col += 1;
+                }
+
+                if (reportModel.FieldEnabled8)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Field8);
+                    col += 1;
+                }
+
+                if (reportModel.FieldEnabled9)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Field9);
+                    col += 1;
+                }
+
+                if (reportModel.FieldEnabled10)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.Field10);
+                    col += 1;
+                }
+
+                if (reportModel.NumberOfImagesEnabled)
+                {
+                    worksheet = SetRow(worksheet, row, col, false, true, false, itemsListPnCaseResultModel.NumberOfImages);
+                    col += 1;
+                }
+
+                row += 1;
+            }
+            return worksheet;
+        }
+        
+        private ExcelWorksheet SetRow(ExcelWorksheet worksheet, int row, int col, bool boldText, bool thinBorder, bool
+            autoFitColumns, object value)
+        {
+            worksheet.Cells[row, col].Value = value;
+            worksheet.Cells[row, col].Style.Font.Bold = boldText;
+            if (thinBorder) {
+                worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            }
+            if (autoFitColumns)
+            {
+                worksheet.Cells[row, col].AutoFitColumns();    
+            }
+            
+            return worksheet;
+        }
+        
         #endregion
 
         #region Working with file system

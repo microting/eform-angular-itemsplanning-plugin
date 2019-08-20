@@ -1,10 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {saveAs} from 'file-saver';
 import {ActivatedRoute} from '@angular/router';
 import {SharedPnService} from '../../../../shared/services';
-import {ItemsPlanningPnCasesService} from '../../../services';
+import {ItemsPlanningPnCasesService, ItemsPlanningPnReportsService} from '../../../services';
 import {PageSettingsModel} from '../../../../../../common/models/settings';
 import {ItemListCasesPnRequestModel} from '../../../models/list/item-list-cases-pn-request.model';
 import {ItemListPnCaseResultListModel, ItemsListPnCaseResultModel} from '../../../models/list';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ReportPnGenerateModel} from '../../../models/report';
+import {ToastrService} from 'ngx-toastr';
+import {format} from "date-fns";
 
 @Component({
   selector: 'app-items-planning-pn-list-case-result-page',
@@ -12,7 +17,10 @@ import {ItemListPnCaseResultListModel, ItemsListPnCaseResultModel} from '../../.
   styleUrls: ['./list-case-result-page.component.scss']
 })
 
-export class ListCaseResultPageComponent implements OnInit{
+export class ListCaseResultPageComponent implements OnInit {
+  @Output() generateReport: EventEmitter<ReportPnGenerateModel> = new EventEmitter();
+  @Output() saveReport: EventEmitter<ReportPnGenerateModel> = new EventEmitter();
+  generateForm: FormGroup;
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   listCaseRequestModel: ItemListCasesPnRequestModel = new ItemListCasesPnRequestModel();
   casesModel: ItemListPnCaseResultListModel = new ItemListPnCaseResultListModel();
@@ -21,20 +29,56 @@ export class ListCaseResultPageComponent implements OnInit{
 
   constructor(private activateRoute: ActivatedRoute,
               private sharedPnService: SharedPnService,
-              private itemsPlanningPnCasesService: ItemsPlanningPnCasesService) {
+              private formBuilder: FormBuilder,
+              private itemsPlanningPnCasesService: ItemsPlanningPnCasesService,
+              private toastrService: ToastrService) {
     const activatedRouteSub = this.activateRoute.params.subscribe(params => {
       this.id = +params['id'];
     });
   }
 
   ngOnInit(): void {
+    this.generateForm = this.formBuilder.group({
+      dateRange: ['', Validators.required]
+    });
     this.getLocalPageSettings();
+    // this.getLocalPageSettings();
+  }
+
+  onGenerateReport() {
+    this.listCaseRequestModel.dateFrom = format(this.generateForm.value.dateRange[0], 'YYYY-MM-DD');
+    this.listCaseRequestModel.dateTo = format(this.generateForm.value.dateRange[1], 'YYYY-MM-DD');
+    this.listCaseRequestModel.offset = 0;
+    this.listCaseRequestModel.listId = this.id;
+    this.getAllInitialData();
+    // this.spinnerStatus = true;
+    // this.reportService.generateReport(model).subscribe((data) => {
+    //   if (data && data.success) {
+    //     this.reportModel = data.model;
+    //   }
+    //   this.spinnerStatus = false;
+    // });
+  }
+
+  onSaveReport() {
+    this.spinnerStatus = true;
+    // debugger;
+    this.listCaseRequestModel.dateFrom = format(this.generateForm.value.dateRange[0], 'YYYY-MM-DD');
+    this.listCaseRequestModel.dateTo = format(this.generateForm.value.dateRange[1], 'YYYY-MM-DD');
+    this.listCaseRequestModel.offset = 0;
+    this.listCaseRequestModel.listId = this.id;
+    this.itemsPlanningPnCasesService.getGeneratedReport(this.listCaseRequestModel).subscribe(((data) => {
+      saveAs(data, this.listCaseRequestModel.dateFrom + '_' + this.listCaseRequestModel.dateTo + '_report.xlsx');
+      this.spinnerStatus = false;
+    }), error => {
+      this.toastrService.error();
+      this.spinnerStatus = false;
+    });
   }
 
   getLocalPageSettings() {
     this.localPageSettings = this.sharedPnService.getLocalPageSettings
     ('itemsPlanningPnSettings', 'ItemCaseResults').settings;
-    this.getAllInitialData();
   }
 
   updateLocalPageSettings() {

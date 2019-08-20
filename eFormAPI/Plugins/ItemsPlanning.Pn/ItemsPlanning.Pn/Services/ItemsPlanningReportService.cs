@@ -51,7 +51,9 @@ namespace ItemsPlanning.Pn.Services
         private readonly IEFormCoreService _coreHelper;
 
         // ReSharper disable once SuggestBaseTypeForParameter
-        public ItemsPlanningReportService(IItemsPlanningLocalizationService itemsPlanningLocalizationService, ILogger<ItemsPlanningReportService> logger, IExcelService excelService, ItemsPlanningPnDbContext dbContext, IEFormCoreService coreHelper)
+        public ItemsPlanningReportService(IItemsPlanningLocalizationService itemsPlanningLocalizationService,
+            ILogger<ItemsPlanningReportService> logger, IExcelService excelService, ItemsPlanningPnDbContext dbContext,
+            IEFormCoreService coreHelper)
         {
             _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
             _logger = logger;

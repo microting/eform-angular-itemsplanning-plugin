@@ -11,6 +11,8 @@ namespace ItemsPlanning.Pn.Abstractions
         Task<OperationDataResult<ItemListPnCaseResultListModel>> GetSingleListResults(
             ItemListCasesPnRequestModel requestModel);
 
+        Task<OperationDataResult<FileStreamModel>> GenerateSingleListResults(
+            ItemListCasesPnRequestModel requestModel);
 
     }
 }

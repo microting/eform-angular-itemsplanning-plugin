@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using ItemsPlanning.Pn.Infrastructure.Models;
 using ItemsPlanning.Pn.Infrastructure.Models.Report;
 
 namespace ItemsPlanning.Pn.Abstractions
@@ -32,6 +33,10 @@ namespace ItemsPlanning.Pn.Abstractions
             ReportModel reportModel,
             GenerateReportModel generateReportModel,
             string destFile);
+        
+        bool WriteTableToExcel(string name, string description, ItemListPnCaseResultListModel reportModel, ItemListCasesPnRequestModel requestModel, string destFile);
+        
         string CopyTemplateForNewAccount(string templateName);
+
     }
 }
