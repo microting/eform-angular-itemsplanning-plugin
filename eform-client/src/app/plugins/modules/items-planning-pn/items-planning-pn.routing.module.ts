@@ -6,7 +6,9 @@ import {
   ListsPageComponent,
   ItemsPlanningSettingsComponent,
   ReportGeneratorContainerComponent,
-  ListCasePageComponent, ListCaseResultPageComponent
+  ListCasePageComponent,
+  ListCaseResultPageComponent,
+  ItemCaseUploadedDataComponent
 } from './components';
 
 export const routes: Routes = [
@@ -38,6 +40,11 @@ export const routes: Routes = [
         path: 'reports',
         canActivate: [AdminGuard],
         component: ReportGeneratorContainerComponent
+      },
+      {
+        path: 'item-cases/:id/:id',
+        canActivate: [AdminGuard],
+        component: ItemCaseUploadedDataComponent
       }
     ]
   }

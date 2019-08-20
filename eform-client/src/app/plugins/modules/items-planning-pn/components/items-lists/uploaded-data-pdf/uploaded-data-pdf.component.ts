@@ -1,0 +1,52 @@
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {FileUploader} from 'ng2-file-upload';
+import {ToastrService} from 'ngx-toastr';
+import {ItemsListPnItemCaseModel} from '../../../models/list/items-list-case-pn.model';
+
+@Component({
+  selector: 'app-uploaded-data-pdf',
+  templateUrl: './uploaded-data-pdf.component.html',
+  styleUrls: ['./uploaded-data-pdf.component.scss']
+})
+export class UploadedDataPdfComponent implements OnInit {
+  @ViewChild('frame') frame;
+  selectedItemCase: ItemsListPnItemCaseModel = new ItemsListPnItemCaseModel();
+  pdfFileUploader: FileUploader = new FileUploader({url: 'api/items-planning-pn/uploaded-data/pdf'});
+
+  constructor(private toastrService: ToastrService, private translateService: TranslateService) { }
+
+  ngOnInit() {
+    this.pdfFileUploader.onBuildItemForm = (item, form) => {
+      form.append('itemCaseId', this.selectedItemCase.id);
+    };
+    this.pdfFileUploader.onSuccessItem = () => {
+      this.pdfFileUploader.clearQueue();
+      this.toastrService.success(this.translateService.instant('File has been uploaded successfully'));
+      this.frame.hide();
+    };
+    this.pdfFileUploader.onErrorItem = () => {
+      this.pdfFileUploader.clearQueue();
+      this.toastrService.error(this.translateService.instant('Error while uploading file'));
+    };
+    this.pdfFileUploader.onAfterAddingFile = f => {
+      if (this.pdfFileUploader.queue.length > 1) {
+        this.pdfFileUploader.removeFromQueue(this.pdfFileUploader.queue[0]);
+      }
+    };
+  }
+
+  show(itemCase: ItemsListPnItemCaseModel) {
+    this.selectedItemCase = itemCase;
+    this.frame.show();
+  }
+
+  uploadPDF() {
+    this.pdfFileUploader.queue[0].upload();
+  }
+
+  hidePDFModal() {
+    this.pdfFileUploader.clearQueue();
+    this.frame.hide();
+  }
+}

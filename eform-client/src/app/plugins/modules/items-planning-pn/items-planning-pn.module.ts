@@ -10,10 +10,12 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ItemsPlanningPnLayoutComponent} from './layouts';
 import {
   ItemsListCreateComponent,
-  ListCasePageComponent, ListCaseResultPageComponent,
+  ListCasePageComponent,
+  ListCaseResultPageComponent,
   ListDeleteComponent,
   ListEditComponent,
-  ListsPageComponent
+  ListsPageComponent,
+  ItemCaseUploadedDataComponent, UploadedDataPdfComponent
 } from './components/items-lists';
 import {ItemsPlanningSettingsComponent} from './components/items-plannings-setting';
 import {RouterModule} from '@angular/router';
@@ -29,6 +31,7 @@ import {
   ReportGeneratorFormComponent,
   ReportPreviewTableComponent
 } from './components/reports';
+import {FileUploadModule} from 'ng2-file-upload';
 
 @NgModule({
   imports: [
@@ -44,7 +47,8 @@ import {
     ItemsPlanningPnRouting,
     OwlDateTimeModule,
     OwlMomentDateTimeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule
   ],
   declarations: [
     ItemsPlanningPnLayoutComponent,
@@ -57,7 +61,9 @@ import {
     ItemsPlanningSettingsComponent,
     ReportGeneratorContainerComponent,
     ReportGeneratorFormComponent,
-    ReportPreviewTableComponent
+    ReportPreviewTableComponent,
+    ItemCaseUploadedDataComponent,
+    UploadedDataPdfComponent
   ],
   providers: [
     ItemsPlanningPnSettingsService,

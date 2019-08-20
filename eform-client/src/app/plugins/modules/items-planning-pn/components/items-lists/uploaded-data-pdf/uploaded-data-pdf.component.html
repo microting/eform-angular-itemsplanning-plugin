@@ -1,0 +1,47 @@
+<div mdbModal class="modal fade" #frame="mdbModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="container-fluid">
+        <div class="row p-1 mt-4 table-responsive no-gutters">
+          <table class="table table-sm table-striped text-center z-depth-1">
+            <thead>
+            <tr>
+              <th scope="col" class="table-header-sortable" id="idTableHeader">
+                <div class="d-flex align-items-center justify-content-center">
+                  ID
+                </div>
+              </th>
+              <th scope="col" class="table-header-sortable" id="nameTableHeader">
+                <div class="d-flex align-items-center justify-content-center">
+                  Name
+                </div>
+              </th>
+              <th scope="col">
+                {{ 'Actions' | translate }}
+              </th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            <tr >
+              <td id="listId">
+                id
+              </td>
+              <td id="listName">
+                name
+              </td>
+              <td id="listDescription">
+                Actions
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="uploadPDF()">{{'Upload'}}</button>
+          <input type="file" ng2FileSelect [uploader]="pdfFileUploader" accept="application/pdf" #pdfInput id="pdfInput">
+          <button class="btn btn-accent text-black-50" (click)="hidePDFModal()">{{'Close' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
