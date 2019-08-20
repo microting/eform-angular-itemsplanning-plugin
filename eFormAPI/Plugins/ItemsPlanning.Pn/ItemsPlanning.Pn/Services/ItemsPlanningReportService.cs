@@ -214,6 +214,7 @@ namespace ItemsPlanning.Pn.Services
             // Go through all itemCases
             foreach (var ic in itemCases)
             {
+                finalModel.Ids.Add($"{ic.Id} / {ic.MicrotingSdkCaseId}");
                 finalModel.Dates.Add(ic.CreatedAt);
 
                 var @case = casesList.FirstOrDefault(c => c.Id == ic.MicrotingSdkCaseId);
@@ -230,11 +231,13 @@ namespace ItemsPlanning.Pn.Services
                     }
 
                     finalModel.DatesDoneAt.Add(null);
+                    finalModel.DoneBy.Add(null);
 
                     continue;
                 }
                 else
                 {
+                    finalModel.DoneBy.Add(@case.WorkerName);
                     finalModel.DatesDoneAt.Add(@case.DoneAt);
                 }
 

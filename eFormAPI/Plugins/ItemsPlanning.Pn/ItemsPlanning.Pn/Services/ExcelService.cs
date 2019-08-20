@@ -80,6 +80,21 @@ namespace ItemsPlanning.Pn.Services
                 var row = 8;
 
                 // Fill dates headers
+                var idName = _itemsPlanningLocalizationService.GetString("Id");
+                worksheet.Cells[8, 3].Value = idName;
+                foreach (var id in reportModel.Ids)
+                {
+                    worksheet.Cells[row, col].Value = id;
+                    worksheet.Cells[row, col].Style.Font.Bold = true;
+                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells[row, col].AutoFitColumns();
+                    col++;
+                }
+
+                row += 1;
+                col = 4;
+                var deployedAt = _itemsPlanningLocalizationService.GetString("Deployed at");
+                worksheet.Cells[9, 3].Value = deployedAt;
                 foreach (var date in reportModel.Dates)
                 {
                     worksheet.Cells[row, col].Value = date?.ToString("MM/dd/yyyy");
@@ -88,6 +103,33 @@ namespace ItemsPlanning.Pn.Services
                     worksheet.Cells[row, col].AutoFitColumns();
                     col++;
                 }
+
+                row += 1;
+                col = 4;
+                var doneAt = _itemsPlanningLocalizationService.GetString("Date of doing");
+                worksheet.Cells[10, 3].Value = doneAt;
+                foreach (var date in reportModel.DatesDoneAt)
+                {
+                    worksheet.Cells[row, col].Value = date?.ToString("MM/dd/yyyy");
+                    worksheet.Cells[row, col].Style.Font.Bold = true;
+                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells[row, col].AutoFitColumns();
+                    col++;
+                }
+
+                row += 1;
+                col = 4;
+                var doneBy = _itemsPlanningLocalizationService.GetString("Done by");
+                worksheet.Cells[11, 3].Value = doneBy;
+                foreach (var name in reportModel.DoneBy)
+                {
+                    worksheet.Cells[row, col].Value = name;
+                    worksheet.Cells[row, col].Style.Font.Bold = true;
+                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells[row, col].AutoFitColumns();
+                    col++;
+                }
+                col = 4;
 
                 worksheet.Cells[row, 2, row, col - 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 

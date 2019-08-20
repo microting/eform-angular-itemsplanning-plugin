@@ -7,5 +7,7 @@ export class ReportPnFullModel {
   dateFrom: string;
   dates: Array<string> = [];
   datesDoneAt: Array<string> = [];
+  ids: Array<string> = [];
+  doneBy: Array<string> = [];
   formFields: Array<ReportFieldModel> = [];
 }
