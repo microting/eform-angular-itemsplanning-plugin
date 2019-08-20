@@ -11,6 +11,8 @@ namespace ItemsPlanning.Pn.Infrastructure.Models.Report
         public DateTime? DateTo { get; set; }
         public List<DateTime?> Dates { get; set; } = new List<DateTime?>();
         public List<DateTime?> DatesDoneAt { get; set; } = new List<DateTime?>();
+        public List<string> Ids { get; set; } = new List<string>();
+        public List<string> DoneBy { get; set; } = new List<string>();
         public List<ReportFormFieldModel> FormFields { get; set; } = new List<ReportFormFieldModel>();
     }
 }

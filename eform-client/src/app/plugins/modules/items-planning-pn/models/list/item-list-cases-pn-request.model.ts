@@ -6,6 +6,8 @@ export class ItemListCasesPnRequestModel {
   offset: number;
   nameFilter: string;
   listId: number;
+  dateTo: string;
+  dateFrom: string;
 
   constructor() {
     this.sort = 'Id';

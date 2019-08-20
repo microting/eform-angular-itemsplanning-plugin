@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Office2010.Excel;
@@ -24,6 +25,7 @@ namespace ItemsPlanning.Pn.Services
     {
         private readonly ItemsPlanningPnDbContext _dbContext;
         private readonly IItemsPlanningLocalizationService _itemsPlanningLocalizationService;
+        private readonly IExcelService _excelService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IEFormCoreService _core;
         private readonly IRebusService _rebusService;
@@ -32,6 +34,7 @@ namespace ItemsPlanning.Pn.Services
         public ItemListCaseService(
             ItemsPlanningPnDbContext dbContext,
             IItemsPlanningLocalizationService itemsPlanningLocalizationService,
+            IExcelService excelService,
             IHttpContextAccessor httpContextAccessor, IEFormCoreService core, 
             IRebusService rebusService)
         {
@@ -39,6 +42,7 @@ namespace ItemsPlanning.Pn.Services
             _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
             _httpContextAccessor = httpContextAccessor;
             _core = core;
+            _excelService = excelService;
             _rebusService = rebusService;
             _bus = rebusService.GetBus();
         }
@@ -68,7 +72,7 @@ namespace ItemsPlanning.Pn.Services
                             itemCase.MicrotingSdkeFormId,
                             itemCase.Status
                         }));
-                
+
                 if (!string.IsNullOrEmpty(requestModel.Sort))
                 {
                     if (requestModel.IsSortDsc)
@@ -143,6 +147,61 @@ namespace ItemsPlanning.Pn.Services
         }
 
         public async Task<OperationDataResult<ItemListPnCaseResultListModel>> GetSingleListResults(ItemListCasesPnRequestModel requestModel)
+        {
+            ItemListPnCaseResultListModel itemListPnCaseResultListModel = await GetTableData(requestModel);
+            
+            return new OperationDataResult<ItemListPnCaseResultListModel>(true, itemListPnCaseResultListModel);
+        }
+
+        public async Task<OperationDataResult<FileStreamModel>> GenerateSingleListResults(
+            ItemListCasesPnRequestModel requestModel)
+        {
+            string excelFile = null;
+            try
+            {
+                ItemListPnCaseResultListModel reportDataResult = await GetTableData(requestModel);
+                if (reportDataResult == null)
+                {
+                    return new OperationDataResult<FileStreamModel>(false, "ERROR");
+                }
+
+                ItemList itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
+                
+                excelFile = _excelService.CopyTemplateForNewAccount("report_template_lists");
+                bool writeResult = _excelService.WriteTableToExcel(itemList.Name,itemList.Description,
+                    reportDataResult,
+                    requestModel,
+                    excelFile);
+
+                if (!writeResult)
+                {
+                    throw new Exception($"Error while writing excel file {excelFile}");
+                }
+
+                FileStreamModel result = new FileStreamModel()
+                {
+                    FilePath = excelFile,
+                    FileStream = new FileStream(excelFile, FileMode.Open),
+                };
+
+                return new OperationDataResult<FileStreamModel>(true, result);
+            }
+            catch (Exception e)
+            {
+                if (!string.IsNullOrEmpty(excelFile) && File.Exists(excelFile))
+                {
+                    File.Delete(excelFile);
+                }
+
+                Trace.TraceError(e.Message);
+//                _logger.LogError(e.Message);
+                return new OperationDataResult<FileStreamModel>(
+                    false,
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileGeneratingReportFile"));
+            }
+        }
+
+        private async Task<ItemListPnCaseResultListModel> GetTableData(ItemListCasesPnRequestModel requestModel)
         {
             var itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
 
@@ -248,6 +307,18 @@ namespace ItemsPlanning.Pn.Services
                         itemCase.WorkflowState,
                         itemCase.NumberOfImages
                     }));
+
+            if (requestModel.DateFrom != null)
+            {
+                newItems = newItems.Where(x => 
+                    x.CreatedAt >= new DateTime(requestModel.DateFrom.Value.Year, requestModel.DateFrom.Value.Month, requestModel.DateFrom.Value.Day, 0, 0, 0));
+            }
+
+            if (requestModel.DateTo != null)
+            {
+                newItems = newItems.Where(x => 
+                    x.CreatedAt <= new DateTime(requestModel.DateTo.Value.Year, requestModel.DateTo.Value.Month, requestModel.DateTo.Value.Day, 23, 59, 59));
+            }
             
             if (!string.IsNullOrEmpty(requestModel.Sort))
             {
@@ -322,8 +393,8 @@ namespace ItemsPlanning.Pn.Services
                     Console.WriteLine(ex.Message);
                 }
             }
-            
-            return new OperationDataResult<ItemListPnCaseResultListModel>(true, itemListPnCaseResultListModel);
+
+            return itemListPnCaseResultListModel;
         }
 
         public async Task<OperationDataResult<ItemsListPnItemCaseModel>> GetSingleCase(int caseId)

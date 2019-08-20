@@ -2,6 +2,12 @@
     <table class="table table-sm table-striped table-bordered text-center z-depth-1" *ngIf="reportData.formFields.length > 0">
         <thead>
         <tr>
+          <th scope="colgroup" colspan="2">{{'Id' | translate}}</th>
+          <th scope="col" *ngFor="let id of reportData.ids">
+            {{id}}
+          </th>
+        </tr>
+        <tr>
             <th scope="colgroup" colspan="2">{{'Issued on' | translate}}</th>
             <th scope="col" *ngFor="let date of reportData.dates">
                 <date-formatter [date]="date" [Format]="'date'"></date-formatter>
@@ -11,6 +17,12 @@
           <th scope="colgroup" colspan="2">{{'Done at' | translate}}</th>
           <th scope="col" *ngFor="let date of reportData.datesDoneAt">
             <date-formatter [date]="date" [Format]="'date'"></date-formatter>
+          </th>
+        </tr>
+        <tr>
+          <th scope="colgroup" colspan="2">{{'Done by' | translate}}</th>
+          <th scope="col" *ngFor="let name of reportData.doneBy">
+            {{name}}
           </th>
         </tr>
         </thead>

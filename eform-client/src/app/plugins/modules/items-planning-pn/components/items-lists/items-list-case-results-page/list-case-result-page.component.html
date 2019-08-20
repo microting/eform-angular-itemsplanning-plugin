@@ -1,5 +1,38 @@
+<subheader-pn [title]="'List results' | translate">
+
+</subheader-pn>
+
+<form [formGroup]="generateForm">
+  <div class="row pl-1">
+
+    <div class="col-md-3">
+      <div class="md-form" [owlDateTimeTrigger]="dateRangePicker">
+        <i class="material-icons prefix">
+          calendar_today
+        </i>
+        <input mdbInputDirective [mdbValidate]="false" formControlName="dateRange"
+               name="dateRange" required
+               type="text" [owlDateTime]="dateRangePicker" [selectMode]="'range'"
+               class="form-control input-sm" id="dateFormInput">
+        <label for="dateFormInput">{{'Selected date range' | translate}}</label>
+      </div>
+    </div>
+    <div class="col-md-3 text-center pt-3">
+      <button class="btn btn-success" [disabled]="generateForm.invalid" (click)="onGenerateReport()">
+        {{'Generate' | translate}}
+      </button>
+      <button class="btn btn-success" [disabled]="generateForm.invalid" (click)="onSaveReport()">
+        {{ 'Download' | translate }}
+      </button>
+    </div>
+
+  </div>
+</form>
+
+<owl-date-time [pickerType]="'calendar'" [firstDayOfWeek]="1" #dateRangePicker></owl-date-time>
 
 <div class="container-fluid">
+
   <div class="row p-1 mt-4 table-responsive no-gutters">
     <table class="table table-sm table-striped text-center z-depth-1">
       <thead>
@@ -114,17 +147,6 @@
                *ngIf="localPageSettings.sort == 'Type' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
-        <th scope="col" class="table-header-sortable" id="numberOfImagesTableHeader"
-            (click)="sortTable('NumberOfImages')" *ngIf="casesModel.numberOfImagesEnabled">
-          <div class="d-flex align-items-center justify-content-center">
-            {{'Number of images' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'NumberOfImages'">unfold_more</i>
-            <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'NumberOfImages' && !listCaseRequestModel.isSortDsc">expand_less</i>
-            <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'NumberOfImages' && listCaseRequestModel.isSortDsc">expand_more</i>
-          </div>
-        </th>
         <th scope="col" class="table-header-sortable" id="field1TableHeader"
             (click)="sortTable('field1TableHeader')" *ngIf="casesModel.fieldEnabled1">
           <div class="d-flex align-items-center justify-content-center">
@@ -235,6 +257,17 @@
                *ngIf="localPageSettings.sort == 'fieldEnabled10' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
+        <th scope="col" class="table-header-sortable" id="numberOfImagesTableHeader"
+            (click)="sortTable('NumberOfImages')" *ngIf="casesModel.numberOfImagesEnabled">
+          <div class="d-flex align-items-center justify-content-center">
+            {{'Number of images' | translate}}
+            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'NumberOfImages'">unfold_more</i>
+            <i class="material-icons"
+               *ngIf="localPageSettings.sort == 'NumberOfImages' && !listCaseRequestModel.isSortDsc">expand_less</i>
+            <i class="material-icons"
+               *ngIf="localPageSettings.sort == 'NumberOfImages' && listCaseRequestModel.isSortDsc">expand_more</i>
+          </div>
+        </th>
         <th scope="col">
           {{ 'Actions' | translate }}
         </th>
@@ -272,9 +305,6 @@
         <td *ngIf="casesModel.typeEnabled">
           {{case.type}}
         </td>
-        <td *ngIf="casesModel.numberOfImagesEnabled">
-          {{case.numberOfImages}}
-        </td>
         <td *ngIf="casesModel.fieldEnabled1">
           {{case.field1}}
         </td>
@@ -304,6 +334,9 @@
         </td>
         <td *ngIf="casesModel.fieldEnabled10">
           {{case.field10}}
+        </td>
+        <td *ngIf="casesModel.numberOfImagesEnabled">
+          {{case.numberOfImages}}
         </td>
         <td>
           <button class="btn btn-success btn-icon mb-2" *ngIf="case.status === 100"

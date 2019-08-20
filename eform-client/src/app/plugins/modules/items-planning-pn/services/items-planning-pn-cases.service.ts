@@ -36,4 +36,7 @@ export class ItemsPlanningPnCasesService extends BaseService {
     return this.get(ItemsPlanningPnCasesMethods.Cases + '/:id/' + caseId);
   }
 
+  getGeneratedReport(model: ItemListCasesPnRequestModel): Observable<OperationDataResult<ItemListPnCaseResultListModel>> {
+    return this.getBlobData(ItemsPlanningPnCasesMethods.CaseResults + '/excel', model);
+  }
 }

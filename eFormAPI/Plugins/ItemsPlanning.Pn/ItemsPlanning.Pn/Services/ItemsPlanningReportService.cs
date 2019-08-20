@@ -51,7 +51,9 @@ namespace ItemsPlanning.Pn.Services
         private readonly IEFormCoreService _coreHelper;
 
         // ReSharper disable once SuggestBaseTypeForParameter
-        public ItemsPlanningReportService(IItemsPlanningLocalizationService itemsPlanningLocalizationService, ILogger<ItemsPlanningReportService> logger, IExcelService excelService, ItemsPlanningPnDbContext dbContext, IEFormCoreService coreHelper)
+        public ItemsPlanningReportService(IItemsPlanningLocalizationService itemsPlanningLocalizationService,
+            ILogger<ItemsPlanningReportService> logger, IExcelService excelService, ItemsPlanningPnDbContext dbContext,
+            IEFormCoreService coreHelper)
         {
             _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
             _logger = logger;
@@ -212,6 +214,7 @@ namespace ItemsPlanning.Pn.Services
             // Go through all itemCases
             foreach (var ic in itemCases)
             {
+                finalModel.Ids.Add($"{ic.Id} / {ic.MicrotingSdkCaseId}");
                 finalModel.Dates.Add(ic.CreatedAt);
 
                 var @case = casesList.FirstOrDefault(c => c.Id == ic.MicrotingSdkCaseId);
@@ -228,11 +231,13 @@ namespace ItemsPlanning.Pn.Services
                     }
 
                     finalModel.DatesDoneAt.Add(null);
+                    finalModel.DoneBy.Add(null);
 
                     continue;
                 }
                 else
                 {
+                    finalModel.DoneBy.Add(@case.WorkerName);
                     finalModel.DatesDoneAt.Add(@case.DoneAt);
                 }
 
