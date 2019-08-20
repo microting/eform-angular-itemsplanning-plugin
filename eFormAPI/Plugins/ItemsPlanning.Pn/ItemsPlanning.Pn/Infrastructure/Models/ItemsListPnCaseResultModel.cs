@@ -6,9 +6,23 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
     {
         public int Id { get; set; }
         
-        public DateTime DoneAt { get; set; }
+        public DateTime? DeployedAt { get; set; }
+        
+        public DateTime? DoneAt { get; set; }
         
         public string DoneByUserName { get; set; }
+        
+        public string Label { get; set; }
+        
+        public string Description { get; set; }
+        
+        public string BuildYear { get; set; }
+        
+        public string LocationCode { get; set; }
+        
+        public string ItemNumber { get; set; }
+        
+        public string Type { get; set; }
         
         public string Field1 { get; set; }
 
@@ -29,25 +43,13 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         public string Field9 { get; set; }
 
         public string Field10 { get; set; }
-
-        public string Field11 { get; set; }
-
-        public string Field12 { get; set; }
-
-        public string Field13 { get; set; }
-
-        public string Field14 { get; set; }
-
-        public string Field15 { get; set; }
-
-        public string Field16 { get; set; }
-
-        public string Field17 { get; set; }
-
-        public string Field18 { get; set; }
-
-        public string Field19 { get; set; }
-
-        public string Field20 { get; set; }
+        
+        public int Status { get; set; }
+        
+        public int SdkCaseId { get; set; }
+        
+        public int SdkeFormId { get; set; }
+        
+        public int NumberOfImages { get; set; }
     }
 }

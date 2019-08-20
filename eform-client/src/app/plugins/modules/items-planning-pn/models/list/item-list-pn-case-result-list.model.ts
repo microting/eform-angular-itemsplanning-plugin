@@ -11,16 +11,17 @@ export class ItemListPnCaseResultListModel {
   fieldEnabled8: boolean;
   fieldEnabled9: boolean;
   fieldEnabled10: boolean;
-  fieldEnabled11: boolean;
-  fieldEnabled12: boolean;
-  fieldEnabled13: boolean;
-  fieldEnabled14: boolean;
-  fieldEnabled15: boolean;
-  fieldEnabled16: boolean;
-  fieldEnabled17: boolean;
-  fieldEnabled18: boolean;
-  fieldEnabled19: boolean;
-  fieldEnabled20: boolean;
+  numberOfImagesEnabled: boolean;
+  labelEnabled: boolean;
+  descriptionEnabled: boolean;
+  deployedAtEnabled: boolean;
+  doneAtEnabled: boolean;
+  doneByUserNameEnabled: boolean;
+  uploadedDataEnabled: boolean;
+  itemNumberEnabled: boolean;
+  locationCodeEnabled: boolean;
+  buildYearEnabled: boolean;
+  typeEnabled: boolean;
   fieldName1: string;
   fieldName2: string;
   fieldName3: string;
@@ -31,21 +32,22 @@ export class ItemListPnCaseResultListModel {
   fieldName8: string;
   fieldName9: string;
   fieldName10: string;
-  fieldName11: string;
-  fieldName12: string;
-  fieldName13: string;
-  fieldName14: string;
-  fieldName15: string;
-  fieldName16: string;
-  fieldName17: string;
-  fieldName18: string;
-  fieldName19: string;
-  fieldName20: string;
+  fieldStatus: string;
+  comment: string;
+  numberOfImages: number;
 }
 
 export class ItemsListPnCaseResultModel {
   id: number;
+  deployedAt: string;
   doneAt: string;
+  label: string;
+  description: string;
+  buildYear: string;
+  locationCode: string;
+  itemNumber: string;
+  numberOfImages: number;
+  type: string;
   doneByUserName: string;
   field1: string;
   field2: string;
@@ -57,14 +59,7 @@ export class ItemsListPnCaseResultModel {
   field8: string;
   field9: string;
   field10: string;
-  field11: string;
-  field12: string;
-  field13: string;
-  field14: string;
-  field15: string;
-  field16: string;
-  field17: string;
-  field18: string;
-  field19: string;
-  field20: string;
+  status: number;
+  sdkCaseId: number;
+  sdkeFormId: number;
 }

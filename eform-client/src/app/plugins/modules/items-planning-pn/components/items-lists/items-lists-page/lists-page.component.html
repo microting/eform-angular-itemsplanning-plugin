@@ -182,6 +182,12 @@
                     mdbTooltip="{{ 'Show case results' | translate }}">
               <fa-icon icon="briefcase" [fixedWidth]="true" size="lg"></fa-icon>
             </button>
+
+            <button class="btn btn-success btn-icon mb-2" id="edit-columnts-btn"
+                    (click)="openEditColumnsModal(list)"
+                    mdbTooltip="{{ 'Edit columns' | translate }}">
+              <fa-icon icon="table" [fixedWidth]="true" size="lg"></fa-icon>
+            </button>
             <button id="deleteListBtn"
               class="btn btn-danger btn-icon mb-2 "
                     mdbTooltip="{{ 'Delete List' | translate }}"
@@ -221,3 +227,5 @@
                                (onListUpdated)="getAllLists()"></app-items-planning-pn-list-edit>
 <app-items-planning-pn-list-delete #deleteListModal
                                      (onListDeleted)="getAllLists()"></app-items-planning-pn-list-delete>
+
+<app-item-list-case-column-modal #modalCasesColumns></app-item-list-case-column-modal>

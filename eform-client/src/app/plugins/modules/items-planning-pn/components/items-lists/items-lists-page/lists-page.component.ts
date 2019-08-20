@@ -14,6 +14,8 @@ export class ListsPageComponent implements OnInit {
   @ViewChild('createListModal') createListModal;
   @ViewChild('editListModal') editListModal;
   @ViewChild('deleteListModal') deleteListModal;
+  @ViewChild('modalCasesColumns') modalCasesColumnsModal;
+
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   listsModel: ItemsListsPnModel = new ItemsListsPnModel();
   listRequestModel: ItemsListPnRequestModel = new ItemsListPnRequestModel();
@@ -64,6 +66,12 @@ export class ListsPageComponent implements OnInit {
   showCreateListModal() {
     this.createListModal.show();
   }
+
+
+  openEditColumnsModal(templateId: number) {
+    this.modalCasesColumnsModal.show(templateId);
+  }
+
   sortTable(sort: string) {
     if (this.localPageSettings.sort === sort) {
       this.localPageSettings.isSortDsc = !this.localPageSettings.isSortDsc;

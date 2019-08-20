@@ -28,6 +28,18 @@ export class ListCaseResultPageComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.getLocalPageSettings();
+  }
+
+  getLocalPageSettings() {
+    this.localPageSettings = this.sharedPnService.getLocalPageSettings
+    ('itemsPlanningPnSettings', 'ItemCaseResults').settings;
+    this.getAllInitialData();
+  }
+
+  updateLocalPageSettings() {
+    this.sharedPnService.updateLocalPageSettings
+    ('itemsPlanningPnSettings', this.localPageSettings, 'ItemCaseResults');
     this.getAllInitialData();
   }
 
@@ -50,12 +62,26 @@ export class ListCaseResultPageComponent implements OnInit{
   }
 
   sortTable(sort: string) {
-    // if (this.localPageSettings.sort === sort) {
-    //   this.localPageSettings.isSortDsc = !this.localPageSettings.isSortDsc;
-    // } else {
-    //   this.localPageSettings.isSortDsc = false;
-    //   this.localPageSettings.sort = sort;
-    // }
-    // this.updateLocalPageSettings();
+    if (this.localPageSettings.sort === sort) {
+      this.localPageSettings.isSortDsc = !this.localPageSettings.isSortDsc;
+    } else {
+      this.localPageSettings.isSortDsc = false;
+      this.localPageSettings.sort = sort;
+    }
+    this.updateLocalPageSettings();
+  }
+
+
+  changePage(e: any) {
+    if (e || e === 0) {
+      this.listCaseRequestModel.offset = e;
+      if (e === 0) {
+        this.listCaseRequestModel.pageIndex = 0;
+      } else {
+        this.listCaseRequestModel.pageIndex
+          = Math.floor(e / this.listCaseRequestModel.pageSize);
+      }
+      this.getAllCases();
+    }
   }
 }

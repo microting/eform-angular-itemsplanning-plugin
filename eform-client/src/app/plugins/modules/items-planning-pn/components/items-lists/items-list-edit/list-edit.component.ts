@@ -20,7 +20,7 @@ export class ListEditComponent implements OnInit {
   templateRequestModel: TemplateRequestModel = new TemplateRequestModel();
   templatesModel: TemplateListModel = new TemplateListModel();
   typeahead = new EventEmitter<string>();
-  constructor(private trashInspectionPnListsService: ItemsPlanningPnListsService,
+  constructor(private itemsPlanningPnListsService: ItemsPlanningPnListsService,
               private cd: ChangeDetectorRef,
               private eFormService: EFormService) {
     this.typeahead
@@ -47,7 +47,7 @@ export class ListEditComponent implements OnInit {
 
   getSelectedList(id: number) {
     this.spinnerStatus = true;
-    this.trashInspectionPnListsService.getSingleList(id).subscribe((data) => {
+    this.itemsPlanningPnListsService.getSingleList(id).subscribe((data) => {
       if (data && data.success) {
         this.selectedListModel = data.model;
         this.selectedListModel.repeatUntil = moment(this.selectedListModel.repeatUntil);
@@ -63,7 +63,7 @@ export class ListEditComponent implements OnInit {
     if (this.selectedListModel.repeatUntil) {
       this.selectedListModel.repeatUntil.utcOffset(0, true);
     }
-    this.trashInspectionPnListsService.updateList(model)
+    this.itemsPlanningPnListsService.updateList(model)
       .subscribe((data) => {
       if (data && data.success) {
         this.onListUpdated.emit();

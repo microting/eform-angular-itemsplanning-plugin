@@ -9,6 +9,7 @@ import {EformSharedModule} from '../../../common/modules/eform-shared/eform-shar
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ItemsPlanningPnLayoutComponent} from './layouts';
 import {
+  ItemListCaseColumnsModalComponent,
   ItemsListCreateComponent,
   ListCasePageComponent,
   ListCaseResultPageComponent,
@@ -52,6 +53,7 @@ import {FileUploadModule} from 'ng2-file-upload';
   ],
   declarations: [
     ItemsPlanningPnLayoutComponent,
+    ItemListCaseColumnsModalComponent,
     ListsPageComponent,
     ListCaseResultPageComponent,
     ItemsListCreateComponent,
