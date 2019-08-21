@@ -158,6 +158,8 @@ namespace ItemsPlanning.Pn.Services
             string excelFile = null;
             try
             {
+                requestModel.PageSize = 100000;
+                requestModel.Offset = 0;
                 ItemListPnCaseResultListModel reportDataResult = await GetTableData(requestModel);
                 if (reportDataResult == null)
                 {
