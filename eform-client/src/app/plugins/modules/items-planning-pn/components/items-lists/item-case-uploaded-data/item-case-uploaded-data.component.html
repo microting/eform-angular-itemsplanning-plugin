@@ -58,15 +58,24 @@
               </tr>
               </thead>
               <tbody id="tableBody">
-              <tr >
-                <td id="listId">
-                  id
+              <tr *ngFor="let uploadedData of uploadedDatasModel.uploadedDatas">
+                <td id="uploadedDatasId">
+                  {{uploadedData.id}}
                 </td>
-                <td id="listName">
-                  name
+                <td id="uploadedDatasFileName">
+                  {{uploadedData.fileName}}
                 </td>
-                <td id="listDescription">
-                  Actions
+                <td id="actionBtns">
+                  <button class="btn btn-success"
+                          (click)="downloadUploadedDataPdf(uploadedData.fileName)"
+                          mdbTooltip="{{'Download PDF' | translate}}">
+                    <fa-icon icon="download" size="lg" [fixedWidth]="true"></fa-icon>
+                  </button>
+                  <button class="btn btn-danger"
+                          (click)="showUploadedDataDeleteModal(uploadedData)"
+                          mdbTooltip="{{'Delete' | translate}}">
+                    <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>
+                  </button>
                 </td>
               </tr>
               </tbody>
@@ -83,3 +92,4 @@
 </div>
 
 <app-uploaded-data-pdf #uploadedDataPdfModal></app-uploaded-data-pdf>
+<app-uploaded-data-delete #uploadedDataDeleteModal></app-uploaded-data-delete>

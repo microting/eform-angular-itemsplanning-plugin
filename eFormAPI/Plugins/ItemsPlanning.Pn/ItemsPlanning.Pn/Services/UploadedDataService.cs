@@ -17,6 +17,8 @@ using System.Security.Claims;
 using Amazon.S3.Transfer;
 using ItemsPlanning.Pn.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microting.eForm.Infrastructure.Models.reply;
+using OpenStack.NetCoreSwiftClient.Extensions;
 using SQLitePCL;
 using Settings = Microting.eForm.Dto.Settings;
 
@@ -183,6 +185,34 @@ namespace ItemsPlanning.Pn.Services
                 _core.LogException(e.Message);
                 return new BadRequestResult();
             }
+        }
+
+        public async Task<IActionResult> DownloadUploadedDataPdf(string fileName)
+        {
+            var core = _core.GetCore();
+            var filePath = Path.Combine(core.GetSdkSetting(Settings.fileLocationPdf), fileName + ".pdf");
+            string fileType = "application/pdf";
+
+            if (core.GetSdkSetting(Settings.swiftEnabled).ToLower() == "true")
+            {
+                var ss = await core.GetFileFromSwiftStorage(fileName);
+                
+                if (ss == null)
+                {
+                    return new NotFoundResult();
+                }
+                return new OkObjectResult(ss);
+            }
+
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return new NotFoundResult();
+            }
+
+            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            
+            return new OkObjectResult(fileStream);
         }
     }
 }

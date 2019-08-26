@@ -37,7 +37,7 @@ namespace ItemsPlanning.Pn.Controllers
         }
 
         [HttpDelete]
-        [Route("api/items-planning-pn/uploaded-data")]
+        [Route("api/items-planning-pn/uploaded-data/{id}")]
         public async Task<OperationResult> DeleteUploadedData(int id)
         {
             return await _uploadedDataService.DeleteUploadedData(id);
@@ -48,6 +48,13 @@ namespace ItemsPlanning.Pn.Controllers
         public async Task<IActionResult> UploadUploadedDataPdf(UploadedDataPDFUploadModel pdfUploadModel)
         {
             return await _uploadedDataService.UploadUploadedDataPdf(pdfUploadModel);
+        }
+
+        [HttpGet]
+        [Route("api/items-planning-pn/uploaded-data/download-pdf/{fileName}")]
+        public async Task<IActionResult> DownloadUploadedDataPdf(string fileName)
+        {
+            return await _uploadedDataService.DownloadUploadedDataPdf(fileName);
         }
     }
 }

@@ -3,6 +3,8 @@ import {TranslateService} from '@ngx-translate/core';
 import {FileUploader} from 'ng2-file-upload';
 import {ToastrService} from 'ngx-toastr';
 import {ItemsListPnItemCaseModel} from '../../../models/list/items-list-case-pn.model';
+import {ItemsPlanningPnUploadedDataService} from '../../../services';
+import {UploadedDatasModel} from '../../../models/list';
 
 @Component({
   selector: 'app-uploaded-data-pdf',
@@ -11,10 +13,13 @@ import {ItemsListPnItemCaseModel} from '../../../models/list/items-list-case-pn.
 })
 export class UploadedDataPdfComponent implements OnInit {
   @ViewChild('frame') frame;
+  spinnerStatus = false;
   selectedItemCase: ItemsListPnItemCaseModel = new ItemsListPnItemCaseModel();
+  uploadedDatasModel: UploadedDatasModel = new UploadedDatasModel();
   pdfFileUploader: FileUploader = new FileUploader({url: 'api/items-planning-pn/uploaded-data/pdf'});
 
-  constructor(private toastrService: ToastrService, private translateService: TranslateService) { }
+  constructor(private toastrService: ToastrService, private translateService: TranslateService,
+              private itemsPlanningPnUploadedDataService: ItemsPlanningPnUploadedDataService) { }
 
   ngOnInit() {
     this.pdfFileUploader.onBuildItemForm = (item, form) => {
@@ -34,6 +39,16 @@ export class UploadedDataPdfComponent implements OnInit {
         this.pdfFileUploader.removeFromQueue(this.pdfFileUploader.queue[0]);
       }
     };
+  }
+
+  getAllUploadedData(itemCaseId: number) {
+    this.spinnerStatus = true;
+    this.itemsPlanningPnUploadedDataService.getAllUploadedData(itemCaseId).subscribe((data) => {
+      if (data && data.success) {
+        this.uploadedDatasModel = data.model;
+        this.spinnerStatus = false;
+      }
+    });
   }
 
   show(itemCase: ItemsListPnItemCaseModel) {

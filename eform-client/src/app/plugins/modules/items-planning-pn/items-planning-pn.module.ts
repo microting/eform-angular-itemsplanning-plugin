@@ -16,7 +16,9 @@ import {
   ListDeleteComponent,
   ListEditComponent,
   ListsPageComponent,
-  ItemCaseUploadedDataComponent, UploadedDataPdfComponent
+  ItemCaseUploadedDataComponent,
+  UploadedDataPdfComponent,
+  UploadedDataDeleteComponent
 } from './components/items-lists';
 import {ItemsPlanningSettingsComponent} from './components/items-plannings-setting';
 import {RouterModule} from '@angular/router';
@@ -24,7 +26,8 @@ import {ItemsPlanningPnRouting} from './items-planning-pn.routing.module';
 import {ItemsPlanningPnListsService,
   ItemsPlanningPnSettingsService,
   ItemsPlanningPnReportsService,
-  ItemsPlanningPnCasesService} from './services';
+  ItemsPlanningPnCasesService,
+  ItemsPlanningPnUploadedDataService} from './services';
 import {OwlDateTimeModule} from 'ng-pick-datetime';
 import {OwlMomentDateTimeModule} from 'ng-pick-datetime-moment';
 import {
@@ -65,13 +68,15 @@ import {FileUploadModule} from 'ng2-file-upload';
     ReportGeneratorFormComponent,
     ReportPreviewTableComponent,
     ItemCaseUploadedDataComponent,
-    UploadedDataPdfComponent
+    UploadedDataPdfComponent,
+    UploadedDataDeleteComponent
   ],
   providers: [
     ItemsPlanningPnSettingsService,
     ItemsPlanningPnListsService,
     ItemsPlanningPnReportsService,
-    ItemsPlanningPnCasesService
+    ItemsPlanningPnCasesService,
+    ItemsPlanningPnUploadedDataService
   ]
 })
 

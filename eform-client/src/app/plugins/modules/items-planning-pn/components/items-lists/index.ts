@@ -7,3 +7,4 @@ export * from './items-list-case-results-page/list-case-result-page.component';
 export * from './item-list-case-columns-modal/item-list-case-columns-modal.component';
 export * from './item-case-uploaded-data/item-case-uploaded-data.component';
 export * from './uploaded-data-pdf/uploaded-data-pdf.component';
+export * from './uploaded-data-delete/uploaded-data-delete.component';

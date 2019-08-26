@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ItemsListPnItemCaseModel} from '../../../models/list/items-list-case-pn.model';
-import {ItemsPlanningPnCasesService} from '../../../services';
+import {ItemsPlanningPnCasesService, ItemsPlanningPnUploadedDataService} from '../../../services';
+import {UploadedDataModel, UploadedDatasModel} from '../../../models/list';
 
 @Component({
   selector: 'app-item-case-uploaded-data',
@@ -10,11 +11,15 @@ import {ItemsPlanningPnCasesService} from '../../../services';
 export class ItemCaseUploadedDataComponent implements OnInit {
   @ViewChild('frame') frame;
   @ViewChild('uploadedDataPdfModal') uploadedDataPdfModal;
+  @ViewChild('uploadedDataDeleteModal') uploadedDataDeleteModal;
   spinnerStatus = false;
+  uploadedDatasModel: UploadedDatasModel = new UploadedDatasModel();
   selectedListCase: ItemsListPnItemCaseModel = new ItemsListPnItemCaseModel();
-  constructor( private itemsPlanningPnCasesService: ItemsPlanningPnCasesService) { }
+  constructor( private itemsPlanningPnCasesService: ItemsPlanningPnCasesService,
+               private itemsPlanningPnUploadedDataService: ItemsPlanningPnUploadedDataService) { }
 
   ngOnInit() {
+    this.getAllUploadedData(this.selectedListCase.id);
   }
   show(selectedListCase) {
     this.getSelectedListCase(selectedListCase.id);
@@ -28,10 +33,24 @@ export class ItemCaseUploadedDataComponent implements OnInit {
         this.selectedListCase = data.model;
       }this.spinnerStatus = false;
     } );
-
   }
-
+  getAllUploadedData(itemCaseId: number) {
+    this.spinnerStatus = true;
+    this.itemsPlanningPnUploadedDataService.getAllUploadedData(itemCaseId).subscribe((data) => {
+      if (data && data.success) {
+        this.uploadedDatasModel = data.model;
+        this.spinnerStatus = false;
+      }
+    });
+  }
+  downloadUploadedDataPdf(fileName: string) {
+    // this.itemsPlanningPnUploadedDataService.downloadUploadedDataPdf(fileName);
+    window.open('api/items-planning-pn/uploaded-data/download-pdf/' + fileName);
+  }
   showUploadPDFModal() {
     this.uploadedDataPdfModal.show(this.selectedListCase);
+  }
+  showUploadedDataDeleteModal(uploadedData: UploadedDataModel) {
+    this.uploadedDataDeleteModal.show(uploadedData);
   }
 }
