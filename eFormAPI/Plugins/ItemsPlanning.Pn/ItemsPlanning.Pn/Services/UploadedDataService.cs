@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microting.eFormApi.BasePn.Infrastructure.Extensions;
@@ -190,29 +191,35 @@ namespace ItemsPlanning.Pn.Services
         public async Task<IActionResult> DownloadUploadedDataPdf(string fileName)
         {
             var core = _core.GetCore();
-            var filePath = Path.Combine(core.GetSdkSetting(Settings.fileLocationPdf), fileName + ".pdf");
+            var filePath = Path.Combine(core.GetSdkSetting(Settings.fileLocationPdf) + "pdfFiles/", fileName);
             string fileType = "application/pdf";
 
-            if (core.GetSdkSetting(Settings.swiftEnabled).ToLower() == "true")
+//            if (core.GetSdkSetting(Settings.swiftEnabled).ToLower() == "true")
+//            {
+//                var ss = await core.GetFileFromSwiftStorage(fileName);
+//                
+//                if (ss == null)
+//                {
+//                    return new NotFoundResult();
+//                }
+//                return new OkObjectResult(ss);
+//            }
+
+            byte[] fileBytes;
+            
+            if (File.Exists(filePath))
             {
-                var ss = await core.GetFileFromSwiftStorage(fileName);
-                
-                if (ss == null)
-                {
-                    return new NotFoundResult();
-                }
-                return new OkObjectResult(ss);
+                fileBytes = File.ReadAllBytes(filePath);
             }
-
-
-            if (!System.IO.File.Exists(filePath))
+            else
             {
                 return new NotFoundResult();
             }
-
-            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             
-            return new OkObjectResult(fileStream);
+            return new FileContentResult(fileBytes, fileType)
+            {
+                FileDownloadName = fileName
+            };
         }
     }
 }

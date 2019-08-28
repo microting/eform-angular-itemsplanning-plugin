@@ -10,7 +10,7 @@ import {Injectable} from '@angular/core';
 
 export let ItemsPlanningPnUploadedDataMethods = {
   UploadedDatas: 'api/items-planning-pn/uploaded-data',
-  DownloadPDF: 'api/items-planning-pn/uploaded-data/download-pdf'
+  DownloadPDF: 'api/items-planning-pn/uploaded-data/download-pdf/'
 };
 @Injectable({
   providedIn: 'root'
