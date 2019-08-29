@@ -64,6 +64,7 @@ namespace ItemsPlanning.Pn
             services.AddTransient<IItemsPlanningReportService, ItemsPlanningReportService>();
             services.AddTransient<IExcelService, ExcelService>();
             services.AddTransient<IItemsListService, ItemsListService>();
+            services.AddTransient<IUploadedDataService, UploadedDataService>();
             services.AddSingleton<IRebusService, RebusService>();
         }
 

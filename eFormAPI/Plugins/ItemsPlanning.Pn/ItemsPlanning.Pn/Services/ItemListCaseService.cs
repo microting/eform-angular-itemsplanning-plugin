@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using ItemsPlanning.Pn.Abstractions;
 using ItemsPlanning.Pn.Infrastructure.Models;
 using ItemsPlanning.Pn.Messages;
@@ -396,6 +397,41 @@ namespace ItemsPlanning.Pn.Services
             }
 
             return itemListPnCaseResultListModel;
+        }
+
+        public async Task<OperationDataResult<ItemsListPnItemCaseModel>> GetSingleCase(int caseId)
+        {
+            try
+            {
+                ItemsListPnItemCaseModel itemCaseModel = new ItemsListPnItemCaseModel();
+
+                var itemCase = await _dbContext.ItemCases.FirstOrDefaultAsync(x => x.Id == caseId);
+                var item = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == itemCase.ItemId);
+                
+                                
+                itemCaseModel.Id = itemCase.Id;
+                itemCaseModel.Comment = itemCase.Comment;
+                itemCaseModel.Status = itemCase.Status;
+                itemCaseModel.NumberOfImages = itemCase.NumberOfImages;
+                itemCaseModel.Location = itemCase.Location;
+                itemCaseModel.Description = item.Description;
+                itemCaseModel.ItemNumber = item.ItemNumber;
+                itemCaseModel.BuildYear = item.BuildYear;
+                itemCaseModel.Type = item.Type;
+//                
+//                if (itemCaseModel == null)
+//                {
+//                    return new OperationDataResult<ItemsListPnItemCaseModel>(false,
+//                        _itemsPlanningLocalizationService.GetString(($"ListItemCase with ID: {caseId} does not exist")));
+//                }
+                return new OperationDataResult<ItemsListPnItemCaseModel>(true, itemCaseModel);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            return new OperationDataResult<ItemsListPnItemCaseModel>(false, "Not done yet.");
         }
     }
 }

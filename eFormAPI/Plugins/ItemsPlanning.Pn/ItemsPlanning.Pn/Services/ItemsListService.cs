@@ -298,7 +298,7 @@ namespace ItemsPlanning.Pn.Services
         {
             try
             {
-                Debugger.Break();
+//                Debugger.Break();
                 var itemsList = new ItemList
                 {
                     Id = id

@@ -27,13 +27,13 @@ su ubuntu -c \
 su ubuntu -c \
 "mkdir -p /var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/"
 
-if [ -d "/var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/TrashInspection"]; then
+if [ -d "/var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/ItemsPlanning"]; then
 	su ubuntu -c \
-	"rm -fR /var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/TrashInspection"
+	"rm -fR /var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/ItemsPlanning"
 fi
 
 su ubuntu -c \
-"cp -av /var/www/microting/eform-angular-itemsplanning-plugin/eFormAPI/Plugins/ItemsPlanning.Pn/ItemsPlanning.Pn/out /var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/TrashInspection"
+"cp -av /var/www/microting/eform-angular-itemsplanning-plugin/eFormAPI/Plugins/ItemsPlanning.Pn/ItemsPlanning.Pn/out /var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/ItemsPlanning"
 
 
 echo "Recompile angular"

@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SharedPnService} from '../../../../shared/services';
 import {ActivatedRoute} from '@angular/router';
 import {PageSettingsModel} from '../../../../../../common/models/settings';
-import {ItemsListCasePnModel} from '../../../models/list/items-list-case-pn.model';
+import {ItemsListCasePnModel, ItemsListPnItemCaseModel} from '../../../models/list/items-list-case-pn.model';
 import {ItemsPlanningPnCasesService} from '../../../services/items-planning-pn-cases.service';
 import {ItemListCasesPnRequestModel} from '../../../models/list/item-list-cases-pn-request.model';
 
@@ -13,6 +13,7 @@ import {ItemListCasesPnRequestModel} from '../../../models/list/item-list-cases-
 })
 
 export class ListCasePageComponent implements OnInit {
+  @ViewChild('uploadedDataModal') uploadedDataModal;
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   listCaseRequestModel: ItemListCasesPnRequestModel = new ItemListCasesPnRequestModel();
   casesModel: ItemsListCasePnModel = new ItemsListCasePnModel();
@@ -46,7 +47,9 @@ export class ListCasePageComponent implements OnInit {
   getAllInitialData() {
     this.getAllCases();
   }
-
+  showListCasePdfModal(itemCase: ItemsListPnItemCaseModel) {
+    this.uploadedDataModal.show(itemCase);
+  }
   getAllCases() {
     this.spinnerStatus = true;
     this.listCaseRequestModel.isSortDsc = this.localPageSettings.isSortDsc;

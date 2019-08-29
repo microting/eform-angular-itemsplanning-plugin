@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {saveAs} from 'file-saver';
 import {ActivatedRoute} from '@angular/router';
 import {SharedPnService} from '../../../../shared/services';
@@ -10,6 +10,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ReportPnGenerateModel} from '../../../models/report';
 import {ToastrService} from 'ngx-toastr';
 import {format} from "date-fns";
+import {ItemsListPnItemCaseModel} from '../../../models/list/items-list-case-pn.model';
 
 @Component({
   selector: 'app-items-planning-pn-list-case-result-page',
@@ -18,6 +19,7 @@ import {format} from "date-fns";
 })
 
 export class ListCaseResultPageComponent implements OnInit {
+  @ViewChild('uploadedDataModal') uploadedDataModal;
   @Output() generateReport: EventEmitter<ReportPnGenerateModel> = new EventEmitter();
   @Output() saveReport: EventEmitter<ReportPnGenerateModel> = new EventEmitter();
   generateForm: FormGroup;
@@ -115,7 +117,9 @@ export class ListCaseResultPageComponent implements OnInit {
     this.updateLocalPageSettings();
   }
 
-
+  showListCasePdfModal(itemCase: ItemListPnCaseResultListModel) {
+    this.uploadedDataModal.show(itemCase);
+  }
   changePage(e: any) {
     if (e || e === 0) {
       this.listCaseRequestModel.offset = e;

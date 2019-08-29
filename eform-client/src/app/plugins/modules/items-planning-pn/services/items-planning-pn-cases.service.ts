@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {OperationDataResult} from '../../../../common/models';
 import {ItemListPnCaseResultListModel, ItemsListPnModel} from '../models/list';
 import {ItemsPlanningPnListsMethods} from './items-planning-pn-lists.service';
-import {ItemsListCasePnModel} from '../models/list/items-list-case-pn.model';
+import {ItemsListCasePnModel, ItemsListPnItemCaseModel} from '../models/list/items-list-case-pn.model';
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {ItemListCasesPnRequestModel} from '../models/list/item-list-cases-pn-request.model';
@@ -30,6 +30,10 @@ export class ItemsPlanningPnCasesService extends BaseService {
 
   getAllCaseResults(model: ItemListCasesPnRequestModel): Observable<OperationDataResult<ItemListPnCaseResultListModel>> {
     return this.get(ItemsPlanningPnCasesMethods.CaseResults, model);
+  }
+
+  getSingleCase(caseId: number): Observable<OperationDataResult<ItemsListPnItemCaseModel>> {
+    return this.get(ItemsPlanningPnCasesMethods.Cases + '/:id/' + caseId);
   }
 
   getGeneratedReport(model: ItemListCasesPnRequestModel): Observable<OperationDataResult<ItemListPnCaseResultListModel>> {

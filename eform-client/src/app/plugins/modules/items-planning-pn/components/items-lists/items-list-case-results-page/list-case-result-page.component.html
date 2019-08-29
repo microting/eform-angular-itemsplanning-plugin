@@ -345,6 +345,11 @@
                   mdbTooltip="{{ 'Edit Case' | translate }}">
             <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
           </button>
+          <button class="btn btn-success"
+                  (click)="showListCasePdfModal(case)"
+                  mdbTooltip="{{'Show/Edit PDF' | translate}}">
+            <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
+          </button>
         </td>
       </tr>
       </tbody>
@@ -369,3 +374,4 @@
 </div>
 
 <spinner-pn [spinnerVisibility]="spinnerStatus"></spinner-pn>
+<app-item-case-uploaded-data #uploadedDataModal></app-item-case-uploaded-data>
