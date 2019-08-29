@@ -346,7 +346,7 @@
             <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
           </button>
           <button class="btn btn-success"
-                  (click)="showListCasePdfModal(case)"
+                  (click)="showListCasePdfModal(case)" *ngIf="case.status === 100"
                   mdbTooltip="{{'Show/Edit PDF' | translate}}">
             <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
           </button>

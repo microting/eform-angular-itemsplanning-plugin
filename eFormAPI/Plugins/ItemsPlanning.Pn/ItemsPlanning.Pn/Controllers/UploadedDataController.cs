@@ -16,14 +16,14 @@ namespace ItemsPlanning.Pn.Controllers
         }
 
         [HttpGet]
-        [Route("api/items-planning-pn/uploaded-data")]
+        [Route("api/items-planning-pn/uploaded-data/get-all/{itemCaseId}")]
         public async Task<OperationDataResult<UploadedDatasModel>> GetAllUploadedDatas(int itemCaseId)
         {
             return await _uploadedDataService.GetAllUploadedDatas(itemCaseId);
         }
 
         [HttpGet]
-        [Route("api/items-planning-pn/uploaded-data/{id}")]
+        [Route("api/items-planning-pn/uploaded-data/{selectedListItemCaseId}")]
         public async Task<OperationDataResult<UploadedDataModel>> GetSingleUploadedData(int selectedListItemCaseId)
         {
             return await _uploadedDataService.GetSingleUploadedData(selectedListItemCaseId);

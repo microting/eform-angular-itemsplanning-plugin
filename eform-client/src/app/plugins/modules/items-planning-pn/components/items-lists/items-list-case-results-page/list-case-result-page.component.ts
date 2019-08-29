@@ -117,7 +117,7 @@ export class ListCaseResultPageComponent implements OnInit {
     this.updateLocalPageSettings();
   }
 
-  showListCasePdfModal(itemCase: ItemListPnCaseResultListModel) {
+  showListCasePdfModal(itemCase: ItemsListPnCaseResultModel) {
     this.uploadedDataModal.show(itemCase);
   }
   changePage(e: any) {

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {FileUploader} from 'ng2-file-upload';
 import {ToastrService} from 'ngx-toastr';
@@ -13,6 +13,7 @@ import {UploadedDatasModel} from '../../../models/list';
 })
 export class UploadedDataPdfComponent implements OnInit {
   @ViewChild('frame') frame;
+  @Output() onUploadedDataUploaded: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
   selectedItemCase: ItemsListPnItemCaseModel = new ItemsListPnItemCaseModel();
   uploadedDatasModel: UploadedDatasModel = new UploadedDatasModel();
@@ -28,6 +29,7 @@ export class UploadedDataPdfComponent implements OnInit {
     this.pdfFileUploader.onSuccessItem = () => {
       this.pdfFileUploader.clearQueue();
       this.toastrService.success(this.translateService.instant('File has been uploaded successfully'));
+      this.onUploadedDataUploaded.emit();
       this.frame.hide();
     };
     this.pdfFileUploader.onErrorItem = () => {
@@ -58,6 +60,7 @@ export class UploadedDataPdfComponent implements OnInit {
 
   uploadPDF() {
     this.pdfFileUploader.queue[0].upload();
+    this.onUploadedDataUploaded.emit();
   }
 
   hidePDFModal() {

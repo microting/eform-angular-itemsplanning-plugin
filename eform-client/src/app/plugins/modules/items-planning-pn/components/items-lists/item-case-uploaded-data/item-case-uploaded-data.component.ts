@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ItemsListPnItemCaseModel} from '../../../models/list/items-list-case-pn.model';
 import {ItemsPlanningPnCasesService, ItemsPlanningPnUploadedDataService} from '../../../services';
-import {UploadedDataModel, UploadedDatasModel} from '../../../models/list';
+import {ItemsListPnCaseResultModel, UploadedDataModel, UploadedDatasModel} from '../../../models/list';
 
 @Component({
   selector: 'app-item-case-uploaded-data',
@@ -15,15 +15,14 @@ export class ItemCaseUploadedDataComponent implements OnInit {
   spinnerStatus = false;
   uploadedDatasModel: UploadedDatasModel = new UploadedDatasModel();
   selectedListCase: ItemsListPnItemCaseModel = new ItemsListPnItemCaseModel();
+  selectedListCaseResult: ItemsListPnCaseResultModel = new ItemsListPnCaseResultModel();
   constructor( private itemsPlanningPnCasesService: ItemsPlanningPnCasesService,
                private itemsPlanningPnUploadedDataService: ItemsPlanningPnUploadedDataService) { }
 
   ngOnInit() {
-    this.getAllUploadedData(this.selectedListCase.id);
   }
-  show(selectedListCase) {
+  show(selectedListCase: ItemsListPnCaseResultModel) {
     this.getSelectedListCase(selectedListCase.id);
-    this.frame.show(selectedListCase);
   }
 
   getSelectedListCase(id: number) {
@@ -31,16 +30,17 @@ export class ItemCaseUploadedDataComponent implements OnInit {
     this.itemsPlanningPnCasesService.getSingleCase(id).subscribe((data) => {
       if (data && data.success) {
         this.selectedListCase = data.model;
+        this.frame.show(this.selectedListCase);
+        this.getAllUploadedData(id);
       }this.spinnerStatus = false;
-    } );
+    });
   }
   getAllUploadedData(itemCaseId: number) {
     this.spinnerStatus = true;
     this.itemsPlanningPnUploadedDataService.getAllUploadedData(itemCaseId).subscribe((data) => {
       if (data && data.success) {
         this.uploadedDatasModel = data.model;
-        this.spinnerStatus = false;
-      }
+      }this.spinnerStatus = false;
     });
   }
   downloadUploadedDataPdf(fileName: string) {

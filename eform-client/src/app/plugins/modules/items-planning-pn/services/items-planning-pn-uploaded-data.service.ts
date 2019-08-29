@@ -22,7 +22,7 @@ export class ItemsPlanningPnUploadedDataService extends BaseService {
   }
 
   getAllUploadedData(itemCaseId: number): Observable<OperationDataResult<UploadedDatasModel>> {
-    return this.get(ItemsPlanningPnUploadedDataMethods.UploadedDatas, itemCaseId);
+    return this.get(ItemsPlanningPnUploadedDataMethods.UploadedDatas + '/get-all/' + itemCaseId);
   }
 
   deleteUploadedData(uploadedDataId: number): Observable<OperationResult> {

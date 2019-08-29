@@ -173,7 +173,8 @@ namespace ItemsPlanning.Pn.Services
                 UploadedData uploadedData = new UploadedData();
                 uploadedData.FileLocation = saveFolder;
                 uploadedData.FileName = fileName;
-
+                uploadedData.ItemCaseId = pdfUploadModel.ItemCaseId;
+                
                 await uploadedData.Create(_dbContext);
                 
                 
