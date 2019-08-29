@@ -194,16 +194,16 @@ namespace ItemsPlanning.Pn.Services
             var filePath = Path.Combine(core.GetSdkSetting(Settings.fileLocationPdf) + "pdfFiles/", fileName);
             string fileType = "application/pdf";
 
-//            if (core.GetSdkSetting(Settings.swiftEnabled).ToLower() == "true")
-//            {
-//                var ss = await core.GetFileFromSwiftStorage(fileName);
-//                
-//                if (ss == null)
-//                {
-//                    return new NotFoundResult();
-//                }
-//                return new OkObjectResult(ss);
-//            }
+            if (core.GetSdkSetting(Settings.swiftEnabled).ToLower() == "true")
+            {
+                var ss = await core.GetFileFromSwiftStorage(fileName);
+                
+                if (ss == null)
+                {
+                    return new NotFoundResult();
+                }
+                return new OkObjectResult(ss);
+            }
 
             byte[] fileBytes;
             
