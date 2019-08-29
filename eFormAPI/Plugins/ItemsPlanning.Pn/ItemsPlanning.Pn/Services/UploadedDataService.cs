@@ -20,6 +20,7 @@ using ItemsPlanning.Pn.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microting.eForm.Infrastructure.Models.reply;
 using OpenStack.NetCoreSwiftClient.Extensions;
+using OpenStack.NetCoreSwiftClient.Infrastructure.Models;
 using SQLitePCL;
 using Settings = Microting.eForm.Dto.Settings;
 
@@ -187,40 +188,6 @@ namespace ItemsPlanning.Pn.Services
                 _core.LogException(e.Message);
                 return new BadRequestResult();
             }
-        }
-
-        public async Task<IActionResult> DownloadUploadedDataPdf(string fileName)
-        {
-            var core = _core.GetCore();
-            var filePath = Path.Combine(core.GetSdkSetting(Settings.fileLocationPdf) + "pdfFiles/", fileName);
-            string fileType = "application/pdf";
-
-            if (core.GetSdkSetting(Settings.swiftEnabled).ToLower() == "true")
-            {
-                var ss = await core.GetFileFromSwiftStorage(fileName);
-                
-                if (ss == null)
-                {
-                    return new NotFoundResult();
-                }
-                return new OkObjectResult(ss);
-            }
-
-            byte[] fileBytes;
-            
-            if (File.Exists(filePath))
-            {
-                fileBytes = File.ReadAllBytes(filePath);
-            }
-            else
-            {
-                return new NotFoundResult();
-            }
-            
-            return new FileContentResult(fileBytes, fileType)
-            {
-                FileDownloadName = fileName
-            };
         }
     }
 }

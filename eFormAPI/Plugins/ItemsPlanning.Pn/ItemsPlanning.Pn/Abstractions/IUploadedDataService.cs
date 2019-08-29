@@ -10,7 +10,6 @@ namespace ItemsPlanning.Pn.Abstractions
         Task<OperationResult> UpdateUploadedData(UploadedDataModel uploadedDataModel);
         Task<OperationResult> DeleteUploadedData(int id);
         Task<IActionResult> UploadUploadedDataPdf(UploadedDataPDFUploadModel pdfUploadModel);
-        Task<IActionResult> DownloadUploadedDataPdf(string fileName);
         Task<OperationDataResult<UploadedDataModel>> GetSingleUploadedData(int selectedListItemCaseId);
         Task<OperationDataResult<UploadedDatasModel>> GetAllUploadedDatas(int itemCaseId);
     }

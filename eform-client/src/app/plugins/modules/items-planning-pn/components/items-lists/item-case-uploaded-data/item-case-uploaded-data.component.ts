@@ -45,7 +45,8 @@ export class ItemCaseUploadedDataComponent implements OnInit {
   }
   downloadUploadedDataPdf(fileName: string) {
     // this.itemsPlanningPnUploadedDataService.downloadUploadedDataPdf(fileName);
-    window.open('api/items-planning-pn/uploaded-data/download-pdf/' + fileName);
+    debugger;
+    window.open('api/template-files/get-pdf/' + fileName);
   }
   showUploadPDFModal() {
     this.uploadedDataPdfModal.show(this.selectedListCase);
