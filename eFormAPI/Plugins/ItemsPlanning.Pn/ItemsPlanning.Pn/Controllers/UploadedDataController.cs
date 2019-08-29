@@ -2,17 +2,24 @@ using System.Threading.Tasks;
 using ItemsPlanning.Pn.Abstractions;
 using ItemsPlanning.Pn.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microting.eForm.Dto;
+using Microting.eFormApi.BasePn.Abstractions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+using OpenStack.NetCoreSwiftClient.Extensions;
+using OpenStack.NetCoreSwiftClient.Infrastructure.Models;
 
 namespace ItemsPlanning.Pn.Controllers
 {
     public class UploadedDataController : Controller
     {
+        private readonly IEFormCoreService _coreHelper;
         private readonly IUploadedDataService _uploadedDataService;
 
-        public UploadedDataController(IUploadedDataService uploadedDataService)
+        public UploadedDataController(IEFormCoreService coreHelper,
+            IUploadedDataService uploadedDataService)
         {
             _uploadedDataService = uploadedDataService;
+            _coreHelper = coreHelper;
         }
 
         [HttpGet]
@@ -48,13 +55,6 @@ namespace ItemsPlanning.Pn.Controllers
         public async Task<IActionResult> UploadUploadedDataPdf(UploadedDataPDFUploadModel pdfUploadModel)
         {
             return await _uploadedDataService.UploadUploadedDataPdf(pdfUploadModel);
-        }
-
-        [HttpGet]
-        [Route("api/items-planning-pn/uploaded-data/download-pdf/{fileName}")]
-        public async Task<IActionResult> DownloadUploadedDataPdf(string fileName)
-        {
-            return await _uploadedDataService.DownloadUploadedDataPdf(fileName);
         }
     }
 }
