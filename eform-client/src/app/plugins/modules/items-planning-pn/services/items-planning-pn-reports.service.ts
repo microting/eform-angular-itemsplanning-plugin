@@ -22,7 +22,7 @@ export class ItemsPlanningPnReportsService extends BaseService {
     return this.get(ItemsPlanningPnReportsMethods.Reports, model);
   }
 
-  getGeneratedReport(model: ReportPnGenerateModel): Observable<OperationDataResult<any>> {
+  getGeneratedReport(model: ReportPnGenerateModel): Observable<any> {
     return this.getBlobData(ItemsPlanningPnReportsMethods.Reports + '/excel', model);
   }
 
