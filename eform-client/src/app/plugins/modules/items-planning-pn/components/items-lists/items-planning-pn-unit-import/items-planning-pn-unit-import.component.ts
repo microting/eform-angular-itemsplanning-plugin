@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FileUploader} from 'ng2-file-upload';
 import {Papa} from 'ngx-papaparse';
-import {TrashInspectionPnFractionsService} from '../../../../trash-inspection-pn/services';
 import {ItemsPlanningPnHeadersModel, ItemsPlanningPnUnitImportModel} from '../../../models/list';
 import {ItemsPlanningPnListsService} from '../../../services';
 
@@ -80,17 +79,6 @@ export class ItemsPlanningPnUnitImportComponent implements OnInit {
     });
     return this.tableData;
   }
-  // importFraction() {
-  //   this.spinnerStatus = true;
-  //   // this.customerImportModel.importList = this.tableData;
-  //   // debugger;
-  //   this.fractionsImportModel.headers = JSON.stringify(this.fractionsImportModel.headerList);
-  //   return this.fractionsService.importFraction(this.fractionsImportModel).subscribe(((data) => {
-  //     if (data && data.success) {
-  //       this.fractionsImportModel = new FractionPnImportModel();
-  //     } this.spinnerStatus = false;
-  //   }));
-  // }
 
   importUnit() {
     this.spinnerStatus = true;
