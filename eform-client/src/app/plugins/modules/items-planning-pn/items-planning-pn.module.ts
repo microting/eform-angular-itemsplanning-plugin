@@ -18,7 +18,8 @@ import {
   ListsPageComponent,
   ItemCaseUploadedDataComponent,
   UploadedDataPdfComponent,
-  UploadedDataDeleteComponent
+  UploadedDataDeleteComponent,
+  ItemsPlanningPnUnitImportComponent
 } from './components/items-lists';
 import {ItemsPlanningSettingsComponent} from './components/items-plannings-setting';
 import {RouterModule} from '@angular/router';
@@ -69,7 +70,8 @@ import {FileUploadModule} from 'ng2-file-upload';
     ReportPreviewTableComponent,
     ItemCaseUploadedDataComponent,
     UploadedDataPdfComponent,
-    UploadedDataDeleteComponent
+    UploadedDataDeleteComponent,
+    ItemsPlanningPnUnitImportComponent
   ],
   providers: [
     ItemsPlanningPnSettingsService,
