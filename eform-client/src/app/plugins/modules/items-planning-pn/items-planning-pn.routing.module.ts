@@ -8,7 +8,8 @@ import {
   ReportGeneratorContainerComponent,
   ListCasePageComponent,
   ListCaseResultPageComponent,
-  ItemCaseUploadedDataComponent
+  ItemCaseUploadedDataComponent,
+  ItemsPlanningPnUnitImportComponent
 } from './components';
 
 export const routes: Routes = [
@@ -45,6 +46,11 @@ export const routes: Routes = [
         path: 'item-cases/:id/:id',
         canActivate: [AdminGuard],
         component: ItemCaseUploadedDataComponent
+      },
+      {
+        path: 'import',
+        canActivate: [AdminGuard],
+        component: ItemsPlanningPnUnitImportComponent
       }
     ]
   }

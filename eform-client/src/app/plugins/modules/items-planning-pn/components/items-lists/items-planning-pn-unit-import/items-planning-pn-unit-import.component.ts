@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {FileUploader} from 'ng2-file-upload';
 import {Papa} from 'ngx-papaparse';
 import {ItemsPlanningPnHeadersModel, ItemsPlanningPnUnitImportModel} from '../../../models/list';
@@ -12,7 +12,7 @@ const URL = '';
   styleUrls: ['./items-planning-pn-unit-import.component.scss']
 })
 export class ItemsPlanningPnUnitImportComponent implements OnInit {
-
+  @ViewChild('frame') frame;
   public data: any = [];
   uploader: FileUploader;
   unitImportModel: ItemsPlanningPnUnitImportModel;
@@ -28,12 +28,8 @@ export class ItemsPlanningPnUnitImportComponent implements OnInit {
   options = [
     {value: 0, label: 'Number'},
     {value: 1, label: 'Name'},
-    {value: 2, label: 'Location Nr'},
-    {value: 3, label: 'eForm nr'},
-    {value: 4, label: 'Statutory eForm'},
-    {value: 5, label: 'Description'}
-
-
+    {value: 2, label: 'Build Year'},
+    {value: 3, label: 'Type'}
   ];
   constructor(private itemListService: ItemsPlanningPnListsService) {
     this.unitImportModel = new ItemsPlanningPnUnitImportModel();
@@ -94,5 +90,8 @@ export class ItemsPlanningPnUnitImportComponent implements OnInit {
   }
   onSelectedChanged(e: any, columnIndex: any) {
     this.unitImportModel.headerList[e.value].headerValue = columnIndex;
+  }
+  show() {
+    this.frame.show();
   }
 }

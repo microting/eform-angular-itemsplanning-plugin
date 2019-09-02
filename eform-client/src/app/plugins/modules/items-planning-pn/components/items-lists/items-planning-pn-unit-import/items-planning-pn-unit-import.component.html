@@ -1,4 +1,5 @@
-<subheader-pn [title]="'Import Fractions' | translate">
+
+<subheader-pn [title]="'Import Items' | translate">
 </subheader-pn>
 <subheader-pn
   [heandingSizeRem]="1">
@@ -21,7 +22,7 @@
         </th>
       </tr>
       </thead>
-      <tbody id="fractionsToImport">
+      <tbody id="itemsToImport">
       <tr *ngFor="let rows of tableData">
         <td >
           {{rows[0]}}
@@ -43,13 +44,13 @@
     </table>
   </div>
   <button class="btn btn-danger"
-          routerLink="/plugins/trash-inspection-pn/fractions"
+          routerLink="/plugins/items-planning-pn/lists"
           id="cancelImportBtn"
           mdbTooltip="{{'Cancel' | translate}}"><i class="material-icons">cancel</i></button>
   <button class="btn btn-success"
           (click)="importUnit()"
-          routerLink="/plugins/trash-inspection-pn/fractions"
+          routerLink="/plugins/items-planning-pn/lists"
           id="continueImportBtn"
-          mdbTooltip="{{'Import the fraction' | translate}}">Continue Import
+          mdbTooltip="{{'Import the item' | translate}}">Continue Import
   </button>
 </div>

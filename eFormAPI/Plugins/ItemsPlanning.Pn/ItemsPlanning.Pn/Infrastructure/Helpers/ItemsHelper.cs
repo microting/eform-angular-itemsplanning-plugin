@@ -43,10 +43,9 @@ namespace ItemsPlanning.Pn.Infrastructure.Helpers
             {
                 item.LocationCode = itemObj[locationId].ToString(); //Location Code
             }
-            
-            if (int.TryParse(headers[5]["headerValue"].ToString(), out locationId))
+            if (int.TryParse(headers[3]["headerValue"].ToString(), out locationId))
             {
-                item.Description = itemObj[locationId].ToString();
+                item.Type = itemObj[locationId].ToString(); //Type
             }
             return item;
         }

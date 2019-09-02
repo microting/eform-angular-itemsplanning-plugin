@@ -406,8 +406,8 @@ namespace ItemsPlanning.Pn.Services
 
             if (itemNameExists)
             {
-                string fractionName = itemObj[itemNameColumn].ToString();
-                item = _dbContext.Items.SingleOrDefault(x => x.Name == fractionName);
+                string itemName = itemObj[itemNameColumn].ToString();
+                item = _dbContext.Items.SingleOrDefault(x => x.Name == itemName);
             }
 
             return item;
@@ -472,14 +472,14 @@ namespace ItemsPlanning.Pn.Services
                     }
                 }
                 return new OperationResult(true,
-                    _itemsPlanningLocalizationService.GetString("FractionCreated"));
+                    _itemsPlanningLocalizationService.GetString("ItemImportes"));
             }
             catch (Exception e)
             {
                 Trace.TraceError(e.Message);
                 _core.LogException(e.Message);
                 return new OperationResult(false,
-                    _itemsPlanningLocalizationService.GetString("ErrorWhileCreatingFraction"));
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileImportingItems"));
             }
         }
 
