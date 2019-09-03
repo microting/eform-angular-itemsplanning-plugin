@@ -215,6 +215,7 @@ namespace ItemsPlanning.Pn.Services
                         SdkFieldEnabled8 = updateModel.SdkFieldId8 != null,
                         SdkFieldEnabled9 = updateModel.SdkFieldId9 != null,
                         SdkFieldEnabled10 = updateModel.SdkFieldId10 != null,
+                        LastExecutedTime = updateModel.LastExecutedTime
 
                     };
                     await itemsList.Update(_dbContext);
@@ -357,6 +358,7 @@ namespace ItemsPlanning.Pn.Services
                         SdkFieldId8 = x.SdkFieldId8,
                         SdkFieldId9 = x.SdkFieldId9,
                         SdkFieldId10 = x.SdkFieldId10,
+                        LastExecutedTime = x.LastExecutedTime,
                         Items = x.Items.Select(i => new ItemsListPnItemModel()
                         {
                             Id = i.Id,
