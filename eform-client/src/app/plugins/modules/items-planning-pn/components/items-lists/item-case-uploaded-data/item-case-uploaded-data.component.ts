@@ -16,12 +16,16 @@ export class ItemCaseUploadedDataComponent implements OnInit {
   uploadedDatasModel: UploadedDatasModel = new UploadedDatasModel();
   selectedListCase: ItemsListPnItemCaseModel = new ItemsListPnItemCaseModel();
   selectedListCaseResult: ItemsListPnCaseResultModel = new ItemsListPnCaseResultModel();
+  selectedListCaseId: number;
+
   constructor( private itemsPlanningPnCasesService: ItemsPlanningPnCasesService,
                private itemsPlanningPnUploadedDataService: ItemsPlanningPnUploadedDataService) { }
 
   ngOnInit() {
   }
+
   show(selectedListCase: ItemsListPnCaseResultModel) {
+    this.selectedListCaseId = selectedListCase.id;
     this.getSelectedListCase(selectedListCase.id);
   }
 
@@ -35,6 +39,7 @@ export class ItemCaseUploadedDataComponent implements OnInit {
       }this.spinnerStatus = false;
     });
   }
+
   getAllUploadedData(itemCaseId: number) {
     this.spinnerStatus = true;
     this.itemsPlanningPnUploadedDataService.getAllUploadedData(itemCaseId).subscribe((data) => {
@@ -43,14 +48,21 @@ export class ItemCaseUploadedDataComponent implements OnInit {
       }this.spinnerStatus = false;
     });
   }
+
+  getMessage() {
+    this.getAllUploadedData(this.selectedListCaseId);
+  }
+
   downloadUploadedDataPdf(fileName: string) {
     // this.itemsPlanningPnUploadedDataService.downloadUploadedDataPdf(fileName);
     debugger;
     window.open('api/template-files/get-pdf/' + fileName);
   }
+
   showUploadPDFModal() {
     this.uploadedDataPdfModal.show(this.selectedListCase);
   }
+
   showUploadedDataDeleteModal(uploadedData: UploadedDataModel) {
     this.uploadedDataDeleteModal.show(uploadedData);
   }
