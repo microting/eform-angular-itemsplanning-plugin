@@ -121,7 +121,7 @@
             <table class="table table-sm text-center z-depth-1 pr-2 pl-2">
               <tbody id="tableBody">
               <tr *ngFor="let item of newListModel.items">
-                <td id="listId">
+                <td id="itemsTableBody">
                   <div class="md-form md-form-sm">
                     <input mdbInputDirective
                            [mdbValidate]="false"
@@ -159,6 +159,26 @@
                            type="text" id="createItemLocationCode"
                            name="createItemLocationCode" class="form-control">
                     <label for="createItemLocationCode">{{'Location code' | translate}}</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
+                           [(ngModel)]="item.buildYear"
+                           type="text" id="createItemBuildYear"
+                           name="createItemBuildYear" class="form-control">
+                    <label for="createItemBuildYear">{{'Build year' | translate}}</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
+                           [(ngModel)]="item.type"
+                           type="text" id="createItemType"
+                           name="createItemType" class="form-control">
+                    <label for="createItemType">{{'Type' | translate}}</label>
                   </div>
                 </td>
                 <td>
