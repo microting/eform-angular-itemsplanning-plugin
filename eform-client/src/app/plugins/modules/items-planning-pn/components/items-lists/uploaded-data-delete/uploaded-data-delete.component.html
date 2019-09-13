@@ -8,20 +8,26 @@
         <div class="container-fluid">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-md-6">
-                <h6>ID</h6>
-              </div>
-              <div class="col-md-6" id="selectedFractionId">
-                <strong>{{selectedUploadedData.id}}</strong>
+              <div class="col-md-12">
+                <strong>ID :</strong>
               </div>
             </div>
 
             <div class="row">
-              <div class="col-md-6">
-                <h6>{{'Creation Date' | translate}}</h6>
+              <div class="col-md-12" id="selectedFractionId">
+                {{selectedUploadedData.id}}
               </div>
-              <div class="col-md-6" id="selectedFractionName">
-                <strong>{{selectedUploadedData.fileName}}</strong>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <strong>{{'File name' | translate}} :</strong>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12" id="selectedFractionName">
+                {{selectedUploadedData.fileName}}
               </div>
             </div>
 

@@ -26,19 +26,24 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using ItemsPlanning.Pn.Abstractions;
+using ItemsPlanning.Pn.Handlers;
 using ItemsPlanning.Pn.Infrastructure.Data.Seed;
 using ItemsPlanning.Pn.Infrastructure.Data.Seed.Data;
+using ItemsPlanning.Pn.Messages;
 using ItemsPlanning.Pn.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microting.eFormApi.BasePn;
+using Microting.eFormApi.BasePn.Abstractions;
 using Microting.eFormApi.BasePn.Infrastructure.Database.Extensions;
+using Microting.eFormApi.BasePn.Infrastructure.Delegates.CaseUpdate;
 using Microting.eFormApi.BasePn.Infrastructure.Models.Application;
 using Microting.eFormApi.BasePn.Infrastructure.Settings;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Factories;
+using Rebus.Bus;
 
 namespace ItemsPlanning.Pn
 {
@@ -50,6 +55,8 @@ namespace ItemsPlanning.Pn
         public string PluginId => "eform-angular-itemsplanning-plugin";
         public string PluginPath => PluginAssembly().Location;
         private string _connectionString;
+        private eFormCaseUpdatedHandler _eFormCaseUpdatedHandler;
+        private IBus _bus;
 
         public Assembly PluginAssembly()
         {
@@ -76,6 +83,8 @@ namespace ItemsPlanning.Pn
                 connectionString, 
                 seedData, 
                 contextFactory);
+            CaseUpdateDelegates.CaseUpdateDelegate += UpdateRelatedCase;
+
         }
 
         public void ConfigureOptionsServices(
@@ -113,6 +122,8 @@ namespace ItemsPlanning.Pn
             var serviceProvider = appBuilder.ApplicationServices;
             IRebusService rebusService = serviceProvider.GetService<IRebusService>();
             rebusService.Start(_connectionString);
+            
+            _bus = rebusService.GetBus();
 
         }
 
@@ -164,6 +175,11 @@ namespace ItemsPlanning.Pn
                 // Seed configuration
                 ItemsPlanningPluginSeed.SeedData(context);
             }
+        }
+
+        private void UpdateRelatedCase(int caseId)
+        {
+            _bus.SendLocal(new eFormCaseUpdated(caseId));
         }
     }
 }

@@ -91,5 +91,5 @@
   </div>
 </div>
 
-<app-uploaded-data-pdf #uploadedDataPdfModal></app-uploaded-data-pdf>
-<app-uploaded-data-delete #uploadedDataDeleteModal></app-uploaded-data-delete>
+<app-uploaded-data-pdf (onUploadedDataUploaded)="getMessage()" #uploadedDataPdfModal></app-uploaded-data-pdf>
+<app-uploaded-data-delete (onUploadedDataDeleted)="getMessage()" #uploadedDataDeleteModal></app-uploaded-data-delete>
