@@ -11,6 +11,8 @@ import {ReportPnGenerateModel} from '../../../models/report';
 import {ToastrService} from 'ngx-toastr';
 import {format} from "date-fns";
 import {ItemsListPnItemCaseModel} from '../../../models/list/items-list-case-pn.model';
+import {EFormService} from '../../../../../../common/services/eform';
+import {TemplateDto} from '../../../../../../common/models/dto';
 
 @Component({
   selector: 'app-items-planning-pn-list-case-result-page',
@@ -23,6 +25,7 @@ export class ListCaseResultPageComponent implements OnInit {
   @Output() generateReport: EventEmitter<ReportPnGenerateModel> = new EventEmitter();
   @Output() saveReport: EventEmitter<ReportPnGenerateModel> = new EventEmitter();
   generateForm: FormGroup;
+  currentTemplate: TemplateDto = new TemplateDto;
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   listCaseRequestModel: ItemListCasesPnRequestModel = new ItemListCasesPnRequestModel();
   casesModel: ItemListPnCaseResultListModel = new ItemListPnCaseResultListModel();
@@ -32,6 +35,7 @@ export class ListCaseResultPageComponent implements OnInit {
   constructor(private activateRoute: ActivatedRoute,
               private sharedPnService: SharedPnService,
               private formBuilder: FormBuilder,
+              private eFormService: EFormService,
               private itemsPlanningPnCasesService: ItemsPlanningPnCasesService,
               private toastrService: ToastrService) {
     const activatedRouteSub = this.activateRoute.params.subscribe(params => {
@@ -89,6 +93,15 @@ export class ListCaseResultPageComponent implements OnInit {
     this.getAllInitialData();
   }
 
+  getReportingSettings(eformId: number) {
+    this.eFormService.getSingle(eformId).subscribe(operation => {
+      this.spinnerStatus = true;
+      if (operation && operation.success) {
+        this.currentTemplate = operation.model;
+      }
+      this.spinnerStatus = false;
+    });
+  }
 
   getAllInitialData() {
     this.getAllCases();
@@ -104,6 +117,7 @@ export class ListCaseResultPageComponent implements OnInit {
       if (data && data.success) {
         this.casesModel = data.model;
       } this.spinnerStatus = false;
+      this.getReportingSettings(this.casesModel.sdkeFormId);
     });
   }
 
@@ -131,5 +145,13 @@ export class ListCaseResultPageComponent implements OnInit {
       }
       this.getAllCases();
     }
+  }
+  downloadFile(caseId: number, fileType: string) {
+    this.spinnerStatus = true;
+    this.eFormService.downloadEformPDF(this.currentTemplate.id, caseId, fileType).subscribe(data => {
+      const blob = new Blob([data]);
+      saveAs(blob, `template_${this.currentTemplate.id}.${fileType}`);
+      this.spinnerStatus = false;
+    });
   }
 }
