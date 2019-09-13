@@ -113,20 +113,14 @@
             <fa-icon icon="plus"></fa-icon>
             {{ 'Add New Item' | translate }}
           </button>
+          <button type="btn btn-success" id="importItemBtn" name="button" routerLink="'/import'">
+          <fa-icon icon="file-import"></fa-icon>
+          {{ 'Import New Items' | translate }}
+        </button>
           <div class="row p-1 mt-2 table-responsive no-gutters">
             <table class="table table-sm text-center z-depth-1 pr-2 pl-2">
-              <tbody id="itemsTableBody">
+              <tbody id="tableBody">
               <tr *ngFor="let item of newListModel.items">
-                <td>
-                  <div class="md-form md-form-sm">
-                    <input mdbInputDirective
-                           [mdbValidate]="false"
-                           [(ngModel)]="item.itemNumber"
-                           type="text" id="createItemNumber"
-                           name="createItemNumber" class="form-control">
-                    <label for="createItemNumber">{{'Number' | translate}}</label>
-                  </div>
-                </td>
                 <td id="listId">
                   <div class="md-form md-form-sm">
                     <input mdbInputDirective
@@ -151,30 +145,20 @@
                   <div class="md-form md-form-sm">
                     <input mdbInputDirective
                            [mdbValidate]="false"
+                           [(ngModel)]="item.itemNumber"
+                           type="text" id="createItemNumber"
+                           name="createItemNumber" class="form-control">
+                    <label for="createItemNumber">{{'Number' | translate}}</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
                            [(ngModel)]="item.locationCode"
                            type="text" id="createItemLocationCode"
                            name="createItemLocationCode" class="form-control">
                     <label for="createItemLocationCode">{{'Location code' | translate}}</label>
-                  </div>
-                </td>
-                <td>
-                  <div class="md-form md-form-sm">
-                    <input mdbInputDirective
-                           [mdbValidate]="false"
-                           [(ngModel)]="item.buildYear"
-                           type="text" id="createItemBuildYear"
-                           name="createItemBuildYear" class="form-control">
-                    <label for="createItemBuildYear">{{'Build year' | translate}}</label>
-                  </div>
-                </td>
-                <td>
-                  <div class="md-form md-form-sm">
-                    <input mdbInputDirective
-                           [mdbValidate]="false"
-                           [(ngModel)]="item.type"
-                           type="text" id="createItemType"
-                           name="createItemType" class="form-control">
-                    <label for="createItemType">{{'Type' | translate}}</label>
                   </div>
                 </td>
                 <td>
@@ -205,3 +189,4 @@
 </div>
 
 <spinner-pn [spinnerVisibility]="spinnerStatus"></spinner-pn>
+<app-items-planning-pn-unit-import #unitImportModal></app-items-planning-pn-unit-import>

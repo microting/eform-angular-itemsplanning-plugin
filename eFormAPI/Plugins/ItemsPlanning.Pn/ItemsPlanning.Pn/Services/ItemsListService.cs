@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Math;
 using Microsoft.EntityFrameworkCore;
 using Microting.eFormApi.BasePn.Infrastructure.Extensions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Entities;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using ItemsPlanning.Pn.Abstractions;
+using ItemsPlanning.Pn.Infrastructure.Helpers;
 using Microting.eForm.Infrastructure.Constants;
 using Microting.eFormApi.BasePn.Abstractions;
+using Newtonsoft.Json.Linq;
 
 namespace ItemsPlanning.Pn.Services
 {
@@ -387,6 +390,96 @@ namespace ItemsPlanning.Pn.Services
                 return new OperationDataResult<ItemsListPnModel>(
                     false,
                     _itemsPlanningLocalizationService.GetString("ErrorWhileObtainingList"));
+            }
+        }
+        
+        private Item FindItem(bool numberExists, int numberColumn, bool itemNameExists,
+            int itemNameColumn, JToken headers, JToken itemObj)
+        {
+            Item item = null;
+
+            if (numberExists)
+            {
+                string itemNo = itemObj[numberColumn].ToString();
+                item = _dbContext.Items.SingleOrDefault(x => x.ItemNumber == itemNo);
+            }
+
+            if (itemNameExists)
+            {
+                string itemName = itemObj[itemNameColumn].ToString();
+                item = _dbContext.Items.SingleOrDefault(x => x.Name == itemName);
+            }
+
+            return item;
+        }
+        
+        public async Task<OperationResult> ImportUnit(UnitImportModel unitAsJson)
+        {
+            try
+            {
+                {
+                    JToken rawJson = JRaw.Parse(unitAsJson.ImportList);
+                    JToken rawHeadersJson = JRaw.Parse(unitAsJson.Headers);
+
+                    JToken headers = rawHeadersJson;
+                    IEnumerable<JToken> itemObjects = rawJson.Skip(1);
+                    
+                    foreach (JToken itemObj in itemObjects)
+                    {
+                        bool numberExists = int.TryParse(headers[0]["headerValue"].ToString(), out int numberColumn);
+                        bool itemNameExists = int.TryParse(headers[1]["headerValue"].ToString(),
+                            out int nameColumn);
+                        if (numberExists || itemNameExists)
+                        {
+                            Item existingItem = FindItem(numberExists, numberColumn, itemNameExists,
+                                nameColumn, headers, itemObj);
+                            if (existingItem == null)
+                            {
+                                ItemsListPnItemModel itemModel =
+                                    ItemsHelper.ComposeValues(new ItemsListPnItemModel(), headers, itemObj);
+
+                                Item newItem = new Item
+                                {
+                                    ItemNumber = itemModel.ItemNumber,
+                                    Name = itemModel.Name,
+                                    Description = itemModel.Description,
+                                    LocationCode = itemModel.LocationCode,
+                                 
+
+                                };
+                               await newItem.Save(_dbContext);
+  
+                            }
+                            else
+                            {
+                                if (existingItem.WorkflowState == Constants.WorkflowStates.Removed)
+                                {                                    
+                                    Item item = await _dbContext.Items.SingleOrDefaultAsync(x => x.Id == existingItem.Id);
+                                    if (item != null)
+                                    {
+                                        item.Name = existingItem.Name;
+                                        item.Description = existingItem.Description;
+                                        item.ItemNumber = existingItem.ItemNumber;
+                                        item.LocationCode = existingItem.LocationCode;
+                                        item.WorkflowState = Constants.WorkflowStates.Created;
+
+                                        await item.Update(_dbContext);
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+                return new OperationResult(true,
+                    _itemsPlanningLocalizationService.GetString("ItemImportes"));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+                _core.LogException(e.Message);
+                return new OperationResult(false,
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileImportingItems"));
             }
         }
 
