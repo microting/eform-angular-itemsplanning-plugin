@@ -14,6 +14,7 @@ import * as moment from 'moment';
 })
 export class ListEditComponent implements OnInit {
   @ViewChild('frame') frame;
+  @ViewChild('unitImportModal') importUnitModal;
   @Output() onListUpdated: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
   selectedListModel: ItemsListPnModel = new ItemsListPnModel();
@@ -72,7 +73,9 @@ export class ListEditComponent implements OnInit {
       } this.spinnerStatus = false;
     });
   }
-
+  showImportModal() {
+    this.importUnitModal.show();
+  }
   onSelectedChanged(e: any) {
     // debugger;
     // this.selectedListModel.eFormId = e.id;
