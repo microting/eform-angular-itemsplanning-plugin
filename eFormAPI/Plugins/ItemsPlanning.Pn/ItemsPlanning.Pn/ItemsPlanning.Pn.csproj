@@ -21,12 +21,12 @@
       <PackageReference Include="ExcelDataReader" Version="3.6.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
-      <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.6" />
+      <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.7" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.6" />
-      <PackageReference Include="Microting.eForm" Version="3.0.302" />
-      <PackageReference Include="Microting.eFormApi.BasePn" Version="1.1.174" />
+      <PackageReference Include="Microting.eForm" Version="3.0.306" />
+      <PackageReference Include="Microting.eFormApi.BasePn" Version="1.1.175" />
       <PackageReference Include="McMaster.NETCore.Plugins" Version="0.2.1" />
-      <PackageReference Include="Microting.ItemsPlanningBase" Version="1.1.43" />
+      <PackageReference Include="Microting.ItemsPlanningBase" Version="1.1.44" />
     </ItemGroup>
 
     <ItemGroup>
