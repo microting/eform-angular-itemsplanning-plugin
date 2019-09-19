@@ -17,7 +17,7 @@ import {TemplateListModel, TemplateRequestModel} from 'src/app/common/models/efo
 })
 export class ItemsListCreateComponent implements OnInit {
   @ViewChild('frame') frame;
-  @ViewChild('importUnitModal') importUnitModal;
+  @ViewChild('unitImportModal') importUnitModal;
   @Output() listCreated: EventEmitter<void> = new EventEmitter<void>();
   // @Output() deploymentFinished: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;

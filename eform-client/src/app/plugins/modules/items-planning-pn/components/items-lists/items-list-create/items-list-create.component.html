@@ -113,7 +113,7 @@
             <fa-icon icon="plus"></fa-icon>
             {{ 'Add New Item' | translate }}
           </button>
-          <button type="btn btn-success" id="importItemBtn" name="button" routerLink="'/import'">
+          <button type="btn btn-success" id="importItemBtn" name="button" (click)="showImportModal()">
           <fa-icon icon="file-import"></fa-icon>
           {{ 'Import New Items' | translate }}
         </button>

@@ -113,6 +113,10 @@
             <fa-icon icon="plus"></fa-icon>
             {{ 'Add New Item' | translate }}
           </button>
+          <button type="btn btn-success" id="importItemBtn" name="button" (click)="showImportModal()">
+            <fa-icon icon="file-import"></fa-icon>
+            {{ 'Import New Items' | translate }}
+          </button>
           <div class="row p-1 mt-2 table-responsive no-gutters">
             <table class="table table-sm text-center z-depth-1 pr-2 pl-2">
               <tbody id="itemsTableBody">
@@ -203,3 +207,4 @@
 </div>
 
 <spinner-pn [spinnerVisibility]="spinnerStatus"></spinner-pn>
+<app-items-planning-pn-unit-import #unitImportModal></app-items-planning-pn-unit-import>
