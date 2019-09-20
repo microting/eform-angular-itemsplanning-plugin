@@ -237,6 +237,7 @@ namespace ItemsPlanning.Pn.Services
             itemListPnCaseResultListModel.BuildYearEnabled = itemList.BuildYearEnabled;
             itemListPnCaseResultListModel.TypeEnabled = itemList.TypeEnabled;
             itemListPnCaseResultListModel.NumberOfImagesEnabled = itemList.NumberOfImagesEnabled;
+            itemListPnCaseResultListModel.SdkeFormId = itemList.RelatedEFormId;
             
             itemListPnCaseResultListModel.FieldEnabled1 = itemList.SdkFieldEnabled1;
             if ( itemListPnCaseResultListModel.FieldEnabled1)

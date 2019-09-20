@@ -70,5 +70,7 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         public string FieldName9 { get; set; }
 
         public string FieldName10 { get; set; }
+        
+        public int SdkeFormId { get; set; }
     }
 }
