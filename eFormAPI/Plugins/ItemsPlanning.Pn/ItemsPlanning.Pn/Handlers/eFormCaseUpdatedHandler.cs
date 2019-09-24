@@ -31,7 +31,7 @@ namespace ItemsPlanning.Pn.Handlers
                 var caseDto = _sdkCore.CaseReadByCaseId(message.caseId);
                 var microtingUId = caseDto.MicrotingUId;
                 var microtingCheckUId = caseDto.CheckUId;
-                var theCase = _sdkCore.CaseRead(microtingUId, microtingCheckUId);
+                var theCase = _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId);
 
                 itemCaseSite = SetFieldValue(itemCaseSite, theCase.Id);
 

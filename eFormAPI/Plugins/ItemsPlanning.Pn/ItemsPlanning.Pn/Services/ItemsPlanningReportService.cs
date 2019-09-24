@@ -242,7 +242,7 @@ namespace ItemsPlanning.Pn.Services
                 }
 
                 // Get the reply and work with its ElementList
-                foreach (var element in core.CaseRead(@case.MicrotingUId, @case.CheckUIid).ElementList)
+                foreach (var element in core.CaseRead((int)@case.MicrotingUId, (int)@case.CheckUIid).ElementList)
                 {
                     if (!(element is CheckListValue checkListValue)) 
                         continue;
