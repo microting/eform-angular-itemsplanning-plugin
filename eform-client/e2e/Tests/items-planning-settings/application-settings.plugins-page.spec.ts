@@ -31,7 +31,8 @@ describe('Application settings page - site header section', function () {
         browser.pause(2000);
         browser.refresh();
 
-        browser.pause(20000);
+        browser.waitForVisible('#PluginDropDown', 40000);
+        browser.pause(10000);
         const plugin = pluginsPage.getFirstPluginRowObj();
         expect(plugin.id).equal(1);
         expect(plugin.name).equal('Microting Items Planning Plugin');
