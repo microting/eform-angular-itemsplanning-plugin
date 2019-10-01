@@ -13,8 +13,7 @@ describe('Application settings page - site header section', function () {
         loginPage.login();
         myEformsPage.Navbar.advancedDropdown();
         myEformsPage.Navbar.clickonSubMenuItem('Plugins');
-        browser.waitForVisible('#plugin-id', 40000);
-        browser.waitForVisible('Microting Items Planning Plugin', 10000);
+        browser.pause(40000);
 
         const plugin = pluginsPage.getFirstPluginRowObj();
         expect(plugin.id).equal(1);
