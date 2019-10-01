@@ -32,7 +32,7 @@ describe('Application settings page - site header section', function () {
         browser.refresh();
 
         browser.waitForVisible('#plugin-id', 40000);
-        browser.waitForVisible('Microting Items Planning Plugin', 10000);
+        // browser.waitForVisible('Microting Items Planning Plugin', 10000);
         const plugin = pluginsPage.getFirstPluginRowObj();
         expect(plugin.id).equal(1);
         expect(plugin.name).equal('Microting Items Planning Plugin');
