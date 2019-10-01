@@ -28,7 +28,7 @@ describe('Application settings page - site header section', function () {
         browser.waitForVisible('#PluginDropDown', 40000);
         pluginPage.selectValue('PluginDropDown', 'PluginDropDown', 'Aktiveret');
         pluginPage.saveBtn.click();
-        browser.pause(40000); // We need to wait 40 seconds for the plugin to create db etc.
+        browser.pause(50000); // We need to wait 40 seconds for the plugin to create db etc.
         browser.refresh();
 
         browser.waitForVisible('#plugin-id', 40000);
