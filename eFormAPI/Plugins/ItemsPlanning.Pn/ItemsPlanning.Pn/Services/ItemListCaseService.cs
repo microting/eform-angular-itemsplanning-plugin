@@ -356,10 +356,6 @@ namespace ItemsPlanning.Pn.Services
 
                 try
                 {
-                    if (item.Status == 100)
-                    {
-                        _bus.SendLocal(new eFormCaseUpdated(item.MicrotingSdkCaseId));
-                    }
                     ItemsListPnCaseResultModel newItem = new ItemsListPnCaseResultModel()
                     {
                         Id = item.Id,
