@@ -28,7 +28,7 @@ export const routes: Routes = [
         component: ListCasePageComponent
       },
       {
-        path: 'item-case-results/:id',
+        path: 'item-itemCase-results/:id',
         canActivate: [AuthGuard],
         component: ListCaseResultPageComponent
       },

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using ItemsPlanning.Pn.Abstractions;
 using ItemsPlanning.Pn.Infrastructure.Models;
@@ -13,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microting.eForm.Dto;
 using Microting.eForm.Infrastructure.Constants;
 using Microting.eFormApi.BasePn.Abstractions;
+using Microting.eFormApi.BasePn.Infrastructure.Database.Entities;
 using Microting.eFormApi.BasePn.Infrastructure.Extensions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
@@ -203,6 +205,9 @@ namespace ItemsPlanning.Pn.Services
 
         private async Task<ItemListPnCaseResultListModel> GetTableData(ItemListCasesPnRequestModel requestModel)
         {
+            PluginConfigurationValue pluginConfigurationValue =
+                await _dbContext.PluginConfigurationValues.SingleOrDefaultAsync(x => x.Name == "ItemsPlanningBaseSettings:Token");
+            
             var itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
 
             List<Field_Dto> allFields = _core.GetCore().Advanced_TemplateFieldReadAll(itemList.RelatedEFormId);
@@ -381,7 +386,8 @@ namespace ItemsPlanning.Pn.Services
                         Field10 = item.SdkFieldValue10,
                         SdkCaseId = item.MicrotingSdkCaseId,
                         SdkeFormId = itemList.RelatedEFormId,
-                        Status = item.Status
+                        Status = item.Status,
+                        Token = pluginConfigurationValue.Value
                     };
                     itemListPnCaseResultListModel.Items.Add(newItem);
                 }
@@ -428,5 +434,57 @@ namespace ItemsPlanning.Pn.Services
             }
             return new OperationDataResult<ItemsListPnItemCaseModel>(false, "Not done yet.");
         }
+
+        public async Task<string> DownloadEFormPdf(int caseId, string token, string fileType)
+        {
+            PluginConfigurationValue pluginConfigurationValue =
+                await _dbContext.PluginConfigurationValues.SingleOrDefaultAsync(x => x.Name == "ItemsPlanningBaseSettings:Token");
+            if (token == pluginConfigurationValue.Value)
+            {
+                try
+                {
+                    var core = _core.GetCore();
+                    int eFormId = 0;
+                    ItemCase itemCase = await _dbContext.ItemCases.FirstOrDefaultAsync(x => x.MicrotingSdkCaseId == caseId);
+                    Item item = await _dbContext.Items.SingleOrDefaultAsync(x => x.Id == itemCase.ItemId);
+
+
+                    string xmlContent = new XElement("ItemCase", 
+                        new XElement("ItemId", item.Id), 
+                        new XElement("ItemNumber", item.ItemNumber),
+                        new XElement("ItemName", item.Name),  
+                        new XElement("ItemDescription", item.Description), 
+                        new XElement("ItemLocationCode", item.LocationCode),
+                        new XElement("ItemBuildYear", item.BuildYear),
+                        new XElement("ItemType", item.Type)
+                    ).ToString();
+
+                    if (caseId != 0 && eFormId != 0)
+                    {
+                        var filePath = core.CaseToPdf(caseId, eFormId.ToString(),
+                            DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                            $"{core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/", fileType, xmlContent);
+                        if (!System.IO.File.Exists(filePath))
+                        {
+                            throw new FileNotFoundException();
+                        }
+
+                        return filePath;
+                    }
+                    else
+                    {
+                        throw new Exception("could not find case of eform!");
+                    }
+                    
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception("Something went wrong!", exception);
+                }
+            }
+
+            throw new UnauthorizedAccessException();
+        }
+        
     }
 }

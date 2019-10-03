@@ -60,6 +60,11 @@ namespace ItemsPlanning.Pn.Infrastructure.Data.Seed.Data
             {
                 Name = "ItemsPlanningBaseSettings:SiteIds",
                 Value = ""
+            },
+            new PluginConfigurationValue()
+            {
+            Name = "ItemsPlanningBaseSettings:Token",
+            Value = "..."
             }
         };
     }

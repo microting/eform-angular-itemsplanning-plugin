@@ -51,5 +51,7 @@ namespace ItemsPlanning.Pn.Infrastructure.Models
         public int SdkeFormId { get; set; }
         
         public int NumberOfImages { get; set; }
+        
+        public string Token { get; set; }
     }
 }

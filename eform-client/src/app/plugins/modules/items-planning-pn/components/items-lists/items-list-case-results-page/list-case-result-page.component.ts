@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core'
 import {saveAs} from 'file-saver';
 import {ActivatedRoute} from '@angular/router';
 import {SharedPnService} from '../../../../shared/services';
-import {ItemsPlanningPnCasesService, ItemsPlanningPnReportsService} from '../../../services';
+import {ItemsPlanningPnCasesService} from '../../../services';
 import {PageSettingsModel} from '../../../../../../common/models/settings';
 import {ItemListCasesPnRequestModel} from '../../../models/list/item-list-cases-pn-request.model';
 import {ItemListPnCaseResultListModel, ItemsListPnCaseResultModel} from '../../../models/list';
@@ -10,7 +10,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ReportPnGenerateModel} from '../../../models/report';
 import {ToastrService} from 'ngx-toastr';
 import {format} from "date-fns";
-import {ItemsListPnItemCaseModel} from '../../../models/list/items-list-case-pn.model';
 import {EFormService} from '../../../../../../common/services/eform';
 import {TemplateDto} from '../../../../../../common/models/dto';
 
@@ -48,7 +47,6 @@ export class ListCaseResultPageComponent implements OnInit {
       dateRange: ['', Validators.required]
     });
     this.getLocalPageSettings();
-    // this.getLocalPageSettings();
   }
 
   onGenerateReport() {
@@ -57,13 +55,6 @@ export class ListCaseResultPageComponent implements OnInit {
     this.listCaseRequestModel.offset = 0;
     this.listCaseRequestModel.listId = this.id;
     this.getAllInitialData();
-    // this.spinnerStatus = true;
-    // this.reportService.generateReport(model).subscribe((data) => {
-    //   if (data && data.success) {
-    //     this.reportModel = data.model;
-    //   }
-    //   this.spinnerStatus = false;
-    // });
   }
 
   onSaveReport() {
@@ -134,6 +125,7 @@ export class ListCaseResultPageComponent implements OnInit {
   showListCasePdfModal(itemCase: ItemsListPnCaseResultModel) {
     this.uploadedDataModal.show(itemCase);
   }
+
   changePage(e: any) {
     if (e || e === 0) {
       this.listCaseRequestModel.offset = e;
@@ -146,12 +138,9 @@ export class ListCaseResultPageComponent implements OnInit {
       this.getAllCases();
     }
   }
-  downloadFile(caseId: number, fileType: string) {
-    this.spinnerStatus = true;
-    this.eFormService.downloadEformPDF(this.currentTemplate.id, caseId, fileType).subscribe(data => {
-      const blob = new Blob([data]);
-      saveAs(blob, `template_${this.currentTemplate.id}.${fileType}`);
-      this.spinnerStatus = false;
-    });
+
+  downloadFile(itemCase: ItemsListPnCaseResultModel, fileType: string) {
+    window.open('/api/items-planning-pn/list-case-file-report/' +
+      itemCase.id + '?token=' + itemCase.token + '&fileType=' + fileType, '_blank');
   }
 }

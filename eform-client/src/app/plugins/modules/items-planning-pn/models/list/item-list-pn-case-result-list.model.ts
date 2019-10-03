@@ -34,7 +34,6 @@ export class ItemListPnCaseResultListModel {
   fieldName10: string;
   fieldStatus: string;
   comment: string;
-  numberOfImages: number;
   sdkeFormId: number;
 }
 
@@ -62,4 +61,5 @@ export class ItemsListPnCaseResultModel {
   field10: string;
   status: number;
   sdkCaseId: number;
+  token: string;
 }

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -91,6 +92,39 @@ namespace ItemsPlanning.Pn.Controllers
         public async Task<OperationDataResult<ItemsListPnItemCaseModel>> GetSingleCase(int caseId)
         {
             return await _listService.GetSingleCase(caseId);
+        }
+
+        [HttpGet]
+        [Route("api/items-planning-pn/list-case-file-report/{caseId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ItemListCaseResult(int caseId, string token, string fileType)
+        {
+            try {
+                string filePath = await _listService.DownloadEFormPdf(caseId, token, fileType);
+                
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return NotFound();
+                }
+                var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                if (fileType == "pdf")
+                {
+                    return File(fileStream, "application/pdf", Path.GetFileName(filePath));
+                }
+                else
+                {
+                    return File(fileStream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", Path.GetFileName(filePath));
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid();
+            }
+            catch 
+            {
+                return BadRequest();
+                
+            }
         }
     }
 }

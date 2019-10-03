@@ -274,90 +274,90 @@
       </tr>
       </thead>
       <tbody id="tableBody">
-      <tr *ngFor="let case of casesModel.items">
+      <tr *ngFor="let itemCase of casesModel.items">
         <td id="caseId">
-          {{case.id}}
+          {{itemCase.id}}
         </td>
         <td *ngIf="casesModel.deployedAtEnabled">
-          <date-formatter [date]="case.deployedAt" [Format]="'date'"></date-formatter>
+          <date-formatter [date]="itemCase.deployedAt" [Format]="'date'"></date-formatter>
         </td>
         <td *ngIf="casesModel.doneAtEnabled">
-          <date-formatter [date]="case.doneAt" [Format]="'datetime'"></date-formatter>
+          <date-formatter [date]="itemCase.doneAt" [Format]="'datetime'"></date-formatter>
         </td>
         <td *ngIf="casesModel.doneByUserNameEnabled">
-          {{case.doneByUserName}}
+          {{itemCase.doneByUserName}}
         </td>
         <td *ngIf="casesModel.labelEnabled">
-          {{case.label}}
+          {{itemCase.label}}
         </td>
         <td *ngIf="casesModel.descriptionEnabled">
-          {{case.description}}
+          {{itemCase.description}}
         </td>
         <td *ngIf="casesModel.itemNumberEnabled">
-          {{case.itemNumber}}
+          {{itemCase.itemNumber}}
         </td>
         <td *ngIf="casesModel.locationCodeEnabled">
-          {{case.locationCode}}
+          {{itemCase.locationCode}}
         </td>
         <td *ngIf="casesModel.buildYearEnabled">
-          {{case.buildYear}}
+          {{itemCase.buildYear}}
         </td>
         <td *ngIf="casesModel.typeEnabled">
-          {{case.type}}
+          {{itemCase.type}}
         </td>
         <td *ngIf="casesModel.fieldEnabled1">
-          {{case.field1}}
+          {{itemCase.field1}}
         </td>
         <td *ngIf="casesModel.fieldEnabled2">
-          {{case.field2}}
+          {{itemCase.field2}}
         </td>
         <td *ngIf="casesModel.fieldEnabled3">
-          {{case.field3}}
+          {{itemCase.field3}}
         </td>
         <td *ngIf="casesModel.fieldEnabled4">
-          {{case.field4}}
+          {{itemCase.field4}}
         </td>
         <td *ngIf="casesModel.fieldEnabled5">
-          {{case.field5}}
+          {{itemCase.field5}}
         </td>
         <td *ngIf="casesModel.fieldEnabled6">
-          {{case.field6}}
+          {{itemCase.field6}}
         </td>
         <td *ngIf="casesModel.fieldEnabled7">
-          {{case.field7}}
+          {{itemCase.field7}}
         </td>
         <td *ngIf="casesModel.fieldEnabled8">
-          {{case.field8}}
+          {{itemCase.field8}}
         </td>
         <td *ngIf="casesModel.fieldEnabled9">
-          {{case.field9}}
+          {{itemCase.field9}}
         </td>
         <td *ngIf="casesModel.fieldEnabled10">
-          {{case.field10}}
+          {{itemCase.field10}}
         </td>
         <td *ngIf="casesModel.numberOfImagesEnabled">
-          {{case.numberOfImages}}
+          {{itemCase.numberOfImages}}
         </td>
         <td>
-          <button class="btn btn-success btn-icon mb-2" *ngIf="case.status === 100"
-                  [routerLink]="['/cases/edit/' + case.sdkCaseId + '/' + casesModel.sdkeFormId]"
-                  [queryParams]="{'reverseRoute': '/plugins/items-planning-pn/item-case-results/' + this.id}"
+          <button class="btn btn-success btn-icon mb-2" *ngIf="itemCase.status === 100"
+                  [routerLink]="['/cases/edit/' + itemCase.sdkCaseId + '/' + casesModel.sdkeFormId]"
+                  [queryParams]="{'reverseRoute': '/plugins/items-planning-pn/item-itemCase-results/' + this.id}"
                   mdbTooltip="{{ 'Edit Case' | translate }}">
             <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
           </button>
           <button class="btn btn-success btn-icon mb-2"
-                  (click)="showListCasePdfModal(case)" *ngIf="case.status === 100"
+                  (click)="showListCasePdfModal(itemCase)" *ngIf="itemCase.status === 100"
                   mdbTooltip="{{'Upload PDF' | translate}}">
             <fa-icon icon="file-upload" size="lg" [fixedWidth]="true"></fa-icon>
           </button>
           <button class="btn btn-success btn-icon mb-2" *ngIf="(currentTemplate.jasperExportEnabled || currentTemplate.docxExportEnabled)"
-                  (click)="downloadFile(case.id, 'pdf')"
+                  (click)="downloadFile(itemCase, 'pdf')"
                   mdbTooltip="{{ 'Download PDF' | translate }}">
             <fa-icon icon="file-pdf" size="lg" [fixedWidth]="true"></fa-icon>
 
           </button>
           <button class="btn btn-success btn-icon mb-2" *ngIf="currentTemplate.docxExportEnabled"
-                  (click)="downloadFile(case.id, 'docx')"
+                  (click)="downloadFile(itemCase, 'docx')"
                   mdbTooltip="{{ 'Download Docx' | translate }}">
             <fa-icon icon="file-word" size="lg" [fixedWidth]="true"></fa-icon>
 
