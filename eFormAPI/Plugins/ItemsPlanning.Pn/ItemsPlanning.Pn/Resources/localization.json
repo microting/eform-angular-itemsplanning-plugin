@@ -89,5 +89,89 @@
       "da": "Nej",
       "en-US": "No"
     }
+  },
+  {
+    "Key": "Deployed at",
+    "LocalizedValue": {
+      "da": "Udsendt d.",
+      "en-US": "Deployed at"
+    }
+  },
+  {
+    "Key": "Date of doing",
+    "LocalizedValue": {
+      "da": "Udførelsesdato",
+      "en-US": "Date of doing"
+    }
+  },
+  {
+    "Key": "Done by",
+    "LocalizedValue": {
+      "da": "Udført af",
+      "en-US": "Done by"
+    }
+  },
+  {
+    "Key": "Name",
+    "LocalizedValue": {
+      "da": "Navn",
+      "en-US": "Name"
+    }
+  },
+  {
+    "Key": "Description",
+    "LocalizedValue": {
+      "da": "Beskrivelse",
+      "en-US": "Description"
+    }
+  },
+  {
+    "Key": "Item number",
+    "LocalizedValue": {
+      "da": "Enhedsid",
+      "en-US": "Item number"
+    }
+  },
+  {
+    "Key": "Location code",
+    "LocalizedValue": {
+      "da": "Placering",
+      "en-US": "Location code"
+    }
+  },
+  {
+    "Key": "Build year",
+    "LocalizedValue": {
+      "da": "Årgang",
+      "en-US": "Build year"
+    }
+  },
+  {
+    "Key": "Type",
+    "LocalizedValue": {
+      "da": "Type",
+      "en-US": "Type"
+    }
+  },
+  {
+    "Key": "Number of images",
+    "LocalizedValue": {
+      "da": "Antal billeder",
+      "en-US": "Number of images"
+    }
+  },
+  {
+    "Key": "DateFrom",
+    "LocalizedValue": {
+      "da": "Dato fra",
+      "en-US": "Date from"
+    }
+  },
+  {
+    "Key": "DateTo",
+    "LocalizedValue": {
+      "da": "Dato til",
+      "en-US": "Date to"
+    }
   }
 ]

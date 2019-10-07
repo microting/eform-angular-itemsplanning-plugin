@@ -38,5 +38,12 @@ namespace ItemsPlanning.Pn.Infrastructure.Models.Settings
         
         public string SiteIds { get; set; }
         
+        public string Token { get; set; }
+        
+    }
+
+    public class ItemsPlanningBaseBaseToken
+    {
+        public string Token { get; set; }
     }
 }

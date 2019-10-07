@@ -29,12 +29,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
-using eFormData;
 using ItemsPlanning.Pn.Abstractions;
 using ItemsPlanning.Pn.Infrastructure.Models;
 using ItemsPlanning.Pn.Infrastructure.Models.Report;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microting.eForm.Infrastructure.Models;
 using Microting.eFormApi.BasePn.Abstractions;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
@@ -51,7 +51,9 @@ namespace ItemsPlanning.Pn.Services
         private readonly IEFormCoreService _coreHelper;
 
         // ReSharper disable once SuggestBaseTypeForParameter
-        public ItemsPlanningReportService(IItemsPlanningLocalizationService itemsPlanningLocalizationService, ILogger<ItemsPlanningReportService> logger, IExcelService excelService, ItemsPlanningPnDbContext dbContext, IEFormCoreService coreHelper)
+        public ItemsPlanningReportService(IItemsPlanningLocalizationService itemsPlanningLocalizationService,
+            ILogger<ItemsPlanningReportService> logger, IExcelService excelService, ItemsPlanningPnDbContext dbContext,
+            IEFormCoreService coreHelper)
         {
             _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
             _logger = logger;
@@ -64,7 +66,6 @@ namespace ItemsPlanning.Pn.Services
         {
             try
             {
-                Debugger.Break();
                 var core = _coreHelper.GetCore();
                 var itemList = await _dbContext.ItemLists.FirstAsync(x => x.Id == model.ItemList);
                 var item = await _dbContext.Items.FirstAsync(x => x.Id == model.Item);
@@ -207,16 +208,17 @@ namespace ItemsPlanning.Pn.Services
             
             // Get all answered cases
             var casesList = core.CaseReadAll(template.Id, null, null)
-                .Where(c => itemCases.Select(ic => ic.MicrotingSdkCaseId.ToString()).Contains(c.MicrotingUId))
+                .Where(c => itemCases.Select(ic => ic.MicrotingSdkCaseId).Contains(c.Id))
                 .ToList();
 
             // Go through all itemCases
             foreach (var ic in itemCases)
             {
+                finalModel.Ids.Add($"{ic.Id} / {ic.MicrotingSdkCaseId}");
                 finalModel.Dates.Add(ic.CreatedAt);
 
-                var @case = casesList.FirstOrDefault(c => c.MicrotingUId == ic.MicrotingSdkCaseId.ToString());
-                
+                var @case = casesList.FirstOrDefault(c => c.Id == ic.MicrotingSdkCaseId);
+
                 // Fill with empty values, if this itemCase was not replied
                 if (@case == null)
                 {
@@ -228,11 +230,19 @@ namespace ItemsPlanning.Pn.Services
                         }
                     }
 
+                    finalModel.DatesDoneAt.Add(null);
+                    finalModel.DoneBy.Add(null);
+
                     continue;
+                }
+                else
+                {
+                    finalModel.DoneBy.Add(@case.WorkerName);
+                    finalModel.DatesDoneAt.Add(@case.DoneAt);
                 }
 
                 // Get the reply and work with its ElementList
-                foreach (var element in core.CaseRead(@case.MicrotingUId, @case.CheckUIid).ElementList)
+                foreach (var element in core.CaseRead((int)@case.MicrotingUId, (int)@case.CheckUIid).ElementList)
                 {
                     if (!(element is CheckListValue checkListValue)) 
                         continue;

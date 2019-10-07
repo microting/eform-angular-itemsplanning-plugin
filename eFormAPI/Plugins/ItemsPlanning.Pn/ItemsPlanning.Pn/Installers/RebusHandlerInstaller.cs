@@ -25,6 +25,8 @@ SOFTWARE.
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using ItemsPlanning.Pn.Handlers;
+using ItemsPlanning.Pn.Messages;
 using Rebus.Handlers;
 
 namespace ItemsPlanning.Pn.Installers
@@ -33,9 +35,7 @@ namespace ItemsPlanning.Pn.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-//            container.Register(Component.For<IHandleMessages<MachineAreaCreate>>().ImplementedBy<MachineAreaCreateHandler>().LifestyleTransient());            
-//            container.Register(Component.For<IHandleMessages<MachineAreaUpdate>>().ImplementedBy<MachineAreaUpdateHandler>().LifestyleTransient());            
-//            container.Register(Component.For<IHandleMessages<MachineAreaDelete>>().ImplementedBy<MachineAreaDeleteHandler>().LifestyleTransient());            
+            container.Register(Component.For<IHandleMessages<eFormCaseUpdated>>().ImplementedBy<eFormCaseUpdatedHandler>().LifestyleTransient());              
         }
     }
 }

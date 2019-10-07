@@ -9,11 +9,12 @@ describe('Items planning lists table sorting', function () {
     loginPage.login();
     itemsPlanningListPage.goToListsPage();
   });
-  it ('should be able to sort by ID', function () {
+  it('should create dummy lists', function () {
     itemsPlanningListPage.createDummyLists();
-
+  });
+  it ('should be able to sort by ID', function () {
     const listBefore = $$('#listId').map(item => {
-      return parseInt(item.getText(), 10);
+      return item.getText();
     });
 
     // check that sorting is correct in both directions
@@ -21,11 +22,11 @@ describe('Items planning lists table sorting', function () {
       itemsPlanningListPage.clickIdTableHeader();
 
       const listAfter = $$('#listId').map(item => {
-        return parseInt(item.getText(), 10);
+        return item.getText();
       });
 
       // get current direction of sorting
-      const sortIcon = browser.$('#idTableHeader i').getText();
+      const sortIcon = browser.element('#idTableHeader i').getText();
       let sorted;
       if (sortIcon === 'expand_more') {
         sorted = listBefore.sort().reverse();
@@ -34,15 +35,11 @@ describe('Items planning lists table sorting', function () {
       } else {
         sorted = listBefore;
       }
-
       expect(sorted, 'Sort by ID incorrect').deep.equal(listAfter);
     }
-
-    itemsPlanningListPage.clearTable();
+    browser.pause(5000);
   });
   it ('should be able to sort by Name', function () {
-    itemsPlanningListPage.createDummyLists();
-
     const listBefore = $$('#listName').map(item => {
       return item.getText();
     });
@@ -56,7 +53,7 @@ describe('Items planning lists table sorting', function () {
       });
 
       // get current direction of sorting
-      const sortIcon = browser.$('#nameTableHeader i').getText();
+      const sortIcon = browser.element('#nameTableHeader i').getText();
       let sorted;
       if (sortIcon === 'expand_more') {
         sorted = listBefore.sort().reverse();
@@ -69,13 +66,9 @@ describe('Items planning lists table sorting', function () {
       browser.pause(5000);
       expect(sorted, 'Sort by Name incorrect').deep.equal(listAfter);
     }
-
     browser.pause(5000);
-    itemsPlanningListPage.clearTable();
   });
   it ('should be able to sort by Description', function () {
-    itemsPlanningListPage.createDummyLists();
-
     const listBefore = $$('#listDescription').map(item => {
       return item.getText();
     });
@@ -89,7 +82,7 @@ describe('Items planning lists table sorting', function () {
       });
 
       // get current direction of sorting
-      const sortIcon = browser.$('#descriptionTableHeader i').getText();
+      const sortIcon = browser.element('#descriptionTableHeader i').getText();
       let sorted;
       if (sortIcon === 'expand_more') {
         sorted = listBefore.sort().reverse();
@@ -101,8 +94,9 @@ describe('Items planning lists table sorting', function () {
 
       expect(sorted, 'Sort by Description incorrect').deep.equal(listAfter);
     }
-
     browser.pause(5000);
+  });
+  it('should clear table', function () {
     itemsPlanningListPage.clearTable();
   });
 });

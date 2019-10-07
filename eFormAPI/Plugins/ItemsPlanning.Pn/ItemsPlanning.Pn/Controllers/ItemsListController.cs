@@ -51,5 +51,12 @@ namespace ItemsPlanning.Pn.Controllers
         {
             return await _listService.DeleteList(id);
         }
+        
+        [HttpPost]
+        [Route("api/items-planning-pn/lists/import")]
+        public async Task<OperationResult> ImportUnit([FromBody] UnitImportModel unitImportModel)
+        {
+            return await _listService.ImportUnit(unitImportModel);
+        }
     }
 }

@@ -2,6 +2,7 @@ import Page from '../Page';
 import itemsPlanningModalPage from './ItemsPlanningModal.page';
 import {PageWithNavbarPage} from '../PageWithNavbar.page';
 import {Guid} from 'guid-typescript';
+import XMLForEformFractions from '../../Constants/XMLForEformFractions';
 
 export class ItemsPlanningListPage extends PageWithNavbarPage {
   constructor() {
@@ -11,19 +12,33 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
   public rowNum(): number {
     return browser.$$('#tableBody > tr').length;
   }
-
+  public get newEformBtn() {
+    return browser.element('#newEFormBtn');
+  }
+  public get xmlTextArea() {
+    return browser.element('#eFormXml');
+  }
+  public get createEformBtn() {
+    return browser.element('#createEformBtn');
+  }
+  public get createEformTagSelector() {
+    return browser.element('#createEFormMultiSelector');
+  }
+  public get createEformNewTagInput() {
+    return browser.element('#addTagInput');
+  }
   public clickIdTableHeader() {
-    browser.$('#idTableHeader').click();
+    browser.element(`//*[contains(@id, 'idTableHeader')]`).click();
     browser.pause(5000);
   }
 
   public clickNameTableHeader() {
-    browser.$('#nameTableHeader').click();
+    browser.element(`//*[contains(@id, 'nameTableHeader')]`).click();
     browser.pause(5000);
   }
 
   public clickDescriptionTableHeader() {
-    browser.$('#descriptionTableHeader').click();
+    browser.element(`//*[contains(@id, 'descriptionTableHeader')]`).click();
     browser.pause(5000);
   }
 
@@ -58,12 +73,17 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
   public createDummyLists() {
     for (let i = 0; i < 3; i++) {
       this.listCreateBtn.click();
-      browser.pause(5000);
-
       itemsPlanningModalPage.createListItemName.setValue(Guid.create().toString());
       itemsPlanningModalPage.createListDescription.setValue(Guid.create().toString());
+      browser.pause(5000);
+      itemsPlanningModalPage.createListSelector.addValue('Number 1');
+      browser.pause(2000);
+      itemsPlanningModalPage.createListSelectorOption.click();
+      itemsPlanningModalPage.createRepeatEvery.setValue(1);
+      itemsPlanningModalPage.selectCreateRepeatType(1);
+      itemsPlanningModalPage.createRepeatUntil.setValue('5/15/2020');
       itemsPlanningModalPage.listCreateSaveBtn.click();
-      browser.pause(6000);
+      browser.pause(10000);
     }
   }
 
@@ -76,6 +96,38 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
       browser.pause(5000);
     }
   }
+  createNewEform(eFormLabel, newTagsList = [], tagAddedNum = 0) {
+    this.newEformBtn.click();
+    browser.pause(5000);
+    // Create replaced xml and insert it in textarea
+    const xml = XMLForEformFractions.XML.replace('TEST_LABEL', eFormLabel);
+    browser.execute(function (xmlText) {
+      (<HTMLInputElement>document.getElementById('eFormXml')).value = xmlText;
+    }, xml);
+    this.xmlTextArea.addValue(' ');
+    // Create new tags
+    const addedTags: string[] = newTagsList;
+    if (newTagsList.length > 0) {
+      this.createEformNewTagInput.setValue(newTagsList.join(','));
+      browser.pause(5000);
+    }
+    // Add existing tags
+    const selectedTags: string[] = [];
+    if (tagAddedNum > 0) {
+      browser.pause(5000);
+      for (let i = 0; i < tagAddedNum; i++) {
+        this.createEformTagSelector.click();
+        const selectedTag = $('.ng-option:not(.ng-option-selected)');
+        selectedTags.push(selectedTag.getText());
+        console.log('selectedTags is ' + JSON.stringify(selectedTags));
+        selectedTag.click();
+        browser.pause(5000);
+      }
+    }
+    this.createEformBtn.click();
+    browser.pause(14000);
+    return {added: addedTags, selected: selectedTags};
+  }
 }
 
 const itemsPlanningListPage = new ItemsPlanningListPage();
@@ -83,11 +135,20 @@ export default itemsPlanningListPage;
 
 export class ListRowObject {
   constructor(rowNumber) {
-    this.id = $$('#listId')[rowNumber - 1].getText();
-    this.name = $$('#listName')[rowNumber - 1].getText();
-    this.description = $$('#listDescription')[rowNumber - 1].getText();
-    this.updateBtn = $$('#updateListBtn')[rowNumber - 1];
-    this.deleteBtn = $$('#deleteListBtn')[rowNumber - 1];
+    if ($$('#listId')[rowNumber - 1]) {
+      try {
+        this.name = $$('#listName')[rowNumber - 1].getText();
+      } catch (e) {}
+      try {
+        this.description = $$('#listDescription')[rowNumber - 1].getText();
+      } catch (e) {}
+      try {
+        this.updateBtn = $$('#updateListBtn')[rowNumber - 1];
+      } catch (e) {}
+      try {
+        this.deleteBtn = $$('#deleteListBtn')[rowNumber - 1];
+      } catch (e) {}
+    }
   }
 
   public id;

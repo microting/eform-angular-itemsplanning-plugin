@@ -8,11 +8,27 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {EformSharedModule} from '../../../common/modules/eform-shared/eform-shared.module';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ItemsPlanningPnLayoutComponent} from './layouts';
-import {ItemsListCreateComponent, ListDeleteComponent, ListEditComponent, ListsPageComponent} from './components/items-lists';
+import {
+  ItemListCaseColumnsModalComponent,
+  ItemsListCreateComponent,
+  ListCasePageComponent,
+  ListCaseResultPageComponent,
+  ListDeleteComponent,
+  ListEditComponent,
+  ListsPageComponent,
+  ItemCaseUploadedDataComponent,
+  UploadedDataPdfComponent,
+  UploadedDataDeleteComponent,
+  ItemsPlanningPnUnitImportComponent
+} from './components/items-lists';
 import {ItemsPlanningSettingsComponent} from './components/items-plannings-setting';
 import {RouterModule} from '@angular/router';
 import {ItemsPlanningPnRouting} from './items-planning-pn.routing.module';
-import {ItemsPlanningPnListsService, ItemsPlanningPnSettingsService, ItemsPlanningPnReportsService} from './services';
+import {ItemsPlanningPnListsService,
+  ItemsPlanningPnSettingsService,
+  ItemsPlanningPnReportsService,
+  ItemsPlanningPnCasesService,
+  ItemsPlanningPnUploadedDataService} from './services';
 import {OwlDateTimeModule} from 'ng-pick-datetime';
 import {OwlMomentDateTimeModule} from 'ng-pick-datetime-moment';
 import {
@@ -20,6 +36,7 @@ import {
   ReportGeneratorFormComponent,
   ReportPreviewTableComponent
 } from './components/reports';
+import {FileUploadModule} from 'ng2-file-upload';
 
 @NgModule({
   imports: [
@@ -35,23 +52,33 @@ import {
     ItemsPlanningPnRouting,
     OwlDateTimeModule,
     OwlMomentDateTimeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule
   ],
   declarations: [
     ItemsPlanningPnLayoutComponent,
+    ItemListCaseColumnsModalComponent,
     ListsPageComponent,
+    ListCaseResultPageComponent,
     ItemsListCreateComponent,
+    ListCasePageComponent,
     ListEditComponent,
     ListDeleteComponent,
     ItemsPlanningSettingsComponent,
     ReportGeneratorContainerComponent,
     ReportGeneratorFormComponent,
-    ReportPreviewTableComponent
+    ReportPreviewTableComponent,
+    ItemCaseUploadedDataComponent,
+    UploadedDataPdfComponent,
+    UploadedDataDeleteComponent,
+    ItemsPlanningPnUnitImportComponent
   ],
   providers: [
     ItemsPlanningPnSettingsService,
     ItemsPlanningPnListsService,
-    ItemsPlanningPnReportsService
+    ItemsPlanningPnReportsService,
+    ItemsPlanningPnCasesService,
+    ItemsPlanningPnUploadedDataService
   ]
 })
 

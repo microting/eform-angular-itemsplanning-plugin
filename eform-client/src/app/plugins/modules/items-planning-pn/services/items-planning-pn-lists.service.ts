@@ -11,7 +11,7 @@ import {
   ItemsListPnModel,
   ItemsListsPnModel,
   ItemsListPnUpdateModel,
-  ItemsListPnRequestModel, ItemsListPnCreateModel
+  ItemsListPnRequestModel, ItemsListPnCreateModel, ItemsPlanningPnUnitImportModel
 } from '../models/list';
 
 export let ItemsPlanningPnListsMethods = {
@@ -44,5 +44,9 @@ export class ItemsPlanningPnListsService extends BaseService {
 
   deleteList(fractionId: number): Observable<OperationResult> {
     return this.delete(ItemsPlanningPnListsMethods.Lists + '/' + fractionId);
+  }
+
+  importUnit(model: ItemsPlanningPnUnitImportModel): Observable<OperationResult> {
+    return this.post(ItemsPlanningPnListsMethods.Lists + '/import', model);
   }
 }

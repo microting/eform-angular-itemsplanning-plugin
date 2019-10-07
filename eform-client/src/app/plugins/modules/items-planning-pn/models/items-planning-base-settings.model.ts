@@ -5,4 +5,5 @@ export class ItemsPlanningBaseSettingsModel {
   maxParallelism: string;
   numberOfWorkers: number;
   siteIds: string;
+  token: string;
 }

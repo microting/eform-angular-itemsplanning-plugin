@@ -113,11 +113,15 @@
             <fa-icon icon="plus"></fa-icon>
             {{ 'Add New Item' | translate }}
           </button>
+          <button type="btn btn-success" id="importItemBtn" name="button" (click)="showImportModal()">
+          <fa-icon icon="file-import"></fa-icon>
+          {{ 'Import New Items' | translate }}
+        </button>
           <div class="row p-1 mt-2 table-responsive no-gutters">
             <table class="table table-sm text-center z-depth-1 pr-2 pl-2">
               <tbody id="tableBody">
               <tr *ngFor="let item of newListModel.items">
-                <td id="listId">
+                <td id="itemsTableBody">
                   <div class="md-form md-form-sm">
                     <input mdbInputDirective
                            [mdbValidate]="false"
@@ -158,6 +162,26 @@
                   </div>
                 </td>
                 <td>
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
+                           [(ngModel)]="item.buildYear"
+                           type="text" id="createItemBuildYear"
+                           name="createItemBuildYear" class="form-control">
+                    <label for="createItemBuildYear">{{'Build year' | translate}}</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="md-form md-form-sm">
+                    <input mdbInputDirective
+                           [mdbValidate]="false"
+                           [(ngModel)]="item.type"
+                           type="text" id="createItemType"
+                           name="createItemType" class="form-control">
+                    <label for="createItemType">{{'Type' | translate}}</label>
+                  </div>
+                </td>
+                <td>
                   <div class="d-flex flex-row justify-content-center">
                     <button id="deleteItemBtn" (click)="removeItem(item.id)"
                             class="btn btn-danger btn-icon mb-2 "
@@ -185,3 +209,4 @@
 </div>
 
 <spinner-pn [spinnerVisibility]="spinnerStatus"></spinner-pn>
+<app-items-planning-pn-unit-import #unitImportModal></app-items-planning-pn-unit-import>

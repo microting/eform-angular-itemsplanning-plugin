@@ -2,7 +2,15 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AdminGuard, AuthGuard} from 'src/app/common/guards';
 import {ItemsPlanningPnLayoutComponent} from './layouts';
-import {ListsPageComponent, ItemsPlanningSettingsComponent, ReportGeneratorContainerComponent} from './components';
+import {
+  ListsPageComponent,
+  ItemsPlanningSettingsComponent,
+  ReportGeneratorContainerComponent,
+  ListCasePageComponent,
+  ListCaseResultPageComponent,
+  ItemCaseUploadedDataComponent,
+  ItemsPlanningPnUnitImportComponent
+} from './components';
 
 export const routes: Routes = [
   {
@@ -15,6 +23,16 @@ export const routes: Routes = [
         component: ListsPageComponent
       },
       {
+        path: 'item-cases/:id',
+        canActivate: [AuthGuard],
+        component: ListCasePageComponent
+      },
+      {
+        path: 'item-itemCase-results/:id',
+        canActivate: [AuthGuard],
+        component: ListCaseResultPageComponent
+      },
+      {
         path: 'settings',
         canActivate: [AdminGuard],
         component: ItemsPlanningSettingsComponent
@@ -23,6 +41,16 @@ export const routes: Routes = [
         path: 'reports',
         canActivate: [AdminGuard],
         component: ReportGeneratorContainerComponent
+      },
+      {
+        path: 'item-cases/:id/:id',
+        canActivate: [AdminGuard],
+        component: ItemCaseUploadedDataComponent
+      },
+      {
+        path: 'import',
+        canActivate: [AdminGuard],
+        component: ItemsPlanningPnUnitImportComponent
       }
     ]
   }

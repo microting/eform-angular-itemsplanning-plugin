@@ -10,7 +10,8 @@ namespace ItemsPlanning.Pn.Abstractions
         Task<OperationResult> DeleteList(int id);
         Task<OperationResult> UpdateList(ItemsListPnModel updateModel);
         Task<OperationDataResult<ItemsListsModel>> GetAllLists(ItemsListRequestModel requestModel);
-        Task<OperationDataResult<ItemsListPnModel>> GetSingleList(int fractionId);
-        
+        Task<OperationDataResult<ItemsListPnModel>> GetSingleList(int itemListId);
+        Task<OperationResult> ImportUnit(UnitImportModel unitImportModel);
+
     }
 }

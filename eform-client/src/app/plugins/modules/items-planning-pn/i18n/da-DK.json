@@ -29,6 +29,9 @@
 	"SDK connection string": "SDK-forbindelsesstreng",
 	"Save": "Gem",
   "Selected template": "Valgt skabelon",
+  "Build year": "Årgang",
+  "Type": "Type",
+  "File name": "Filnavn",
 
   "Monday": "Mandag",
   "Tuesday": "Tirsdag",
@@ -40,5 +43,12 @@
 
   "Day": "Dag",
   "Week": "Uge",
-  "Month": "Måned"
+  "Month": "Måned",
+  "Issued on": "Udsendt den",
+  "Done at": "Udført den",
+  "Done by": "Udført af",
+  "Selected date range": "Valgt datointerval",
+  "Generate": "Generer",
+  "Item List": "Gruppe",
+  "Item": "Enhed"
 }

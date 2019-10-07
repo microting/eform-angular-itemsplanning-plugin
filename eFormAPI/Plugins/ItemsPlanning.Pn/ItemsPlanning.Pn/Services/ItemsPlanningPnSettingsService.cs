@@ -24,6 +24,7 @@ SOFTWARE.
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -67,6 +68,13 @@ namespace ItemsPlanning.Pn.Services
             try
             {
                 var option = _options.Value;
+                if (option.Token == "...")
+                {
+                    const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    Random random = new Random();
+                    string result = new string(chars.Select(c => chars[random.Next(chars.Length)]).Take(32).ToArray());
+                    await _options.UpdateDb(settings => { settings.Token = result;}, _dbContext, UserId);
+                }
 
                 if (option.SdkConnectionString == "...")
                 {
@@ -114,6 +122,26 @@ namespace ItemsPlanning.Pn.Services
                 _logger.LogError(e.Message);
                 return new OperationResult(false,
                     _itemsPlanningLocalizationService.GetString("ErrorWhileUpdatingSettings"));
+            }
+        }
+
+        public async Task<OperationDataResult<ItemsPlanningBaseBaseToken>> GetToken()
+        {
+            try
+            {
+                ItemsPlanningBaseBaseToken itemsPlanningBaseBaseToken = new ItemsPlanningBaseBaseToken()
+                {
+                    Token = _options.Value.Token
+                };
+
+                return new OperationDataResult<ItemsPlanningBaseBaseToken>(true, itemsPlanningBaseBaseToken);
+            }
+            catch(Exception e)
+            {
+                Trace.TraceError(e.Message);
+                _logger.LogError(e.Message);
+                return new OperationDataResult<ItemsPlanningBaseBaseToken>(false,
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileObtainingTrashInspectionToken"));
             }
         }
         

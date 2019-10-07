@@ -11,7 +11,25 @@ export const ItemsPlanningPnLocalSettings = [
         sort: 'Id',
         isSortDsc: false
       })
-    }
+    },
+  ),
+  new ApplicationPageModel({
+      name: 'ItemListCases',
+      settings: new PageSettingsModel({
+        pageSize: 10,
+        sort: 'Id',
+        isSortDsc: false
+      })
+    },
+  ),
+  new ApplicationPageModel({
+      name: 'ItemCaseResults',
+      settings: new PageSettingsModel({
+        pageSize: 10,
+        sort: 'Id',
+        isSortDsc: false
+      })
+    },
   )
 ];
 

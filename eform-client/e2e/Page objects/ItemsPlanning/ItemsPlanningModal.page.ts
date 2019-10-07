@@ -14,6 +14,10 @@ export class ItemsPlanningModalPage extends Page {
     return browser.element('#createListSelector input');
   }
 
+  public get createListSelectorOption() {
+    return browser.element(`//*[contains(@class, 'ng-option')]`);
+  }
+
   public get createListDescription() {
     return browser.element('#createListDescription');
   }
@@ -50,7 +54,9 @@ export class ItemsPlanningModalPage extends Page {
   public get editListSelector() {
     return browser.element('#editListSelector input');
   }
-
+  public get editListSelectorValue() {
+    return browser.element(`//*[contains(@id, 'editListSelector')]//*[contains(@class, 'ng-value')]//div[contains(@class, 'ng-star-inserted')]`);
+  }
   public get editListDescription() {
     return browser.element('#editListDescription');
   }
@@ -95,7 +101,9 @@ export class ItemsPlanningModalPage extends Page {
 
   public createList(data: any) {
     this.createListItemName.setValue(data.name);
-    this.createListSelector.setValue(data.template);
+    this.createListSelector.addValue(data.template);
+    browser.pause(2000);
+    this.createListSelectorOption.click();
     this.createListDescription.setValue(data.description);
     this.createRepeatEvery.setValue(data.repeatEvery);
     this.selectCreateRepeatType(data.repeatType);

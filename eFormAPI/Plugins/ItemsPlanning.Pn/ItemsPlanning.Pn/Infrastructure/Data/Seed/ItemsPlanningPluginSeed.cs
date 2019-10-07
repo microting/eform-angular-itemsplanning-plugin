@@ -27,7 +27,7 @@ using Microting.ItemsPlanningBase.Infrastructure.Data;
 using Microting.eFormApi.BasePn.Infrastructure.Database.Entities;
 using System;
 using System.Linq;
-using eFormShared;
+using Microting.eForm.Infrastructure.Constants;
 
 namespace ItemsPlanning.Pn.Infrastructure.Data.Seed
 {

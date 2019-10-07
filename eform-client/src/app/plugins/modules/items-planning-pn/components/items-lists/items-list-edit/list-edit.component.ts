@@ -14,13 +14,14 @@ import * as moment from 'moment';
 })
 export class ListEditComponent implements OnInit {
   @ViewChild('frame') frame;
+  @ViewChild('unitImportModal') importUnitModal;
   @Output() onListUpdated: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
   selectedListModel: ItemsListPnModel = new ItemsListPnModel();
   templateRequestModel: TemplateRequestModel = new TemplateRequestModel();
   templatesModel: TemplateListModel = new TemplateListModel();
   typeahead = new EventEmitter<string>();
-  constructor(private trashInspectionPnListsService: ItemsPlanningPnListsService,
+  constructor(private itemsPlanningPnListsService: ItemsPlanningPnListsService,
               private cd: ChangeDetectorRef,
               private eFormService: EFormService) {
     this.typeahead
@@ -47,7 +48,7 @@ export class ListEditComponent implements OnInit {
 
   getSelectedList(id: number) {
     this.spinnerStatus = true;
-    this.trashInspectionPnListsService.getSingleList(id).subscribe((data) => {
+    this.itemsPlanningPnListsService.getSingleList(id).subscribe((data) => {
       if (data && data.success) {
         this.selectedListModel = data.model;
         this.selectedListModel.repeatUntil = moment(this.selectedListModel.repeatUntil);
@@ -63,7 +64,7 @@ export class ListEditComponent implements OnInit {
     if (this.selectedListModel.repeatUntil) {
       this.selectedListModel.repeatUntil.utcOffset(0, true);
     }
-    this.trashInspectionPnListsService.updateList(model)
+    this.itemsPlanningPnListsService.updateList(model)
       .subscribe((data) => {
       if (data && data.success) {
         this.onListUpdated.emit();
@@ -72,7 +73,9 @@ export class ListEditComponent implements OnInit {
       } this.spinnerStatus = false;
     });
   }
-
+  showImportModal() {
+    this.importUnitModal.show();
+  }
   onSelectedChanged(e: any) {
     // debugger;
     // this.selectedListModel.eFormId = e.id;
