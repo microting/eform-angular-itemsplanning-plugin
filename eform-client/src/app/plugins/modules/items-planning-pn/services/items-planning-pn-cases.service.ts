@@ -3,8 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
 import {Observable} from 'rxjs';
 import {OperationDataResult} from '../../../../common/models';
-import {ItemListPnCaseResultListModel, ItemsListPnModel} from '../models/list';
-import {ItemsPlanningPnListsMethods} from './items-planning-pn-lists.service';
+import {ItemListPnCaseResultListModel} from '../models/list';
 import {ItemsListCasePnModel, ItemsListPnItemCaseModel} from '../models/list/items-list-case-pn.model';
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
@@ -12,7 +11,7 @@ import {ItemListCasesPnRequestModel} from '../models/list/item-list-cases-pn-req
 
 export let ItemsPlanningPnCasesMethods = {
   Cases: 'api/items-planning-pn/list-cases',
-  CaseResults: 'api/items-planning-pn/list-itemCase-results'
+  CaseResults: 'api/items-planning-pn/list-case-results'
 };
 @Injectable({
   providedIn: 'root'

@@ -8,3 +8,4 @@ export * from './item-case-uploaded-data.model';
 export * from './uploaded-data.model';
 export * from './items-planning-pn-headers.model';
 export * from './items-planning-pn-unit-import.model';
+export * from './item-list-results-settings.model';
