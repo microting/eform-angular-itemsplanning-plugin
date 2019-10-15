@@ -12,7 +12,7 @@ import {ItemListCasesPnRequestModel} from '../models/list/item-list-cases-pn-req
 
 export let ItemsPlanningPnCasesMethods = {
   Cases: 'api/items-planning-pn/list-cases',
-  CaseResults: 'api/items-planning-pn/list-itemCase-results'
+  CaseResults: 'api/items-planning-pn/list-case-results'
 };
 @Injectable({
   providedIn: 'root'
