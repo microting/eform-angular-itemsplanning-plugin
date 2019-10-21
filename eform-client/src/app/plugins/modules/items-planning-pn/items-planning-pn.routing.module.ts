@@ -11,14 +11,14 @@ import {
   ItemCaseUploadedDataComponent,
   ItemsPlanningPnUnitImportComponent
 } from './components';
-import {MonitoringPnClaims} from '../monitoring-pn/const/monitoring-pn-claims.const';
+import {ItemsPlanningPnClaims} from './enums';
 
 export const routes: Routes = [
   {
     path: '',
     component: ItemsPlanningPnLayoutComponent,
     canActivate: [PermissionGuard],
-    data: {requiredPermission: MonitoringPnClaims.accessMonitoringPlugin},
+    data: {requiredPermission: ItemsPlanningPnClaims.accessItemsPlanningPlugin},
     children: [
       {
         path: 'lists',
