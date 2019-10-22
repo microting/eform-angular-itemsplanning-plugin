@@ -85,7 +85,7 @@ namespace ItemsPlanning.Pn
                 connectionString, 
                 seedData, 
                 contextFactory);
-            CaseUpdateDelegates.CaseUpdateDelegate += UpdateRelatedCase;
+            //CaseUpdateDelegates.CaseUpdateDelegate += UpdateRelatedCase;
 
         }
 
