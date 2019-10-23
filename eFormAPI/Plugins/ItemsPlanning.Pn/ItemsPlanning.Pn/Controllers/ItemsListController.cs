@@ -4,6 +4,7 @@ using ItemsPlanning.Pn.Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+using Microting.ItemsPlanningBase.Infrastructure.Const;
 
 namespace ItemsPlanning.Pn.Controllers
 {
@@ -33,6 +34,7 @@ namespace ItemsPlanning.Pn.Controllers
 
         [HttpPost]
         [Route("api/items-planning-pn/lists")]
+        [Authorize(Policy = ItemsPlanningClaims.CreateItemsLists)]
         public async Task<OperationResult> CreateList([FromBody] ItemsListPnModel createModel)
         {
             return await _listService.CreateList(createModel);

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AdminGuard, AuthGuard} from 'src/app/common/guards';
+import {AdminGuard, AuthGuard, PermissionGuard} from 'src/app/common/guards';
 import {ItemsPlanningPnLayoutComponent} from './layouts';
 import {
   ListsPageComponent,
@@ -11,11 +11,14 @@ import {
   ItemCaseUploadedDataComponent,
   ItemsPlanningPnUnitImportComponent
 } from './components';
+import {ItemsPlanningPnClaims} from './enums';
 
 export const routes: Routes = [
   {
     path: '',
     component: ItemsPlanningPnLayoutComponent,
+    canActivate: [PermissionGuard],
+    data: {requiredPermission: ItemsPlanningPnClaims.accessItemsPlanningPlugin},
     children: [
       {
         path: 'lists',

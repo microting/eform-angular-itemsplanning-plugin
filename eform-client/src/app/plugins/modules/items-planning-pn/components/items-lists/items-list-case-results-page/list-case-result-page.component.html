@@ -41,231 +41,231 @@
             (click)="sortTable('Id')">
           <div class="d-flex align-items-center justify-content-center">
             ID
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'Id'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'Id'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'Id' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'Id' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'Id' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'Id' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="dateTableHeader"
             (click)="sortTable('CreatedAt')" *ngIf="casesModel.deployedAtEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Date of deployment' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'CreatedAt'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'CreatedAt'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'CreatedAt' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'CreatedAt' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'CreatedAt' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'CreatedAt' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="doneAtTableHeader"
             (click)="sortTable('MicrotingSdkCaseDoneAt')" *ngIf="casesModel.doneAtEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Date of doing' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'MicrotingSdkCaseDoneAt'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'MicrotingSdkCaseDoneAt'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'MicrotingSdkCaseDoneAt' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'MicrotingSdkCaseDoneAt' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'MicrotingSdkCaseDoneAt' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'MicrotingSdkCaseDoneAt' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="doneByUserNameTableHeader"
             (click)="sortTable('DoneByUserName')" *ngIf="casesModel.doneByUserNameEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Done by' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'DoneByUserName'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'DoneByUserName'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'DoneByUserName' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'DoneByUserName' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'DoneByUserName' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'DoneByUserName' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="labelTableHeader"
             (click)="sortTable('Name')" *ngIf="casesModel.labelEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Name' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'Name'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'Name'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'Name' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'Name' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'Name' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'Name' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="descriptionTableHeader"
             (click)="sortTable('Description')" *ngIf="casesModel.descriptionEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Description' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'Description'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'Description'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'Description' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'Description' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'Description' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'Description' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="itemNumberTableHeader"
             (click)="sortTable('ItemNumber')" *ngIf="casesModel.itemNumberEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Item number' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'ItemNumber'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'ItemNumber'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'ItemNumber' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'ItemNumber' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'ItemNumber' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'ItemNumber' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="locationCodeTableHeader"
             (click)="sortTable('LocationCode')" *ngIf="casesModel.locationCodeEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Location code' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'LocationCode'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'LocationCode'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'LocationCode' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'LocationCode' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'LocationCode' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'LocationCode' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="buildYearTableHeader"
             (click)="sortTable('BuildYear')" *ngIf="casesModel.buildYearEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Build year' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'BuildYear'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'BuildYear'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'BuildYear' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'BuildYear' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'BuildYear' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'BuildYear' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="typeTableHeader"
             (click)="sortTable('Type')" *ngIf="casesModel.typeEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Type' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'Type'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'Type'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'Type' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'Type' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'Type' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'Type' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field1TableHeader"
             (click)="sortTable('SdkFieldValue1')" *ngIf="casesModel.fieldEnabled1">
           <div class="d-flex align-items-center justify-content-center">
             {{casesModel.fieldName1}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'SdkFieldValue1'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'SdkFieldValue1'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue1' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue1' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue1' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue1' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field2TableHeader"
             (click)="sortTable('SdkFieldValue2')" *ngIf="casesModel.fieldEnabled2">
           <div class="d-flex align-items-center justify-content-center">
             {{casesModel.fieldName2}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'SdkFieldValue2'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'SdkFieldValue2'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue2' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue2' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue2' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue2' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field3TableHeader"
             (click)="sortTable('SdkFieldValue3')" *ngIf="casesModel.fieldEnabled3">
           <div class="d-flex align-items-center justify-content-center">
             {{casesModel.fieldName3}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'SdkFieldValue3'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'SdkFieldValue3'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue3' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue3' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue3' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue3' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field4TableHeader"
             (click)="sortTable('SdkFieldValue4')" *ngIf="casesModel.fieldEnabled4">
           <div class="d-flex align-items-center justify-content-center">
             {{casesModel.fieldName4}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'SdkFieldValue4'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'SdkFieldValue4'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue4' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue4' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue4' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue4' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field5TableHeader"
             (click)="sortTable('SdkFieldValue5')" *ngIf="casesModel.fieldEnabled5">
           <div class="d-flex align-items-center justify-content-center">
             {{casesModel.fieldName5}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'SdkFieldValue5'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'SdkFieldValue5'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue5' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue5' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue5' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue5' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field6TableHeader"
             (click)="sortTable('SdkFieldValue6')" *ngIf="casesModel.fieldEnabled6">
           <div class="d-flex align-items-center justify-content-center">
             {{casesModel.fieldName6}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'SdkFieldValue6'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'SdkFieldValue6'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue6' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue6' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue6' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue6' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field7TableHeader"
             (click)="sortTable('SdkFieldValue7')" *ngIf="casesModel.fieldEnabled7">
           <div class="d-flex align-items-center justify-content-center">
             {{casesModel.fieldName7}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'SdkFieldValue7'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'SdkFieldValue7'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue7' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue7' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue7' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue7' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field8TableHeader"
             (click)="sortTable('SdkFieldValue8')" *ngIf="casesModel.fieldEnabled8">
           <div class="d-flex align-items-center justify-content-center">
             {{casesModel.fieldName8}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'SdkFieldValue8'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'SdkFieldValue8'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue8' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue8' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue8' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue8' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field9TableHeader"
             (click)="sortTable('SdkFieldValue9')" *ngIf="casesModel.fieldEnabled9">
           <div class="d-flex align-items-center justify-content-center">
             {{casesModel.fieldName9}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'SdkFieldValue9'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'SdkFieldValue9'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue9' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue9' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue9' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue9' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="field10TableHeader"
             (click)="sortTable('SdkFieldValue10')" *ngIf="casesModel.fieldEnabled10">
           <div class="d-flex align-items-center justify-content-center">
             {{casesModel.fieldName10}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'SdkFieldValue10'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'SdkFieldValue10'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue10' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue10' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'SdkFieldValue10' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'SdkFieldValue10' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col" class="table-header-sortable" id="numberOfImagesTableHeader"
             (click)="sortTable('NumberOfImages')" *ngIf="casesModel.numberOfImagesEnabled">
           <div class="d-flex align-items-center justify-content-center">
             {{'Number of images' | translate}}
-            <i class="material-icons text-black-50" *ngIf="localPageSettings.sort != 'NumberOfImages'">unfold_more</i>
+            <i class="material-icons text-black-50" *ngIf="listCaseRequestModel.sort != 'NumberOfImages'">unfold_more</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'NumberOfImages' && !listCaseRequestModel.isSortDsc">expand_less</i>
+               *ngIf="listCaseRequestModel.sort == 'NumberOfImages' && !listCaseRequestModel.isSortDsc">expand_less</i>
             <i class="material-icons"
-               *ngIf="localPageSettings.sort == 'NumberOfImages' && listCaseRequestModel.isSortDsc">expand_more</i>
+               *ngIf="listCaseRequestModel.sort == 'NumberOfImages' && listCaseRequestModel.isSortDsc">expand_more</i>
           </div>
         </th>
         <th scope="col">
@@ -341,7 +341,8 @@
         <td>
           <button class="btn btn-success btn-icon mb-2" *ngIf="itemCase.status === 100"
                   [routerLink]="['/cases/edit/' + itemCase.sdkCaseId + '/' + casesModel.sdkeFormId]"
-                  [queryParams]="{'reverseRoute': '/plugins/items-planning-pn/item-itemCase-results/' + this.id}"
+                  [queryParams]="{'reverseRoute': '/plugins/items-planning-pn/item-itemCase-results/'
+                    + this.listCaseRequestModel.listId}"
                   mdbTooltip="{{ 'Edit Case' | translate }}">
             <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
           </button>
@@ -350,7 +351,8 @@
                   mdbTooltip="{{'Upload PDF' | translate}}">
             <fa-icon icon="file-upload" size="lg" [fixedWidth]="true"></fa-icon>
           </button>
-          <button class="btn btn-success btn-icon mb-2" *ngIf="(currentTemplate.jasperExportEnabled || currentTemplate.docxExportEnabled)"
+          <button class="btn btn-success btn-icon mb-2"
+                  *ngIf="(currentTemplate.jasperExportEnabled || currentTemplate.docxExportEnabled)"
                   (click)="downloadFile(itemCase, 'pdf')"
                   mdbTooltip="{{ 'Download PDF' | translate }}">
             <fa-icon icon="file-pdf" size="lg" [fixedWidth]="true"></fa-icon>
@@ -370,9 +372,8 @@
   <div class="row justify-content-between mr-2 ml-2">
     <div class="col-md-1">
       <page-size-pn
-        [pageSize]="localPageSettings.pageSize"
-        (onPageSizeChanged)="localPageSettings.pageSize = $event; listCaseRequestModel.pageIndex = 1;
-        updateLocalPageSettings()">
+        [pageSize]="listCaseRequestModel.pageSize"
+        (onPageSizeChanged)="changePageSize($event)">
       </page-size-pn>
     </div>
     <div class="col-md-4 ml-auto d-flex justify-content-end p-2">

@@ -4,6 +4,8 @@ import {PageSettingsModel} from 'src/app/common/models/settings';
 import {SharedPnService} from 'src/app/plugins/modules/shared/services';
 import {ItemsListPnModel, ItemsListPnRequestModel, ItemsListsPnModel} from '../../../models/list';
 import {ItemsPlanningPnListsService} from '../../../services';
+import {PluginClaimsHelper} from '../../../../../../common/helpers';
+import {ItemsPlanningPnClaims} from '../../../enums';
 
 @Component({
   selector: 'app-items-planning-pn-lists-page',
@@ -23,6 +25,14 @@ export class ListsPageComponent implements OnInit {
 
   constructor(private sharedPnService: SharedPnService,
               private itemsPlanningPnListsService: ItemsPlanningPnListsService) { }
+
+  get pluginClaimsHelper() {
+    return PluginClaimsHelper;
+  }
+
+  get itemsPlanningPnClaims() {
+    return ItemsPlanningPnClaims;
+  }
 
   ngOnInit() {
     this.getLocalPageSettings();

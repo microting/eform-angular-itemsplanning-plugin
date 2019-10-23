@@ -36,7 +36,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microting.eFormApi.BasePn;
-using Microting.eFormApi.BasePn.Abstractions;
 using Microting.eFormApi.BasePn.Infrastructure.Database.Extensions;
 using Microting.eFormApi.BasePn.Infrastructure.Delegates.CaseUpdate;
 using Microting.eFormApi.BasePn.Infrastructure.Models.Application;
@@ -44,16 +43,19 @@ using Microting.eFormApi.BasePn.Infrastructure.Settings;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Factories;
 using Rebus.Bus;
+using ItemsPlanning.Pn.Infrastructure.Models.Settings;
+using Microting.eFormApi.BasePn.Infrastructure.Helpers;
+using Microting.ItemsPlanningBase.Infrastructure.Const;
 
 namespace ItemsPlanning.Pn
 {
-    using Infrastructure.Models.Settings;
-
     public class EformItemsPlanningPlugin : IEformPlugin
     {
         public string Name => "Microting Items Planning Plugin";
         public string PluginId => "eform-angular-itemsplanning-plugin";
         public string PluginPath => PluginAssembly().Location;
+        public string PluginBaseUrl => "items-planning-pn";
+
         private string _connectionString;
         private eFormCaseUpdatedHandler _eFormCaseUpdatedHandler;
         private IBus _bus;
@@ -83,7 +85,7 @@ namespace ItemsPlanning.Pn
                 connectionString, 
                 seedData, 
                 contextFactory);
-            CaseUpdateDelegates.CaseUpdateDelegate += UpdateRelatedCase;
+            //CaseUpdateDelegates.CaseUpdateDelegate += UpdateRelatedCase;
 
         }
 
@@ -138,6 +140,7 @@ namespace ItemsPlanning.Pn
                 Name = localizationService.GetString("ItemsPlanning"),
                 E2EId = "items-planning-pn",
                 Link = "",
+                Guards = new List<string>() { ItemsPlanningClaims.AccessItemsPlanningPlugin },
                 MenuItems = new List<MenuItemModel>()
                 {
                     new MenuItemModel()
@@ -153,13 +156,6 @@ namespace ItemsPlanning.Pn
                         E2EId = "items-planning-pn-reports",
                         Link = "/plugins/items-planning-pn/reports",
                         Position = 2,
-                    },
-                    new MenuItemModel()
-                    {
-                        Name = localizationService.GetString("Settings"),
-                        E2EId = "items-planning-pn-settings",
-                        Link = "/plugins/items-planning-pn/settings",
-                        Position = 3,
                     }
                 }
             });
@@ -175,6 +171,14 @@ namespace ItemsPlanning.Pn
                 // Seed configuration
                 ItemsPlanningPluginSeed.SeedData(context);
             }
+        }
+
+        public PluginPermissionsManager GetPermissionsManager(string connectionString)
+        {
+            var contextFactory = new ItemsPlanningPnContextFactory();
+            var context = contextFactory.CreateDbContext(new[] { connectionString });
+
+            return new PluginPermissionsManager(context);
         }
 
         private void UpdateRelatedCase(int caseId)

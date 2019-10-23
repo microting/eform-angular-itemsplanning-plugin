@@ -1,6 +1,6 @@
 <subheader-pn [title]="'Lists' | translate">
   <div class="p-3">
-    <button
+    <button *ngIf="pluginClaimsHelper.check(itemsPlanningPnClaims.createItemsLists)"
       id="listCreateBtn"
       class="btn btn-success"
       mdbTooltip="{{ 'Create List' | translate }}"

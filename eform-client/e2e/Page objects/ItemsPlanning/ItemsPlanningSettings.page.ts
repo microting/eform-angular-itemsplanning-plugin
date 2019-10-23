@@ -1,4 +1,6 @@
 import Page from '../Page';
+import myEformsPage from '../MyEforms.page';
+import pluginPage from '../Plugin.page';
 
 export class ItemsPlanningSettingsPage extends Page {
   constructor() {
@@ -42,10 +44,11 @@ export class ItemsPlanningSettingsPage extends Page {
   }
 
   public goToSettingsPage() {
-    this.itemsPlanningBtn.click();
-    browser.pause(5000);
-    this.itemsPlanningSettingsBtn.click();
-    browser.pause(10000);
+    myEformsPage.Navbar.advancedDropdown();
+    myEformsPage.Navbar.clickonSubMenuItem('Plugins');
+    browser.pause(8000);
+    pluginPage.pluginSettingsLink.click();
+    browser.pause(8000);
   }
 
   public saveSettings(data: any) {

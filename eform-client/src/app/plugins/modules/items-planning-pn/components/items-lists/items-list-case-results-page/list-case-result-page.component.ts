@@ -3,13 +3,12 @@ import {saveAs} from 'file-saver';
 import {ActivatedRoute} from '@angular/router';
 import {SharedPnService} from '../../../../shared/services';
 import {ItemsPlanningPnCasesService} from '../../../services';
-import {PageSettingsModel} from '../../../../../../common/models/settings';
 import {ItemListCasesPnRequestModel} from '../../../models/list/item-list-cases-pn-request.model';
 import {ItemListPnCaseResultListModel, ItemsListPnCaseResultModel} from '../../../models/list';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ReportPnGenerateModel} from '../../../models/report';
 import {ToastrService} from 'ngx-toastr';
-import {format} from "date-fns";
+import {format} from 'date-fns';
 import {EFormService} from '../../../../../../common/services/eform';
 import {TemplateDto} from '../../../../../../common/models/dto';
 
@@ -25,11 +24,9 @@ export class ListCaseResultPageComponent implements OnInit {
   @Output() saveReport: EventEmitter<ReportPnGenerateModel> = new EventEmitter();
   generateForm: FormGroup;
   currentTemplate: TemplateDto = new TemplateDto;
-  localPageSettings: PageSettingsModel = new PageSettingsModel();
   listCaseRequestModel: ItemListCasesPnRequestModel = new ItemListCasesPnRequestModel();
   casesModel: ItemListPnCaseResultListModel = new ItemListPnCaseResultListModel();
   spinnerStatus = false;
-  id: number;
 
   constructor(private activateRoute: ActivatedRoute,
               private sharedPnService: SharedPnService,
@@ -38,32 +35,29 @@ export class ListCaseResultPageComponent implements OnInit {
               private itemsPlanningPnCasesService: ItemsPlanningPnCasesService,
               private toastrService: ToastrService) {
     const activatedRouteSub = this.activateRoute.params.subscribe(params => {
-      this.id = +params['id'];
+      this.listCaseRequestModel.listId = +params['id'];
     });
   }
 
   ngOnInit(): void {
-    this.generateForm = this.formBuilder.group({
-      dateRange: ['', Validators.required]
-    });
     this.getLocalPageSettings();
+    this.generateForm = this.formBuilder.group({
+      dateRange: [[this.listCaseRequestModel.dateFrom, this.listCaseRequestModel.dateTo], Validators.required]
+    });
+
+    this.getAllCases();
   }
 
   onGenerateReport() {
+    this.listCaseRequestModel.offset = 0;
     this.listCaseRequestModel.dateFrom = format(this.generateForm.value.dateRange[0], 'YYYY-MM-DD');
     this.listCaseRequestModel.dateTo = format(this.generateForm.value.dateRange[1], 'YYYY-MM-DD');
-    this.listCaseRequestModel.offset = 0;
-    this.listCaseRequestModel.listId = this.id;
-    this.getAllInitialData();
+    this.getAllCases();
   }
 
   onSaveReport() {
     this.spinnerStatus = true;
-    // debugger;
-    this.listCaseRequestModel.dateFrom = format(this.generateForm.value.dateRange[0], 'YYYY-MM-DD');
-    this.listCaseRequestModel.dateTo = format(this.generateForm.value.dateRange[1], 'YYYY-MM-DD');
     this.listCaseRequestModel.offset = 0;
-    this.listCaseRequestModel.listId = this.id;
     this.itemsPlanningPnCasesService.getGeneratedReport(this.listCaseRequestModel).subscribe(((data) => {
       saveAs(data, this.listCaseRequestModel.dateFrom + '_' + this.listCaseRequestModel.dateTo + '_report.xlsx');
       this.spinnerStatus = false;
@@ -74,14 +68,29 @@ export class ListCaseResultPageComponent implements OnInit {
   }
 
   getLocalPageSettings() {
-    this.localPageSettings = this.sharedPnService.getLocalPageSettings
-    ('itemsPlanningPnSettings', 'ItemCaseResults').settings;
+    const itemsPlanningPnSettings = JSON.parse(localStorage.getItem('itemsPlanningPnSettings'));
+    const settings = itemsPlanningPnSettings.find(x => x.name === 'ItemCaseResults').settings;
+
+    if (settings.listId === this.listCaseRequestModel.listId) {
+      this.listCaseRequestModel = {
+        offset: settings.offset,
+        dateFrom: settings.dateFrom,
+        dateTo: settings.dateTo,
+        isSortDsc: settings.isSortDsc,
+        listId: settings.listId,
+        nameFilter: settings.nameFilter,
+        pageIndex: settings.pageIndex,
+        pageSize: settings.pageSize,
+        sort: settings.sort
+      };
+    }
   }
 
   updateLocalPageSettings() {
-    this.sharedPnService.updateLocalPageSettings
-    ('itemsPlanningPnSettings', this.localPageSettings, 'ItemCaseResults');
-    this.getAllInitialData();
+    const itemsPlanningPnSettings = JSON.parse(localStorage.getItem('itemsPlanningPnSettings'));
+    const i = itemsPlanningPnSettings.findIndex(x => x.name === 'ItemCaseResults');
+    itemsPlanningPnSettings[i].settings = this.listCaseRequestModel;
+    localStorage.setItem('itemsPlanningPnSettings', JSON.stringify(itemsPlanningPnSettings));
   }
 
   getReportingSettings(eformId: number) {
@@ -94,16 +103,9 @@ export class ListCaseResultPageComponent implements OnInit {
     });
   }
 
-  getAllInitialData() {
-    this.getAllCases();
-  }
-
   getAllCases() {
     this.spinnerStatus = true;
-    this.listCaseRequestModel.isSortDsc = this.localPageSettings.isSortDsc;
-    this.listCaseRequestModel.sort = this.localPageSettings.sort;
-    this.listCaseRequestModel.pageSize = this.localPageSettings.pageSize;
-    this.listCaseRequestModel.listId = this.id;
+    this.updateLocalPageSettings();
     this.itemsPlanningPnCasesService.getAllCaseResults(this.listCaseRequestModel).subscribe((data) => {
       if (data && data.success) {
         this.casesModel = data.model;
@@ -113,30 +115,29 @@ export class ListCaseResultPageComponent implements OnInit {
   }
 
   sortTable(sort: string) {
-    if (this.localPageSettings.sort === sort) {
-      this.localPageSettings.isSortDsc = !this.localPageSettings.isSortDsc;
+    if (this.listCaseRequestModel.sort === sort) {
+      this.listCaseRequestModel.isSortDsc = !this.listCaseRequestModel.isSortDsc;
     } else {
-      this.localPageSettings.isSortDsc = false;
-      this.localPageSettings.sort = sort;
+      this.listCaseRequestModel.isSortDsc = false;
+      this.listCaseRequestModel.sort = sort;
     }
-    this.updateLocalPageSettings();
+    this.getAllCases();
+  }
+
+  changePage(offset: number) {
+    this.listCaseRequestModel.offset = offset;
+    this.listCaseRequestModel.pageIndex = offset ? offset / this.listCaseRequestModel.pageSize : 1;
+    this.getAllCases();
+  }
+
+  changePageSize(n: number) {
+    this.listCaseRequestModel.pageSize = n;
+    this.listCaseRequestModel.offset = 0;
+    this.getAllCases();
   }
 
   showListCasePdfModal(itemCase: ItemsListPnCaseResultModel) {
     this.uploadedDataModal.show(itemCase);
-  }
-
-  changePage(e: any) {
-    if (e || e === 0) {
-      this.listCaseRequestModel.offset = e;
-      if (e === 0) {
-        this.listCaseRequestModel.pageIndex = 0;
-      } else {
-        this.listCaseRequestModel.pageIndex
-          = Math.floor(e / this.listCaseRequestModel.pageSize);
-      }
-      this.getAllCases();
-    }
   }
 
   downloadFile(itemCase: ItemsListPnCaseResultModel, fileType: string) {
