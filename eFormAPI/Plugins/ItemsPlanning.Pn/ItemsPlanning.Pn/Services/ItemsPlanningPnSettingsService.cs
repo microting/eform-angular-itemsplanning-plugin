@@ -131,7 +131,7 @@ namespace ItemsPlanning.Pn.Services
             {
                 ItemsPlanningBaseBaseToken itemsPlanningBaseBaseToken = new ItemsPlanningBaseBaseToken()
                 {
-                    Token = _options.Value.Token
+                    Token =_options.Value.Token
                 };
 
                 return new OperationDataResult<ItemsPlanningBaseBaseToken>(true, itemsPlanningBaseBaseToken);

@@ -110,7 +110,7 @@ namespace ItemsPlanning.Pn.Services
             {
                 try
                 {
-                    var template = _core.GetCore().TemplateItemRead(model.RelatedEFormId);
+                    var template = await _core.GetCore().Result.TemplateItemRead(model.RelatedEFormId);
                     var itemsList = new ItemList
                     {
                         Name = model.Name,
@@ -172,7 +172,7 @@ namespace ItemsPlanning.Pn.Services
             {
                 try
                 {
-                    var template = _core.GetCore().TemplateItemRead(updateModel.RelatedEFormId);
+                    var template = await _core.GetCore().Result.TemplateItemRead(updateModel.RelatedEFormId);
                     var itemsList = new ItemList
                     {
                         Id = updateModel.Id,

@@ -28,29 +28,29 @@ namespace ItemsPlanning.Pn.Handlers
             
             if (itemCaseSite != null)
             {
-                var caseDto = _sdkCore.CaseReadByCaseId(message.caseId);
+                var caseDto = await _sdkCore.CaseReadByCaseId(message.caseId);
                 var microtingUId = caseDto.MicrotingUId;
                 var microtingCheckUId = caseDto.CheckUId;
-                var theCase = _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId);
+                var theCase = await _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId);
 
-                itemCaseSite = SetFieldValue(itemCaseSite, theCase.Id);
+                itemCaseSite = await SetFieldValue(itemCaseSite, theCase.Id);
 
                 await itemCaseSite.Update(_dbContext);
                 
                 ItemCase itemCase = await _dbContext.ItemCases.SingleOrDefaultAsync(x => x.Id == itemCaseSite.ItemCaseId);
 
-                itemCase = SetFieldValue(itemCase, theCase.Id);
+                itemCase = await SetFieldValue(itemCase, theCase.Id);
                 await itemCase.Update(_dbContext);
             }
         }
         
-        private ItemCaseSite SetFieldValue(ItemCaseSite itemCaseSite, int caseId)
+        private async Task<ItemCaseSite> SetFieldValue(ItemCaseSite itemCaseSite, int caseId)
         {
             Item item = _dbContext.Items.SingleOrDefault(x => x.Id == itemCaseSite.ItemId);
             ItemList itemList = _dbContext.ItemLists.SingleOrDefault(x => x.Id == item.ItemListId);
             List<int> caseIds = new List<int>();
             caseIds.Add(itemCaseSite.MicrotingSdkCaseId);
-            List<FieldValue> fieldValues = _sdkCore.Advanced_FieldValueReadList(caseIds);
+            List<FieldValue> fieldValues = await _sdkCore.Advanced_FieldValueReadList(caseIds);
 
             if (itemList == null) return itemCaseSite;
 
@@ -122,13 +122,13 @@ namespace ItemsPlanning.Pn.Handlers
             return itemCaseSite;
         }
 
-        private ItemCase SetFieldValue(ItemCase itemCase, int caseId)
+        private async Task<ItemCase> SetFieldValue(ItemCase itemCase, int caseId)
         {
             Item item = _dbContext.Items.SingleOrDefault(x => x.Id == itemCase.ItemId);
             ItemList itemList = _dbContext.ItemLists.SingleOrDefault(x => x.Id == item.ItemListId);
             List<int> caseIds = new List<int>();
             caseIds.Add(itemCase.MicrotingSdkCaseId);
-            List<FieldValue> fieldValues = _sdkCore.Advanced_FieldValueReadList(caseIds);
+            List<FieldValue> fieldValues = await _sdkCore.Advanced_FieldValueReadList(caseIds);
 
             if (itemList == null) return itemCase;
 

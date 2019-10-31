@@ -152,7 +152,7 @@ namespace ItemsPlanning.Pn.Services
             {
                 var core =_core.GetCore();
                 
-                var saveFolder = Path.Combine(core.GetSdkSetting(Settings.fileLocationPdf), Path.Combine("pdfFiles"));
+                var saveFolder = Path.Combine(await core.Result.GetSdkSetting(Settings.fileLocationPdf), Path.Combine("pdfFiles"));
 
                 Directory.CreateDirectory(saveFolder);
 
@@ -165,9 +165,9 @@ namespace ItemsPlanning.Pn.Services
                         await pdfUploadModel.File.CopyToAsync(stream);
                     }
                 }
-                if (core.GetSdkSetting(Settings.swiftEnabled).ToLower() == "true")
+                if (core.Result.GetSdkSetting(Settings.swiftEnabled).ToString().ToLower() == "true")
                 {
-                    core.PutFileToStorageSystem(Path.Combine(saveFolder, fileName), fileName);
+                   await core.Result.PutFileToStorageSystem(Path.Combine(saveFolder, fileName), fileName);
                 }
 
                 UploadedData uploadedData = new UploadedData();
@@ -192,12 +192,12 @@ namespace ItemsPlanning.Pn.Services
         public async Task<IActionResult> DownloadUploadedDataPdf(string fileName)
         {
             var core = _core.GetCore();
-            var filePath = Path.Combine(core.GetSdkSetting(Settings.fileLocationPdf) + "pdfFiles/", fileName);
+            var filePath = Path.Combine(core.Result.GetSdkSetting(Settings.fileLocationPdf) + "pdfFiles/", fileName);
             string fileType = "application/pdf";
 
-            if (core.GetSdkSetting(Settings.swiftEnabled).ToLower() == "true")
+            if (core.Result.GetSdkSetting(Settings.swiftEnabled).ToString().ToLower() == "true")
             {
-                var ss = await core.GetFileFromSwiftStorage(fileName);
+                var ss = await core.Result.GetFileFromSwiftStorage(fileName);
                 
                 if (ss == null)
                 {

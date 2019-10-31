@@ -210,7 +210,7 @@ namespace ItemsPlanning.Pn.Services
             
             var itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
 
-            List<Field_Dto> allFields = _core.GetCore().Advanced_TemplateFieldReadAll(itemList.RelatedEFormId);
+            List<Field_Dto> allFields = await _core.GetCore().Result.Advanced_TemplateFieldReadAll(itemList.RelatedEFormId);
 
             int i = 0;
             List<int> toBeRemoved = new List<int>();
@@ -461,9 +461,9 @@ namespace ItemsPlanning.Pn.Services
 
                     if (caseId != 0 && eFormId != 0)
                     {
-                        var filePath = core.CaseToPdf(caseId, eFormId.ToString(),
+                        var filePath = await core.Result.CaseToPdf(caseId, eFormId.ToString(),
                             DateTime.Now.ToString("yyyyMMddHHmmssffff"),
-                            $"{core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/", fileType, xmlContent);
+                            $"{core.Result.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/", fileType, xmlContent);
                         if (!System.IO.File.Exists(filePath))
                         {
                             throw new FileNotFoundException();

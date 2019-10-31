@@ -22,13 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System.Threading.Tasks;
 using Rebus.Bus;
 
 namespace ItemsPlanning.Pn.Abstractions
 {
     public interface IRebusService
     {
-        void Start(string connectionString);
+        Task Start(string connectionString);
         IBus GetBus();
 
     }

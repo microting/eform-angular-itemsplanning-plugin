@@ -69,7 +69,7 @@ namespace ItemsPlanning.Pn.Services
                 var core = _coreHelper.GetCore();
                 var itemList = await _dbContext.ItemLists.FirstAsync(x => x.Id == model.ItemList);
                 var item = await _dbContext.Items.FirstAsync(x => x.Id == model.Item);
-                var template = core.TemplateRead(itemList.RelatedEFormId);
+                var template = await core.Result.TemplateRead(itemList.RelatedEFormId);
 
                 var casesQuery = _dbContext.ItemCases.Where(x => x.ItemId == item.Id);
 
@@ -207,7 +207,7 @@ namespace ItemsPlanning.Pn.Services
             }
             
             // Get all answered cases
-            var casesList = core.CaseReadAll(template.Id, null, null)
+            var casesList = core.Result.CaseReadAll(template.Id, null, null).Result
                 .Where(c => itemCases.Select(ic => ic.MicrotingSdkCaseId).Contains(c.Id))
                 .ToList();
 
@@ -242,7 +242,7 @@ namespace ItemsPlanning.Pn.Services
                 }
 
                 // Get the reply and work with its ElementList
-                foreach (var element in core.CaseRead((int)@case.MicrotingUId, (int)@case.CheckUIid).ElementList)
+                foreach (var element in core.Result.CaseRead((int)@case.MicrotingUId, (int)@case.CheckUIid).Result.ElementList)
                 {
                     if (!(element is CheckListValue checkListValue)) 
                         continue;
