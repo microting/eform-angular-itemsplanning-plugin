@@ -6,6 +6,7 @@ using ItemsPlanning.Pn.Abstractions;
 using ItemsPlanning.Pn.Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microting.eFormApi.BasePn.Infrastructure.Helpers;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 
 namespace ItemsPlanning.Pn.Controllers
@@ -120,8 +121,9 @@ namespace ItemsPlanning.Pn.Controllers
             {
                 return Forbid();
             }
-            catch 
+            catch (Exception ex)
             {
+                Log.LogException($"ItemsListCaseController.ItemListCaseResult: Got exception {ex.Message}");
                 return BadRequest();
                 
             }

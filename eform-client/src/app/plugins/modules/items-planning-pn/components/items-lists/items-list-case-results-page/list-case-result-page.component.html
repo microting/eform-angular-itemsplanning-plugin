@@ -352,13 +352,13 @@
             <fa-icon icon="file-upload" size="lg" [fixedWidth]="true"></fa-icon>
           </button>
           <button class="btn btn-success btn-icon mb-2"
-                  *ngIf="(currentTemplate.jasperExportEnabled || currentTemplate.docxExportEnabled)"
+                  *ngIf="(currentTemplate.jasperExportEnabled || currentTemplate.docxExportEnabled) && itemCase.status === 100"
                   (click)="downloadFile(itemCase, 'pdf')"
                   mdbTooltip="{{ 'Download PDF' | translate }}">
             <fa-icon icon="file-pdf" size="lg" [fixedWidth]="true"></fa-icon>
 
           </button>
-          <button class="btn btn-success btn-icon mb-2" *ngIf="currentTemplate.docxExportEnabled"
+          <button class="btn btn-success btn-icon mb-2" *ngIf="currentTemplate.docxExportEnabled && itemCase.status === 100"
                   (click)="downloadFile(itemCase, 'docx')"
                   mdbTooltip="{{ 'Download Docx' | translate }}">
             <fa-icon icon="file-word" size="lg" [fixedWidth]="true"></fa-icon>

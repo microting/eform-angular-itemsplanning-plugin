@@ -16,6 +16,7 @@ using Microting.eForm.Infrastructure.Constants;
 using Microting.eFormApi.BasePn.Abstractions;
 using Microting.eFormApi.BasePn.Infrastructure.Database.Entities;
 using Microting.eFormApi.BasePn.Infrastructure.Extensions;
+using Microting.eFormApi.BasePn.Infrastructure.Helpers;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Entities;
@@ -479,6 +480,7 @@ namespace ItemsPlanning.Pn.Services
                 }
                 catch (Exception exception)
                 {
+                    Log.LogException($"ItemListCaseService.DownloadEFormPdf: Got exception {exception.Message}");
                     throw new Exception("Something went wrong!", exception);
                 }
             }
