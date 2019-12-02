@@ -446,7 +446,7 @@ namespace ItemsPlanning.Pn.Services
                 {
                     var core = _core.GetCore();
                     int eFormId = 0;
-                    ItemCase itemCase = await _dbContext.ItemCases.FirstOrDefaultAsync(x => x.MicrotingSdkCaseId == caseId);
+                    ItemCase itemCase = await _dbContext.ItemCases.FirstOrDefaultAsync(x => x.Id == caseId);
                     Item item = await _dbContext.Items.SingleOrDefaultAsync(x => x.Id == itemCase.ItemId);
 
 
