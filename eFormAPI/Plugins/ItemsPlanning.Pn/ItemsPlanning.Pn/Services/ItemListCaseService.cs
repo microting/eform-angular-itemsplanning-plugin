@@ -466,7 +466,7 @@ namespace ItemsPlanning.Pn.Services
 
                     if (caseId != 0 && eFormId != 0)
                     {
-                        var filePath = await core.Result.CaseToPdf(caseId, eFormId.ToString(),
+                        var filePath = await core.Result.CaseToPdf(itemCase.MicrotingSdkCaseId, eFormId.ToString(),
                             DateTime.Now.ToString("yyyyMMddHHmmssffff"),
                             $"{core.Result.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/", fileType, xmlContent);
                         if (!System.IO.File.Exists(filePath))
