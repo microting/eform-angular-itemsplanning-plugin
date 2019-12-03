@@ -448,7 +448,11 @@ namespace ItemsPlanning.Pn.Services
                     int eFormId = 0;
                     ItemCase itemCase = await _dbContext.ItemCases.FirstOrDefaultAsync(x => x.Id == caseId);
                     Item item = await _dbContext.Items.SingleOrDefaultAsync(x => x.Id == itemCase.ItemId);
-
+                    ItemList itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == item.ItemListId);
+                    if (itemList != null)
+                    {
+                        eFormId = itemList.RelatedEFormId;    
+                    }
 
                     string xmlContent = new XElement("ItemCase", 
                         new XElement("ItemId", item.Id), 
