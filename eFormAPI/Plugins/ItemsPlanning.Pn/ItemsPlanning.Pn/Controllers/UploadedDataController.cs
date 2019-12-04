@@ -17,30 +17,30 @@ namespace ItemsPlanning.Pn.Controllers
 
         [HttpGet]
         [Route("api/items-planning-pn/uploaded-data/get-all/{itemCaseId}")]
-        public async Task<OperationDataResult<UploadedDatasModel>> GetAllUploadedDatas(int itemCaseId)
+        public async Task<OperationDataResult<UploadedDatasModel>> Index(int itemCaseId)
         {
-            return await _uploadedDataService.GetAllUploadedDatas(itemCaseId);
+            return await _uploadedDataService.Index(itemCaseId);
         }
 
         [HttpGet]
         [Route("api/items-planning-pn/uploaded-data/{selectedListItemCaseId}")]
-        public async Task<OperationDataResult<UploadedDataModel>> GetSingleUploadedData(int selectedListItemCaseId)
+        public async Task<OperationDataResult<UploadedDataModel>> Read(int selectedListItemCaseId)
         {
-            return await _uploadedDataService.GetSingleUploadedData(selectedListItemCaseId);
+            return await _uploadedDataService.Read(selectedListItemCaseId);
         }
         
         [HttpPut]
         [Route("api/items-planning-pn/uploaded-data")]
-        public async Task<OperationResult> UpdateUploadedData([FromBody] UploadedDataModel uploadedDataModel)
+        public async Task<OperationResult> Update([FromBody] UploadedDataModel uploadedDataModel)
         {
-            return await _uploadedDataService.UpdateUploadedData(uploadedDataModel);
+            return await _uploadedDataService.Update(uploadedDataModel);
         }
 
         [HttpDelete]
         [Route("api/items-planning-pn/uploaded-data/{id}")]
-        public async Task<OperationResult> DeleteUploadedData(int id)
+        public async Task<OperationResult> Delete(int id)
         {
-            return await _uploadedDataService.DeleteUploadedData(id);
+            return await _uploadedDataService.Delete(id);
         }
 
         [HttpPost]

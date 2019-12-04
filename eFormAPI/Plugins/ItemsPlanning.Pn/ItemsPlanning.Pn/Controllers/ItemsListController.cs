@@ -20,38 +20,38 @@ namespace ItemsPlanning.Pn.Controllers
 
         [HttpGet]
         [Route("api/items-planning-pn/lists")]
-        public async Task<OperationDataResult<ItemsListsModel>> GetAllLists(ItemsListRequestModel requestModel)
+        public async Task<OperationDataResult<ItemsListsModel>> Index(ItemsListRequestModel requestModel)
         {
-            return await _listService.GetAllLists(requestModel);
-        }
-
-        [HttpGet]
-        [Route("api/items-planning-pn/lists/{id}")]
-        public async Task<OperationDataResult<ItemsListPnModel>> GetSingleList(int id)
-        {
-            return await _listService.GetSingleList(id);
+            return await _listService.Index(requestModel);
         }
 
         [HttpPost]
         [Route("api/items-planning-pn/lists")]
         [Authorize(Policy = ItemsPlanningClaims.CreateItemsLists)]
-        public async Task<OperationResult> CreateList([FromBody] ItemsListPnModel createModel)
+        public async Task<OperationResult> Create([FromBody] ItemsListPnModel createModel)
         {
-            return await _listService.CreateList(createModel);
+            return await _listService.Create(createModel);
+        }
+
+        [HttpGet]
+        [Route("api/items-planning-pn/lists/{id}")]
+        public async Task<OperationDataResult<ItemsListPnModel>> Read(int id)
+        {
+            return await _listService.Read(id);
         }
 
         [HttpPut]
         [Route("api/items-planning-pn/lists")]
-        public async Task<OperationResult> UpdateList([FromBody] ItemsListPnModel updateModel)
+        public async Task<OperationResult> Update([FromBody] ItemsListPnModel updateModel)
         {
-            return await _listService.UpdateList(updateModel);
+            return await _listService.Update(updateModel);
         }
 
         [HttpDelete]
         [Route("api/items-planning-pn/lists/{id}")]
-        public async Task<OperationResult> DeleteList(int id)
+        public async Task<OperationResult> Delete(int id)
         {
-            return await _listService.DeleteList(id);
+            return await _listService.Delete(id);
         }
         
         [HttpPost]
