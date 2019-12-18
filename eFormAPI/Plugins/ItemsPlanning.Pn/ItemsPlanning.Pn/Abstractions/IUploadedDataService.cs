@@ -7,11 +7,11 @@ namespace ItemsPlanning.Pn.Abstractions
 {
     public interface IUploadedDataService
     {
-        Task<OperationResult> UpdateUploadedData(UploadedDataModel uploadedDataModel);
-        Task<OperationResult> DeleteUploadedData(int id);
+        Task<OperationDataResult<UploadedDatasModel>> Index(int itemCaseId);
+        Task<OperationDataResult<UploadedDataModel>> Read(int selectedListItemCaseId);
+        Task<OperationResult> Update(UploadedDataModel uploadedDataModel);
+        Task<OperationResult> Delete(int id);
         Task<IActionResult> UploadUploadedDataPdf(UploadedDataPDFUploadModel pdfUploadModel);
         Task<IActionResult> DownloadUploadedDataPdf(string fileName);
-        Task<OperationDataResult<UploadedDataModel>> GetSingleUploadedData(int selectedListItemCaseId);
-        Task<OperationDataResult<UploadedDatasModel>> GetAllUploadedDatas(int itemCaseId);
     }
 }

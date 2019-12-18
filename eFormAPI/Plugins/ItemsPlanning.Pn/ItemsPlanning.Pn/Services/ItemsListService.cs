@@ -39,7 +39,7 @@ namespace ItemsPlanning.Pn.Services
             _core = core;
         }
 
-        public async Task<OperationDataResult<ItemsListsModel>> GetAllLists(ItemsListRequestModel pnRequestModel)
+        public async Task<OperationDataResult<ItemsListsModel>> Index(ItemsListRequestModel pnRequestModel)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace ItemsPlanning.Pn.Services
             }
         }
 
-        public async Task<OperationResult> CreateList(ItemsListPnModel model)
+        public async Task<OperationResult> Create(ItemsListPnModel model)
         {
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
@@ -165,8 +165,79 @@ namespace ItemsPlanning.Pn.Services
                 }
             }
         }
+        public async Task<OperationDataResult<ItemsListPnModel>> Read(int listId)
+        {
+            try
+            {
+                var itemList = await _dbContext.ItemLists
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed && x.Id == listId)
+                    .Select(x => new ItemsListPnModel()
+                    {
+                        Id = x.Id,
+                        RepeatUntil = x.RepeatUntil,
+                        RepeatEvery = x.RepeatEvery,
+                        RepeatType = x.RepeatType,
+                        DayOfWeek = x.DayOfWeek,
+                        DayOfMonth = x.DayOfMonth,
+                        Description = x.Description,
+                        Name = x.Name,
+                        RelatedEFormId = x.RelatedEFormId,
+                        RelatedEFormName = x.RelatedEFormName,
+                        LabelEnabled = x.LabelEnabled,
+                        DeployedAtEnabled = x.DeployedAtEnabled,
+                        DescriptionEnabled = x.DescriptionEnabled,
+                        DoneAtEnabled = x.DoneAtEnabled,
+                        DoneByUserNameEnabled = x.DoneByUserNameEnabled,
+                        UploadedDataEnabled = x.UploadedDataEnabled,
+                        ItemNumberEnabled = x.ItemNumberEnabled,
+                        LocationCodeEnabled = x.LocationCodeEnabled,
+                        BuildYearEnabled = x.BuildYearEnabled,
+                        TypeEnabled = x.TypeEnabled,
+                        NumberOfImagesEnabled = x.NumberOfImagesEnabled,
+                        SdkFieldId1 = x.SdkFieldId1,
+                        SdkFieldId2 = x.SdkFieldId2,
+                        SdkFieldId3 = x.SdkFieldId3,
+                        SdkFieldId4 = x.SdkFieldId4,
+                        SdkFieldId5 = x.SdkFieldId5,
+                        SdkFieldId6 = x.SdkFieldId6,
+                        SdkFieldId7 = x.SdkFieldId7,
+                        SdkFieldId8 = x.SdkFieldId8,
+                        SdkFieldId9 = x.SdkFieldId9,
+                        SdkFieldId10 = x.SdkFieldId10,
+                        LastExecutedTime = x.LastExecutedTime,
+                        Items = x.Items.Select(i => new ItemsListPnItemModel()
+                        {
+                            Id = i.Id,
+                            Description = i.Description,
+                            Name = i.Name,
+                            LocationCode = i.LocationCode,
+                            ItemNumber = i.ItemNumber,
+                            BuildYear = i.BuildYear,
+                            Type = i.Type
+                        }).ToList()
+                    }).FirstOrDefaultAsync();
 
-        public async Task<OperationResult> UpdateList(ItemsListPnModel updateModel)
+                if (itemList == null)
+                {
+                    return new OperationDataResult<ItemsListPnModel>(
+                        false,
+                        _itemsPlanningLocalizationService.GetString("ListNotFound"));
+                }
+
+
+                return new OperationDataResult<ItemsListPnModel>(
+                    true,
+                    itemList);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+                return new OperationDataResult<ItemsListPnModel>(
+                    false,
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileObtainingList"));
+            }
+        }
+        public async Task<OperationResult> Update(ItemsListPnModel updateModel)
         {
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
@@ -298,7 +369,7 @@ namespace ItemsPlanning.Pn.Services
             }
         }
 
-        public async Task<OperationResult> DeleteList(int id)
+        public async Task<OperationResult> Delete(int id)
         {
             try
             {
@@ -322,78 +393,7 @@ namespace ItemsPlanning.Pn.Services
             }
         }
 
-        public async Task<OperationDataResult<ItemsListPnModel>> GetSingleList(int listId)
-        {
-            try
-            {
-                var itemList = await _dbContext.ItemLists
-                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed && x.Id == listId)
-                    .Select(x => new ItemsListPnModel()
-                    {
-                        Id = x.Id,
-                        RepeatUntil = x.RepeatUntil,
-                        RepeatEvery = x.RepeatEvery,
-                        RepeatType = x.RepeatType,
-                        DayOfWeek = x.DayOfWeek,
-                        DayOfMonth = x.DayOfMonth,
-                        Description = x.Description,
-                        Name = x.Name,
-                        RelatedEFormId = x.RelatedEFormId,
-                        RelatedEFormName = x.RelatedEFormName,
-                        LabelEnabled = x.LabelEnabled,
-                        DeployedAtEnabled = x.DeployedAtEnabled,
-                        DescriptionEnabled = x.DescriptionEnabled,
-                        DoneAtEnabled = x.DoneAtEnabled,
-                        DoneByUserNameEnabled = x.DoneByUserNameEnabled,
-                        UploadedDataEnabled = x.UploadedDataEnabled,
-                        ItemNumberEnabled = x.ItemNumberEnabled,
-                        LocationCodeEnabled = x.LocationCodeEnabled,
-                        BuildYearEnabled = x.BuildYearEnabled,
-                        TypeEnabled = x.TypeEnabled,
-                        NumberOfImagesEnabled = x.NumberOfImagesEnabled,
-                        SdkFieldId1 = x.SdkFieldId1,
-                        SdkFieldId2 = x.SdkFieldId2,
-                        SdkFieldId3 = x.SdkFieldId3,
-                        SdkFieldId4 = x.SdkFieldId4,
-                        SdkFieldId5 = x.SdkFieldId5,
-                        SdkFieldId6 = x.SdkFieldId6,
-                        SdkFieldId7 = x.SdkFieldId7,
-                        SdkFieldId8 = x.SdkFieldId8,
-                        SdkFieldId9 = x.SdkFieldId9,
-                        SdkFieldId10 = x.SdkFieldId10,
-                        LastExecutedTime = x.LastExecutedTime,
-                        Items = x.Items.Select(i => new ItemsListPnItemModel()
-                        {
-                            Id = i.Id,
-                            Description = i.Description,
-                            Name = i.Name,
-                            LocationCode = i.LocationCode,
-                            ItemNumber = i.ItemNumber,
-                            BuildYear = i.BuildYear,
-                            Type = i.Type
-                        }).ToList()
-                    }).FirstOrDefaultAsync();
-
-                if (itemList == null)
-                {
-                    return new OperationDataResult<ItemsListPnModel>(
-                        false,
-                        _itemsPlanningLocalizationService.GetString("ListNotFound"));
-                }
-
-
-                return new OperationDataResult<ItemsListPnModel>(
-                    true,
-                    itemList);
-            }
-            catch (Exception e)
-            {
-                Trace.TraceError(e.Message);
-                return new OperationDataResult<ItemsListPnModel>(
-                    false,
-                    _itemsPlanningLocalizationService.GetString("ErrorWhileObtainingList"));
-            }
-        }
+        
         
         private Item FindItem(bool numberExists, int numberColumn, bool itemNameExists,
             int itemNameColumn, JToken headers, JToken itemObj)

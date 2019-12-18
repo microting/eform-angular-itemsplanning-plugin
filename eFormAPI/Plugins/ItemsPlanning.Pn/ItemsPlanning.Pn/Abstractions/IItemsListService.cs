@@ -6,11 +6,11 @@ namespace ItemsPlanning.Pn.Abstractions
 {
     public interface IItemsListService
     {
-        Task<OperationResult> CreateList(ItemsListPnModel model);
-        Task<OperationResult> DeleteList(int id);
-        Task<OperationResult> UpdateList(ItemsListPnModel updateModel);
-        Task<OperationDataResult<ItemsListsModel>> GetAllLists(ItemsListRequestModel requestModel);
-        Task<OperationDataResult<ItemsListPnModel>> GetSingleList(int itemListId);
+        Task<OperationDataResult<ItemsListsModel>> Index(ItemsListRequestModel requestModel);
+        Task<OperationResult> Create(ItemsListPnModel model);
+        Task<OperationDataResult<ItemsListPnModel>> Read(int itemListId);
+        Task<OperationResult> Update(ItemsListPnModel updateModel);
+        Task<OperationResult> Delete(int id);
         Task<OperationResult> ImportUnit(UnitImportModel unitImportModel);
 
     }

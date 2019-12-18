@@ -17,7 +17,7 @@ echo "################## END GITVERSION ##################"
 su ubuntu -c \
 "dotnet publish eFormAPI/Plugins/ItemsPlanning.Pn/ItemsPlanning.Pn.sln -o out /p:Version=$GITVERSION --runtime linux-x64 --configuration Release"
 
-if [ -d "/var/www/microting/eform-angular-frontend/eform-client/src/app/plugins/modules/items-planning-pn"]; then
+if [ -d "/var/www/microting/eform-angular-frontend/eform-client/src/app/plugins/modules/items-planning-pn" ]; then
 	su ubuntu -c \
 	"rm -fR /var/www/microting/eform-angular-frontend/eform-client/src/app/plugins/modules/items-planning-pn"
 fi
@@ -27,7 +27,7 @@ su ubuntu -c \
 su ubuntu -c \
 "mkdir -p /var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/"
 
-if [ -d "/var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/ItemsPlanning"]; then
+if [ -d "/var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/ItemsPlanning" ]; then
 	su ubuntu -c \
 	"rm -fR /var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/ItemsPlanning"
 fi
@@ -43,4 +43,4 @@ su ubuntu -c \
 su ubuntu -c \
 "npm run build"
 echo "Recompiling angular done"
-./rabbitmqadmin declare queue name=eform-angular-itemsplanning-plugin durable=true
+/rabbitmqadmin declare queue name=eform-angular-itemsplanning-plugin durable=true

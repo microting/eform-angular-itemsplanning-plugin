@@ -42,7 +42,7 @@ namespace ItemsPlanning.Pn.Services
             _core = core;
         }
 
-        public async Task<OperationDataResult<UploadedDatasModel>> GetAllUploadedDatas(int itemCaseId)
+        public async Task<OperationDataResult<UploadedDatasModel>> Index(int itemCaseId)
         {
 
             try
@@ -82,7 +82,7 @@ namespace ItemsPlanning.Pn.Services
             }
         }
         
-        public async Task<OperationDataResult<UploadedDataModel>> GetSingleUploadedData(int selectedListItemCaseId)
+        public async Task<OperationDataResult<UploadedDataModel>> Read(int selectedListItemCaseId)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace ItemsPlanning.Pn.Services
             
         }
         
-        public async Task<OperationResult> UpdateUploadedData(UploadedDataModel uploadedDataModel)
+        public async Task<OperationResult> Update(UploadedDataModel uploadedDataModel)
         {
 
             UploadedData uploadedData =
@@ -133,7 +133,7 @@ namespace ItemsPlanning.Pn.Services
             return new OperationResult(false);
         }
 
-        public async Task<OperationResult> DeleteUploadedData(int id)
+        public async Task<OperationResult> Delete(int id)
         {
             UploadedData uploadedData =
             await _dbContext.UploadedDatas.SingleOrDefaultAsync(x => x.Id == id);

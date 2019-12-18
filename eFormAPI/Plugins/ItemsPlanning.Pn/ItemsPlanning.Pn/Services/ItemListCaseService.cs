@@ -16,6 +16,7 @@ using Microting.eForm.Infrastructure.Constants;
 using Microting.eFormApi.BasePn.Abstractions;
 using Microting.eFormApi.BasePn.Infrastructure.Database.Entities;
 using Microting.eFormApi.BasePn.Infrastructure.Extensions;
+using Microting.eFormApi.BasePn.Infrastructure.Helpers;
 using Microting.eFormApi.BasePn.Infrastructure.Models.API;
 using Microting.ItemsPlanningBase.Infrastructure.Data;
 using Microting.ItemsPlanningBase.Infrastructure.Data.Entities;
@@ -210,11 +211,11 @@ namespace ItemsPlanning.Pn.Services
             
             var itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
 
-            List<Field_Dto> allFields = await _core.GetCore().Result.Advanced_TemplateFieldReadAll(itemList.RelatedEFormId);
+            List<FieldDto> allFields = await _core.GetCore().Result.Advanced_TemplateFieldReadAll(itemList.RelatedEFormId);
 
             int i = 0;
             List<int> toBeRemoved = new List<int>();
-            foreach (Field_Dto field in allFields)
+            foreach (FieldDto field in allFields)
             {
                 if (field.FieldType == Constants.FieldTypes.SaveButton)
                 {
@@ -445,9 +446,13 @@ namespace ItemsPlanning.Pn.Services
                 {
                     var core = _core.GetCore();
                     int eFormId = 0;
-                    ItemCase itemCase = await _dbContext.ItemCases.FirstOrDefaultAsync(x => x.MicrotingSdkCaseId == caseId);
+                    ItemCase itemCase = await _dbContext.ItemCases.FirstOrDefaultAsync(x => x.Id == caseId);
                     Item item = await _dbContext.Items.SingleOrDefaultAsync(x => x.Id == itemCase.ItemId);
-
+                    ItemList itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == item.ItemListId);
+                    if (itemList != null)
+                    {
+                        eFormId = itemList.RelatedEFormId;    
+                    }
 
                     string xmlContent = new XElement("ItemCase", 
                         new XElement("ItemId", item.Id), 
@@ -461,7 +466,7 @@ namespace ItemsPlanning.Pn.Services
 
                     if (caseId != 0 && eFormId != 0)
                     {
-                        var filePath = await core.Result.CaseToPdf(caseId, eFormId.ToString(),
+                        var filePath = await core.Result.CaseToPdf(itemCase.MicrotingSdkCaseId, eFormId.ToString(),
                             DateTime.Now.ToString("yyyyMMddHHmmssffff"),
                             $"{core.Result.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/", fileType, xmlContent);
                         if (!System.IO.File.Exists(filePath))
@@ -479,6 +484,7 @@ namespace ItemsPlanning.Pn.Services
                 }
                 catch (Exception exception)
                 {
+                    Log.LogException($"ItemListCaseService.DownloadEFormPdf: Got exception {exception.Message}");
                     throw new Exception("Something went wrong!", exception);
                 }
             }
