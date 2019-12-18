@@ -211,11 +211,11 @@ namespace ItemsPlanning.Pn.Services
             
             var itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
 
-            List<Field_Dto> allFields = await _core.GetCore().Result.Advanced_TemplateFieldReadAll(itemList.RelatedEFormId);
+            List<FieldDto> allFields = await _core.GetCore().Result.Advanced_TemplateFieldReadAll(itemList.RelatedEFormId);
 
             int i = 0;
             List<int> toBeRemoved = new List<int>();
-            foreach (Field_Dto field in allFields)
+            foreach (FieldDto field in allFields)
             {
                 if (field.FieldType == Constants.FieldTypes.SaveButton)
                 {
