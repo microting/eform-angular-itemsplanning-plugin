@@ -41,6 +41,6 @@ describe('Application settings page - site header section', function () {
         expect(plugin.id).equal(1);
         expect(plugin.name).equal('Microting Items Planning Plugin');
         expect(plugin.version).equal('1.0.0.0');
-        settingsBtn.waitForDisplayed(20000);
+        plugin.settingsBtn.waitForDisplayed(20000);
     });
 });
