@@ -1,5 +1,4 @@
 import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {DateTimeAdapter} from 'ng-pick-datetime';
 import {LocaleService} from 'src/app/common/services/auth';
 import {format} from 'date-fns';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -8,6 +7,7 @@ import {ItemsListPnRequestModel, ItemsListsPnModel} from '../../../models/list';
 import {debounceTime, switchMap} from 'rxjs/operators';
 import {ItemsPlanningPnListsService} from '../../../services';
 import {ItemsListPnItemModel} from '../../../models/list';
+import {DateTimeAdapter} from 'ng-pick-datetime-ex';
 
 @Component({
   selector: 'app-items-planning-pn-report-generator-form',
