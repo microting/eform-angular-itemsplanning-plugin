@@ -9,9 +9,9 @@ import {ItemsListPnCaseResultModel, UploadedDataModel, UploadedDatasModel} from 
   styleUrls: ['./item-case-uploaded-data.component.scss']
 })
 export class ItemCaseUploadedDataComponent implements OnInit {
-  @ViewChild('frame') frame;
-  @ViewChild('uploadedDataPdfModal') uploadedDataPdfModal;
-  @ViewChild('uploadedDataDeleteModal') uploadedDataDeleteModal;
+  @ViewChild('frame', {static: false}) frame;
+  @ViewChild('uploadedDataPdfModal', {static: false}) uploadedDataPdfModal;
+  @ViewChild('uploadedDataDeleteModal', {static: false}) uploadedDataDeleteModal;
   spinnerStatus = false;
   uploadedDatasModel: UploadedDatasModel = new UploadedDatasModel();
   selectedListCase: ItemsListPnItemCaseModel = new ItemsListPnItemCaseModel();

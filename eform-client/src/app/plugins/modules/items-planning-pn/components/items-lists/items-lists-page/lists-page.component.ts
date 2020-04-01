@@ -13,10 +13,10 @@ import {ItemsPlanningPnClaims} from '../../../enums';
   styleUrls: ['./lists-page.component.scss']
 })
 export class ListsPageComponent implements OnInit {
-  @ViewChild('createListModal') createListModal;
-  @ViewChild('editListModal') editListModal;
-  @ViewChild('deleteListModal') deleteListModal;
-  @ViewChild('modalCasesColumns') modalCasesColumnsModal;
+  @ViewChild('createListModal', {static: false}) createListModal;
+  @ViewChild('editListModal', {static: false}) editListModal;
+  @ViewChild('deleteListModal', {static: false}) deleteListModal;
+  @ViewChild('modalCasesColumns', {static: false}) modalCasesColumnsModal;
 
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   listsModel: ItemsListsPnModel = new ItemsListsPnModel();

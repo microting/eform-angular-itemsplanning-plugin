@@ -12,7 +12,7 @@ import {UploadedDatasModel} from '../../../models/list';
   styleUrls: ['./uploaded-data-pdf.component.scss']
 })
 export class UploadedDataPdfComponent implements OnInit {
-  @ViewChild('frame') frame;
+  @ViewChild('frame', {static: false}) frame;
   @Output() onUploadedDataUploaded: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
   selectedItemCase: ItemsListPnItemCaseModel = new ItemsListPnItemCaseModel();

@@ -13,7 +13,7 @@ import {ItemListCasesPnRequestModel} from '../../../models/list/item-list-cases-
 })
 
 export class ListCasePageComponent implements OnInit {
-  @ViewChild('uploadedDataModal') uploadedDataModal;
+  @ViewChild('uploadedDataModal', {static: false}) uploadedDataModal;
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   listCaseRequestModel: ItemListCasesPnRequestModel = new ItemListCasesPnRequestModel();
   casesModel: ItemsListCasePnModel = new ItemsListCasePnModel();

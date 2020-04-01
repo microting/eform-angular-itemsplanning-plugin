@@ -3,9 +3,13 @@ language: csharp
 solution: ItemsPlanning.Pn.sln
 mono: none
 dotnet: 2.2
+addons:
+  chrome: stable
 services:
   - mysql
-script:
+install:
+  - nvm install 11.0.0
+  - nvm use 11.0.0
   - pip install --user awscli
   - echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list
   - wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -
@@ -21,11 +25,11 @@ script:
   - chmod +x rabbitmqadmin
   - ./rabbitmqadmin declare queue name=eformsdk-input durable=true
   - ./rabbitmqadmin declare queue name=eform-angular-itemsplanning-plugin durable=true
-  - dotnet restore eFormAPI/Plugins/ItemsPlanning.Pn/ItemsPlanning.Pn.sln
+script:
   - dotnet build eFormAPI/Plugins/ItemsPlanning.Pn/ItemsPlanning.Pn.sln
   - dotnet test -v n eFormAPI/Plugins/ItemsPlanning.Pn/ItemsPlanning.Pn.Test/ItemsPlanning.Pn.Test.csproj
   - cd ../..
-  - git clone --depth=50 --branch=stable https://github.com/microting/eform-angular-frontend.git microting/eform-angular-frontend
+  - git clone --depth=50 --branch=$TRAVIS_BRANCH https://github.com/microting/eform-angular-frontend.git microting/eform-angular-frontend
   - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/src/app/plugins/modules/items-planning-pn microting/eform-angular-frontend/eform-client/src/app/plugins/modules/items-planning-pn
   - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/e2e/Tests/items-planning-settings microting/eform-angular-frontend/eform-client/e2e/Tests/items-planning-settings
   - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/e2e/Tests/items-planning-general microting/eform-angular-frontend/eform-client/e2e/Tests/items-planning-general
@@ -33,24 +37,17 @@ script:
   - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/wdio-headless-plugin-step2.conf.js microting/eform-angular-frontend/eform-client/wdio-headless-plugin-step2.conf.js
   - cp -av microting/eform-angular-itemsplanning-plugin/eform-client/wdio-plugin-step2.conf.js microting/eform-angular-frontend/eform-client/wdio-plugin-step2.conf.js
   - cd microting/eform-angular-frontend
-  - dotnet restore -v q eFormAPI/eFormAPI.sln > dotnet_log 2>&1 &
   - dotnet build eFormAPI/eFormAPI.sln > dotnet_log 2>&1 &
   - cd ../..
   - mkdir -p microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/Plugins
   - cp -av microting/eform-angular-itemsplanning-plugin/eFormAPI/eFormAPI.Web/Plugins/ItemsPlanning microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/Plugins/ItemsPlanning
   - cd microting/eform-angular-frontend
+  - mkdir -p /home/travis/build/microting/eform-angular-frontend/eform-client/errorShots
   - cd eform-client && npm install
   - ../../eform-angular-itemsplanning-plugin/testinginstallpn.sh
   - npm start &
-  - sleep 40
   - dotnet run --project ../eFormAPI/eFormAPI.Web/eFormAPI.Web.csproj > dotnet_log 2>&1 &
   - sleep 40
   - npm run testheadless
-  - sleep 40
   - npm run testheadlessplugin
-  - touch ~/.aws/config || true
-  - echo "[default]" >> ~/.aws/config || true
-  - echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/config || true
-  - echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/config || true
-  - echo "region=$AWS_DEFAULT_REGION" >> ~/.aws/config || true
   - aws s3 sync errorShots/ s3://$S3_STORAGE_FOLDER/ItemsPlanning/$TRAVIS_BUILD_NUMBER || true

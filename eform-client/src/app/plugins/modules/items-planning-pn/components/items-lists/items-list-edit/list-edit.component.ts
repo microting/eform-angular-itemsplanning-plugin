@@ -13,8 +13,8 @@ import * as moment from 'moment';
   styleUrls: ['./list-edit.component.scss']
 })
 export class ListEditComponent implements OnInit {
-  @ViewChild('frame') frame;
-  @ViewChild('unitImportModal') importUnitModal;
+  @ViewChild('frame', {static: false}) frame;
+  @ViewChild('unitImportModal', {static: false}) importUnitModal;
   @Output() onListUpdated: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
   selectedListModel: ItemsListPnModel = new ItemsListPnModel();

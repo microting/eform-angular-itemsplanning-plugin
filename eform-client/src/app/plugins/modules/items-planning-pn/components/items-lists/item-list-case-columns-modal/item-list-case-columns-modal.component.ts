@@ -14,7 +14,7 @@ import {EFormService} from '../../../../../../common/services/eform';
   styleUrls: ['./item-list-case-columns-modal.component.scss']
 })
 export class ItemListCaseColumnsModalComponent implements OnInit {
-  @ViewChild('frame') frame;
+  @ViewChild('frame', {static: false}) frame;
   @Output() onListUpdated: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
   selectedListModel: ItemsListPnModel = new ItemsListPnModel();

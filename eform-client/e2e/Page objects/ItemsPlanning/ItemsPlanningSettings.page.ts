@@ -46,9 +46,9 @@ export class ItemsPlanningSettingsPage extends Page {
   public goToSettingsPage() {
     myEformsPage.Navbar.advancedDropdown();
     myEformsPage.Navbar.clickonSubMenuItem('Plugins');
-    browser.pause(8000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
     pluginPage.pluginSettingsLink.click();
-    browser.pause(8000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
   }
 
   public saveSettings(data: any) {
@@ -59,10 +59,11 @@ export class ItemsPlanningSettingsPage extends Page {
     this.numberOfWorkers.setValue(data.numberOfWorkers);
     this.siteIds.setValue(data.siteIds);
     this.saveSettingsBtn.click();
-    browser.pause(6000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
   }
 
   public getSettings() {
+      browser.pause(500);
     return new ItemsPlanningSettings();
   }
 }

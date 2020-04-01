@@ -12,7 +12,7 @@ const URL = '';
   styleUrls: ['./items-planning-pn-unit-import.component.scss']
 })
 export class ItemsPlanningPnUnitImportComponent implements OnInit {
-  @ViewChild('frame') frame;
+  @ViewChild('frame', {static: false}) frame;
   public data: any = [];
   uploader: FileUploader;
   unitImportModel: ItemsPlanningPnUnitImportModel;

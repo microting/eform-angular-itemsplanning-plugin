@@ -10,7 +10,7 @@ import {ItemsListPnModel} from '../../../models/list';
   styleUrls: ['./list-delete.component.scss']
 })
 export class ListDeleteComponent implements OnInit {
-  @ViewChild('frame') frame;
+  @ViewChild('frame', {static: false}) frame;
   @Output() onListDeleted: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
   selectedListModel: ItemsListPnModel = new ItemsListPnModel();

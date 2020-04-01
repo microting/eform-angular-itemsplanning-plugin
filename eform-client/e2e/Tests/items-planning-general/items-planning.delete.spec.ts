@@ -12,7 +12,7 @@ describe('Items planning actions', function () {
     });
   it('should should create List', function () {
     itemsPlanningListPage.listCreateBtn.click();
-    browser.pause(6000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
     const listData = {
       name: 'Test list',
       template: 'Number 1',
@@ -22,15 +22,15 @@ describe('Items planning actions', function () {
       repeatUntil: '5/15/2020'
     };
     itemsPlanningModalPage.createList(listData);
-    browser.pause(5000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
   });
   it ('should delete existing list', function () {
-        browser.pause(5000);
+        $('#spinner-animation').waitForDisplayed(90000, true);
 
         let listRowObject = new ListRowObject(itemsPlanningListPage.rowNum());
         listRowObject.clickDeleteList();
         itemsPlanningModalPage.listDeleteDeleteBtn.click();
-        browser.pause(5000);
+        $('#spinner-animation').waitForDisplayed(90000, true);
         listRowObject = new ListRowObject(1);
         expect(listRowObject.id === null, 'List is not deleted');
     });

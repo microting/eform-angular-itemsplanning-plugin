@@ -16,8 +16,8 @@ import {TemplateListModel, TemplateRequestModel} from 'src/app/common/models/efo
   styleUrls: ['./items-list-create.component.scss']
 })
 export class ItemsListCreateComponent implements OnInit {
-  @ViewChild('frame') frame;
-  @ViewChild('unitImportModal') importUnitModal;
+  @ViewChild('frame', {static: false}) frame;
+  @ViewChild('unitImportModal', {static: false}) importUnitModal;
   @Output() listCreated: EventEmitter<void> = new EventEmitter<void>();
   // @Output() deploymentFinished: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
