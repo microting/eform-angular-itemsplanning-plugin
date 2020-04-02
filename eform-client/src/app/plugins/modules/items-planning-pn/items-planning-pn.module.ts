@@ -35,6 +35,7 @@ import {
   ReportPreviewTableComponent
 } from './components/reports';
 import {FileUploadModule} from 'ng2-file-upload';
+import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
 
 @NgModule({
   imports: [
@@ -49,7 +50,8 @@ import {FileUploadModule} from 'ng2-file-upload';
     RouterModule,
     ItemsPlanningPnRouting,
     ReactiveFormsModule,
-    FileUploadModule
+    FileUploadModule,
+    OwlDateTimeModule
   ],
   declarations: [
     ItemsPlanningPnLayoutComponent,
