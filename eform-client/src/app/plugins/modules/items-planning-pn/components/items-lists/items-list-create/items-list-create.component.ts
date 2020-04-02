@@ -59,7 +59,7 @@ export class ItemsListCreateComponent implements OnInit {
     this.spinnerStatus = true;
 
     if (this.newListModel.repeatUntil) {
-      this.newListModel.repeatUntil.utcOffset(0, true);
+      //this.newListModel.repeatUntil;
     }
 
     this.trashInspectionPnListsService.createList(this.newListModel).subscribe((data) => {
