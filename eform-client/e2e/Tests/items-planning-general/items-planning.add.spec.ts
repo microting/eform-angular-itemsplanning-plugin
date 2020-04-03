@@ -9,7 +9,7 @@ describe('Items planning actions', function () {
         loginPage.open('/auth');
         loginPage.login();
         const newEformLabel = 'Number 1';
-        itemsPlanningListPage.createNewEform(newEformLabel);
+        //itemsPlanningListPage.createNewEform(newEformLabel);
         itemsPlanningListPage.goToListsPage();
     });
     it ('should create list with all fields', function () {
@@ -37,7 +37,7 @@ describe('Items planning actions', function () {
         const repeatUntil = new Date(listData.repeatUntil);
         const repeatUntilSaved = new Date(itemsPlanningModalPage.editRepeatUntil.getValue());
         expect(repeatUntilSaved.getDate(), 'Saved Repeat Until is incorrect').equal(repeatUntil.getDate());
-
+        //
         $('#editRepeatType').click();
         $('#spinner-animation').waitForDisplayed(90000, true);
         const editRepeatTypeSelected = $$('#editRepeatType .ng-option')[listData.repeatType];

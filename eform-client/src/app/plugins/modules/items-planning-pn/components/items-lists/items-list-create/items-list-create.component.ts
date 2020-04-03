@@ -8,6 +8,7 @@ import {SitesService} from '../../../../../../common/services/advanced';
 import {AuthService} from 'src/app/common/services';
 import {ItemsListPnCreateModel, ItemsListPnItemModel, ItemsListPnModel} from '../../../models/list';
 import {TemplateListModel, TemplateRequestModel} from 'src/app/common/models/eforms';
+import moment = require('moment');
 
 
 @Component({
@@ -59,7 +60,8 @@ export class ItemsListCreateComponent implements OnInit {
     this.spinnerStatus = true;
 
     if (this.newListModel.repeatUntil) {
-      //this.newListModel.repeatUntil;
+      const datTime = moment(this.newListModel.repeatUntil);
+      this.newListModel.repeatUntil = datTime.utcOffset(0, true);
     }
 
     this.trashInspectionPnListsService.createList(this.newListModel).subscribe((data) => {
