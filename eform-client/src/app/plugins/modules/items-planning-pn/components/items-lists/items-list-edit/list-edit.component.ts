@@ -52,6 +52,7 @@ export class ListEditComponent implements OnInit {
       if (data && data.success) {
         this.selectedListModel = data.model;
         this.selectedListModel.internalRepeatUntil = this.selectedListModel.repeatUntil;
+        // @ts-ignore
         this.templatesModel.templates = [{id: this.selectedListModel.relatedEFormId, label: this.selectedListModel.relatedEFormName}];
       } this.spinnerStatus = false;
     });
