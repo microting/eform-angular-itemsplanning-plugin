@@ -59,13 +59,13 @@ export class ItemsListCreateComponent implements OnInit {
   createItemsList() {
     this.spinnerStatus = true;
 
-    if (this.newListModel.repeatUntil) {
-      const datTime = moment(this.newListModel.repeatUntil);
-      this.newListModel.repeatUntil = datTime.utcOffset(0, true);
+    if (this.newListModel.internalRepeatUntil) {
+      const tempDate = moment(this.newListModel.internalRepeatUntil).format('DD/MM/YYYY');
+      const datTime = moment.utc(tempDate, 'DD/MM/YYYY');
+      this.newListModel.repeatUntil = datTime.format('YYYY-MM-DD');
     }
 
     this.trashInspectionPnListsService.createList(this.newListModel).subscribe((data) => {
-      // debugger;
       if (data && data.success) {
         this.listCreated.emit();
         // this.submitDeployment();

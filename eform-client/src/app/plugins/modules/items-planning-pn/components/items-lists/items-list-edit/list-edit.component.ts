@@ -51,19 +51,19 @@ export class ListEditComponent implements OnInit {
     this.itemsPlanningPnListsService.getSingleList(id).subscribe((data) => {
       if (data && data.success) {
         this.selectedListModel = data.model;
-        //this.selectedListModel.repeatUntil = moment(this.selectedListModel.repeatUntil);
-        // @ts-ignore
+        this.selectedListModel.internalRepeatUntil = this.selectedListModel.repeatUntil;
         this.templatesModel.templates = [{id: this.selectedListModel.relatedEFormId, label: this.selectedListModel.relatedEFormName}];
       } this.spinnerStatus = false;
     });
   }
 
   updateList() {
-    this.spinnerStatus = true;
-    const model = new ItemsListPnUpdateModel(this.selectedListModel);
-    if (this.selectedListModel.repeatUntil) {
-      this.selectedListModel.repeatUntil.utcOffset(0, true);
+    this.spinnerStatus = true;if (this.selectedListModel.internalRepeatUntil) {
+      const tempDate = moment(this.selectedListModel.internalRepeatUntil).format('DD/MM/YYYY');
+      const datTime = moment.utc(tempDate, 'DD/MM/YYYY');
+      this.selectedListModel.repeatUntil = datTime.format('YYYY-MM-DDT00:00:00').toString();
     }
+    const model = new ItemsListPnUpdateModel(this.selectedListModel);
     this.itemsPlanningPnListsService.updateList(model)
       .subscribe((data) => {
       if (data && data.success) {
