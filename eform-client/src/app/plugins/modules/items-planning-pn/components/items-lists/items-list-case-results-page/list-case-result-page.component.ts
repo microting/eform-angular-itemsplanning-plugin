@@ -19,7 +19,7 @@ import {TemplateDto} from '../../../../../../common/models/dto';
 })
 
 export class ListCaseResultPageComponent implements OnInit {
-  @ViewChild('uploadedDataModal') uploadedDataModal;
+  @ViewChild('uploadedDataModal', {static: false}) uploadedDataModal;
   @Output() generateReport: EventEmitter<ReportPnGenerateModel> = new EventEmitter();
   @Output() saveReport: EventEmitter<ReportPnGenerateModel> = new EventEmitter();
   generateForm: FormGroup;

@@ -29,14 +29,13 @@ import {ItemsPlanningPnListsService,
   ItemsPlanningPnReportsService,
   ItemsPlanningPnCasesService,
   ItemsPlanningPnUploadedDataService} from './services';
-import {OwlDateTimeModule} from 'ng-pick-datetime';
-import {OwlMomentDateTimeModule} from 'ng-pick-datetime-moment';
 import {
   ReportGeneratorContainerComponent,
   ReportGeneratorFormComponent,
   ReportPreviewTableComponent
 } from './components/reports';
 import {FileUploadModule} from 'ng2-file-upload';
+import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
 
 @NgModule({
   imports: [
@@ -50,10 +49,9 @@ import {FileUploadModule} from 'ng2-file-upload';
     FontAwesomeModule,
     RouterModule,
     ItemsPlanningPnRouting,
-    OwlDateTimeModule,
-    OwlMomentDateTimeModule,
     ReactiveFormsModule,
-    FileUploadModule
+    FileUploadModule,
+    OwlDateTimeModule
   ],
   declarations: [
     ItemsPlanningPnLayoutComponent,

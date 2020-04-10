@@ -8,7 +8,8 @@ export class ItemsListPnCreateModel {
   repeatType: number;
   dayOfWeek: number;
   dayOfMonth: number;
-  repeatUntil: Moment | null;
+  repeatUntil: string;
+  internalRepeatUntil: Moment | null;
   relatedEFormId: number;
   items: ItemsListPnItemModel[] = [];
 }

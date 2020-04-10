@@ -8,7 +8,7 @@ import {UploadedDataModel} from '../../../models/list';
   styleUrls: ['./uploaded-data-delete.component.scss']
 })
 export class UploadedDataDeleteComponent implements OnInit {
- @ViewChild('frame') frame;
+ @ViewChild('frame', {static: false}) frame;
  @Output() onUploadedDataDeleted: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
   selectedUploadedData: UploadedDataModel = new UploadedDataModel();

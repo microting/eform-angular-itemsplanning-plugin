@@ -12,7 +12,7 @@ describe('Items planning actions', function () {
     });
   it('should create a new list', function () {
       itemsPlanningListPage.listCreateBtn.click();
-      browser.pause(6000);
+      $('#spinner-animation').waitForDisplayed(90000, true);
       const listData = {
         name: 'Test list',
         template: 'Number 1',
@@ -24,7 +24,7 @@ describe('Items planning actions', function () {
     itemsPlanningModalPage.createList(listData);
   });
   it ('should change all fields after edit', function () {
-        browser.pause(6000);
+        $('#spinner-animation').waitForDisplayed(90000, true);
         let listRowObject = new ListRowObject(itemsPlanningListPage.rowNum());
         listRowObject.clickUpdateList();
         const listData = {
@@ -50,15 +50,15 @@ describe('Items planning actions', function () {
         const repeatUntilSaved = new Date(itemsPlanningModalPage.editRepeatUntil.getValue());
         expect(repeatUntilSaved.getDate(), 'Saved Repeat Until is incorrect').equal(repeatUntil.getDate());
 
-        browser.element('#editRepeatType').click();
-        browser.pause(5000);
-        const editRepeatTypeSelected = browser.$$('#editRepeatType .ng-option')[listData.repeatType];
+        $('#editRepeatType').click();
+        $('#spinner-animation').waitForDisplayed(90000, true);
+        const editRepeatTypeSelected = $$('#editRepeatType .ng-option')[listData.repeatType];
         expect(editRepeatTypeSelected.getAttribute('class'), 'Saved Repeat Type is incorrect').contains('ng-option-selected');
 
         itemsPlanningModalPage.listEditCancelBtn.click();
-        browser.pause(5000);
+        $('#spinner-animation').waitForDisplayed(90000, true);
         listRowObject.clickDeleteList();
         itemsPlanningModalPage.listDeleteDeleteBtn.click();
-        browser.pause(5000);
+        $('#spinner-animation').waitForDisplayed(90000, true);
     });
 });

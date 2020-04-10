@@ -14,7 +14,8 @@ export class ItemsListPnModel {
   repeatType: number;
   dayOfWeek: number;
   dayOfMonth: number;
-  repeatUntil: Moment | null;
+  repeatUntil: string;
+  internalRepeatUntil: string;
   relatedEFormId: number;
   relatedEFormName: string;
   items: ItemsListPnItemModel[] = [];

@@ -8,6 +8,7 @@ import {SitesService} from '../../../../../../common/services/advanced';
 import {AuthService} from 'src/app/common/services';
 import {ItemsListPnCreateModel, ItemsListPnItemModel, ItemsListPnModel} from '../../../models/list';
 import {TemplateListModel, TemplateRequestModel} from 'src/app/common/models/eforms';
+import moment = require('moment');
 
 
 @Component({
@@ -16,8 +17,8 @@ import {TemplateListModel, TemplateRequestModel} from 'src/app/common/models/efo
   styleUrls: ['./items-list-create.component.scss']
 })
 export class ItemsListCreateComponent implements OnInit {
-  @ViewChild('frame') frame;
-  @ViewChild('unitImportModal') importUnitModal;
+  @ViewChild('frame', {static: false}) frame;
+  @ViewChild('unitImportModal', {static: false}) importUnitModal;
   @Output() listCreated: EventEmitter<void> = new EventEmitter<void>();
   // @Output() deploymentFinished: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
@@ -58,12 +59,13 @@ export class ItemsListCreateComponent implements OnInit {
   createItemsList() {
     this.spinnerStatus = true;
 
-    if (this.newListModel.repeatUntil) {
-      this.newListModel.repeatUntil.utcOffset(0, true);
+    if (this.newListModel.internalRepeatUntil) {
+      const tempDate = moment(this.newListModel.internalRepeatUntil).format('DD/MM/YYYY');
+      const datTime = moment.utc(tempDate, 'DD/MM/YYYY');
+      this.newListModel.repeatUntil = datTime.format('YYYY-MM-DD');
     }
 
     this.trashInspectionPnListsService.createList(this.newListModel).subscribe((data) => {
-      // debugger;
       if (data && data.success) {
         this.listCreated.emit();
         // this.submitDeployment();

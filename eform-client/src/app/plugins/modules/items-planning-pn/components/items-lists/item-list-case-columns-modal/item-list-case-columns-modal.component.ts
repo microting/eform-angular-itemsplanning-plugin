@@ -6,6 +6,7 @@ import {ItemsListPnModel, ItemsListPnUpdateModel} from '../../../models/list';
 import {ItemsPlanningPnListsService} from '../../../services';
 import {TemplateListModel} from '../../../../../../common/models/eforms';
 import {EFormService} from '../../../../../../common/services/eform';
+import moment = require('moment');
 
 
 @Component({
@@ -14,7 +15,7 @@ import {EFormService} from '../../../../../../common/services/eform';
   styleUrls: ['./item-list-case-columns-modal.component.scss']
 })
 export class ItemListCaseColumnsModalComponent implements OnInit {
-  @ViewChild('frame') frame;
+  @ViewChild('frame', {static: false}) frame;
   @Output() onListUpdated: EventEmitter<void> = new EventEmitter<void>();
   spinnerStatus = false;
   selectedListModel: ItemsListPnModel = new ItemsListPnModel();
@@ -53,7 +54,7 @@ export class ItemListCaseColumnsModalComponent implements OnInit {
     this.spinnerStatus = true;
     const model = new ItemsListPnUpdateModel(this.selectedListModel);
     if (this.selectedListModel.repeatUntil) {
-      this.selectedListModel.repeatUntil.utcOffset(0, true);
+      const datTime = moment(this.selectedListModel.repeatUntil);
     }
     this.itemsPlanningPnListsService.updateList(model)
       .subscribe((data) => {

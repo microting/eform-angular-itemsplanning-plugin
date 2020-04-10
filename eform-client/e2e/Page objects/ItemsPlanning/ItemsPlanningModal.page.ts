@@ -7,109 +7,146 @@ export class ItemsPlanningModalPage extends Page {
 
   // Create page elements
   public get createListItemName() {
-    return browser.element('#createListItemName');
+    $('#createListItemName').waitForDisplayed(20000);
+    $('#createListItemName').waitForClickable({timeout: 20000});
+    return $('#createListItemName');
   }
 
   public get createListSelector() {
-    return browser.element('#createListSelector input');
+    $('#createListSelector input').waitForDisplayed(20000);
+    $('#createListSelector input').waitForClickable({timeout: 20000});
+    return $('#createListSelector input');
   }
 
   public get createListSelectorOption() {
-    return browser.element(`//*[contains(@class, 'ng-option')]`);
+    browser.pause(1000);
+    const ele = $(`//*[contains(@class, 'ng-option')]`);
+    ele.waitForDisplayed(20000);
+    ele.waitForClickable({timeout: 20000});
+    return ele;
   }
 
   public get createListDescription() {
-    return browser.element('#createListDescription');
+    $('#createListDescription').waitForDisplayed(20000);
+    $('#createListDescription').waitForClickable({timeout: 20000});
+    return $('#createListDescription');
   }
 
   public get createRepeatEvery() {
-    return browser.element('#createRepeatEvery');
+    $('#createRepeatEvery').waitForDisplayed(20000);
+    //$('#createRepeatEvery').waitForClickable({timeout: 20000});
+    return $('#createRepeatEvery');
   }
 
   public selectCreateRepeatType(n: number) {
-    browser.element('#createRepeatType').click();
-    browser.pause(5000);
-    const choices = browser.$$('#createRepeatType .ng-option');
+    $('#createRepeatType').click();
+    $('#spinner-animation').waitForDisplayed(90000, true);
+    const choices = $$('#createRepeatType .ng-option');
     choices[n].click();
-    browser.pause(3000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
   }
 
   public get createRepeatUntil() {
-    return browser.element('#createRepeatUntil');
+    $('#createRepeatUntil').waitForDisplayed(20000);
+    $('#createRepeatUntil').waitForClickable({timeout: 20000});
+    return $('#createRepeatUntil');
   }
 
   public get listCreateSaveBtn() {
-    return browser.element('#listCreateSaveBtn');
+    $('#listCreateSaveBtn').waitForDisplayed(20000);
+    $('#listCreateSaveBtn').waitForClickable({timeout: 20000});
+    return $('#listCreateSaveBtn');
   }
 
   public get listCreateCancelBtn() {
-    return browser.element('#listCreateCancelBtn');
+    $('#listCreateCancelBtn').waitForDisplayed(20000);
+    $('#listCreateCancelBtn').waitForClickable({timeout: 20000});
+    return $('#listCreateCancelBtn');
   }
 
   // Edit page elements
   public get editListItemName() {
-    return browser.element('#editListItemName');
+    $('#editListItemName').waitForDisplayed(20000);
+    $('#editListItemName').waitForClickable({timeout: 20000});
+    return $('#editListItemName');
   }
 
   public get editListSelector() {
-    return browser.element('#editListSelector input');
+    $('#editListSelector input').waitForDisplayed(20000);
+    $('#editListSelector input').waitForClickable({timeout: 20000});
+    return $('#editListSelector input');
   }
   public get editListSelectorValue() {
-    return browser.element(`//*[contains(@id, 'editListSelector')]//*[contains(@class, 'ng-value')]//div[contains(@class, 'ng-star-inserted')]`);
+    return $(`//*[contains(@id, 'editListSelector')]//*[contains(@class, 'ng-value')]//div[contains(@class, 'ng-star-inserted')]`);
   }
   public get editListDescription() {
-    return browser.element('#editListDescription');
+    $('#editListDescription').waitForDisplayed(20000);
+    $('#editListDescription').waitForClickable({timeout: 20000});
+    return $('#editListDescription');
   }
 
   public get editRepeatEvery() {
-    return browser.element('#editRepeatEvery');
+    $('#editRepeatEvery').waitForDisplayed(20000);
+    $('#editRepeatEvery').waitForClickable({timeout: 20000});
+    return $('#editRepeatEvery');
   }
 
   public selectEditRepeatType(n: number) {
-    browser.element('#editRepeatType').click();
-    browser.pause(5000);
-    const choices = browser.$$('#editRepeatType .ng-option');
+    $('#editRepeatType').click();
+    $('#spinner-animation').waitForDisplayed(90000, true);
+    const choices = $$('#editRepeatType .ng-option');
     choices[n].click();
-    browser.pause(3000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
   }
 
   public get editRepeatUntil() {
-    return browser.element('#editRepeatUntil');
+    $('#editRepeatUntil').waitForDisplayed(20000);
+    $('#editRepeatUntil').waitForClickable({timeout: 20000});
+    return $('#editRepeatUntil');
   }
 
   public get listEditSaveBtn() {
-    return browser.element('#listEditSaveBtn');
+    $('#listEditSaveBtn').waitForDisplayed(20000);
+    $('#listEditSaveBtn').waitForClickable({timeout: 20000});
+    return $('#listEditSaveBtn');
   }
 
   public get listEditCancelBtn() {
-    return browser.element('#listEditCancelBtn');
+    $('#listEditCancelBtn').waitForDisplayed(20000);
+    $('#listEditCancelBtn').waitForClickable({timeout: 20000});
+    return $('#listEditCancelBtn');
   }
 
   // Add item elements
   public get addItemBtn() {
-    return browser.element('#addItemBtn');
+    $('#addItemBtn').waitForDisplayed(20000);
+    $('#addItemBtn').waitForClickable({timeout: 20000});
+    return $('#addItemBtn');
   }
 
   // Delete page elements
   public get listDeleteDeleteBtn() {
-    return browser.element('#listDeleteDeleteBtn');
+    $('#listDeleteDeleteBtn').waitForDisplayed(20000);
+    $('#listDeleteDeleteBtn').waitForClickable({timeout: 20000});
+    return $('#listDeleteDeleteBtn');
   }
 
   public get listDeleteCancelBtn() {
-    return browser.element('#listDeleteCancelBtn');
+    $('#listDeleteCancelBtn').waitForDisplayed(20000);
+    $('#listDeleteCancelBtn').waitForClickable({timeout: 20000});
+    return $('#listDeleteCancelBtn');
   }
 
   public createList(data: any) {
     this.createListItemName.setValue(data.name);
     this.createListSelector.addValue(data.template);
-    browser.pause(2000);
     this.createListSelectorOption.click();
     this.createListDescription.setValue(data.description);
     this.createRepeatEvery.setValue(data.repeatEvery);
     this.selectCreateRepeatType(data.repeatType);
     this.createRepeatUntil.setValue(data.repeatUntil);
     this.listCreateSaveBtn.click();
-    browser.pause(8000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
   }
 
   public editList(data: any) {
@@ -120,12 +157,12 @@ export class ItemsPlanningModalPage extends Page {
     this.selectEditRepeatType(data.repeatType);
     this.editRepeatUntil.setValue(data.repeatUntil);
     this.listEditSaveBtn.click();
-    browser.pause(8000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
   }
 
   public addNewItem() {
     this.addItemBtn.click();
-    browser.pause(5000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
   }
 
 }
@@ -150,6 +187,6 @@ export class ListItemRowObject {
 
   public deleteItem() {
     this.deleteBtn.click();
-    browser.pause(5000);
+    $('#spinner-animation').waitForDisplayed(90000, true);
   }
 }
