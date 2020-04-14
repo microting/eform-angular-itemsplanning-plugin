@@ -160,14 +160,14 @@
           {{case.numberOfImages}}
         </td>
         <td>
-          <button class="btn btn-success"
+          <button mdbBtn class="btn-success"
             (click)="showListCasePdfModal(case)"
             mdbTooltip="{{'Show/Edit PDF' | translate}}">
             <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
           </button>
         </td>
         <td>
-          <button class="btn btn-success btn-icon mb-2" *ngIf="case.status === 100"
+          <button mdbBtn class="btn-success btn-icon mb-2" *ngIf="case.status === 100"
                   [routerLink]="['/cases/edit/' + case.sdkCaseId + '/' + case.sdkeFormId]"
                   mdbTooltip="{{ 'Edit Case' | translate }}">
             <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>

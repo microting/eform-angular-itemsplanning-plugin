@@ -14,7 +14,7 @@ describe('Items planning actions', function () {
     });
     it ('should create list with all fields', function () {
         itemsPlanningListPage.listCreateBtn.click();
-        $('#spinner-animation').waitForDisplayed(90000, true);
+        $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
         const listData = {
             name: 'Test list',
             template: 'Number 1',
@@ -39,13 +39,13 @@ describe('Items planning actions', function () {
         expect(repeatUntilSaved.getDate(), 'Saved Repeat Until is incorrect').equal(repeatUntil.getDate());
         //
         $('#editRepeatType').click();
-        $('#spinner-animation').waitForDisplayed(90000, true);
+        $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
         const editRepeatTypeSelected = $$('#editRepeatType .ng-option')[listData.repeatType];
         expect(editRepeatTypeSelected.getAttribute('class'), 'Saved Repeat Type is incorrect').contains('ng-option-selected');
         itemsPlanningModalPage.listEditCancelBtn.click();
-        $('#spinner-animation').waitForDisplayed(90000, true);
+        $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
         listRowObject.clickDeleteList();
         itemsPlanningModalPage.listDeleteDeleteBtn.click();
-        $('#spinner-animation').waitForDisplayed(90000, true);
+        $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     });
 });

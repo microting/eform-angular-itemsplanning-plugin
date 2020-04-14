@@ -10,7 +10,7 @@
         <i class="material-icons prefix">
           calendar_today
         </i>
-        <input mdbInputDirective [mdbValidate]="false" formControlName="dateRange"
+        <input mdbInput  formControlName="dateRange"
                name="dateRange" required
                type="text" [owlDateTime]="dateRangePicker" [selectMode]="'range'"
                class="form-control input-sm" id="dateFormInput">
@@ -18,10 +18,10 @@
       </div>
     </div>
     <div class="col-md-3 text-center pt-3">
-      <button class="btn btn-success" [disabled]="generateForm.invalid" (click)="onGenerateReport()">
+      <button mdbBtn class="btn-success" [disabled]="generateForm.invalid" (click)="onGenerateReport()">
         {{'Generate' | translate}}
       </button>
-      <button class="btn btn-success" [disabled]="generateForm.invalid" (click)="onSaveReport()">
+      <button mdbBtn class="btn-success" [disabled]="generateForm.invalid" (click)="onSaveReport()">
         {{ 'Download' | translate }}
       </button>
     </div>
@@ -339,26 +339,26 @@
           {{itemCase.numberOfImages}}
         </td>
         <td>
-          <button class="btn btn-success btn-icon mb-2" *ngIf="itemCase.status === 100"
+          <button mdbBtn class="btn-success btn-icon mb-2" *ngIf="itemCase.status === 100"
                   [routerLink]="['/cases/edit/' + itemCase.sdkCaseId + '/' + casesModel.sdkeFormId]"
                   [queryParams]="{'reverseRoute': '/plugins/items-planning-pn/item-itemCase-results/'
                     + this.listCaseRequestModel.listId}"
                   mdbTooltip="{{ 'Edit Case' | translate }}">
             <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
           </button>
-          <button class="btn btn-success btn-icon mb-2"
+          <button mdbBtn class="btn-success btn-icon mb-2"
                   (click)="showListCasePdfModal(itemCase)" *ngIf="itemCase.status === 100"
                   mdbTooltip="{{'Upload PDF' | translate}}">
             <fa-icon icon="file-upload" size="lg" [fixedWidth]="true"></fa-icon>
           </button>
-          <button class="btn btn-success btn-icon mb-2"
+          <button mdbBtn class="btn-success btn-icon mb-2"
                   *ngIf="(currentTemplate.jasperExportEnabled || currentTemplate.docxExportEnabled) && itemCase.status === 100"
                   (click)="downloadFile(itemCase, 'pdf')"
                   mdbTooltip="{{ 'Download PDF' | translate }}">
             <fa-icon icon="file-pdf" size="lg" [fixedWidth]="true"></fa-icon>
 
           </button>
-          <button class="btn btn-success btn-icon mb-2" *ngIf="currentTemplate.docxExportEnabled && itemCase.status === 100"
+          <button mdbBtn class="btn-success btn-icon mb-2" *ngIf="currentTemplate.docxExportEnabled && itemCase.status === 100"
                   (click)="downloadFile(itemCase, 'docx')"
                   mdbTooltip="{{ 'Download Docx' | translate }}">
             <fa-icon icon="file-word" size="lg" [fixedWidth]="true"></fa-icon>

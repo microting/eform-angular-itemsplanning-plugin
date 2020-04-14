@@ -14,43 +14,43 @@ export class ItemsPlanningListPage extends PageWithNavbarPage {
     return $$('#tableBody > tr').length;
   }
   public get newEformBtn() {
-    $('#newEFormBtn').waitForDisplayed(20000);
+    $('#newEFormBtn').waitForDisplayed({timeout: 20000});
 $('#newEFormBtn').waitForClickable({timeout: 20000});
 return $('#newEFormBtn');
   }
   public get xmlTextArea() {
-    $('#eFormXml').waitForDisplayed(20000);
+    $('#eFormXml').waitForDisplayed({timeout: 20000});
 $('#eFormXml').waitForClickable({timeout: 20000});
 return $('#eFormXml');
   }
   public get createEformBtn() {
-    $('#createEformBtn').waitForDisplayed(20000);
+    $('#createEformBtn').waitForDisplayed({timeout: 20000});
 $('#createEformBtn').waitForClickable({timeout: 20000});
 return $('#createEformBtn');
   }
   public get createEformTagSelector() {
-    $('#createEFormMultiSelector').waitForDisplayed(20000);
+    $('#createEFormMultiSelector').waitForDisplayed({timeout: 20000});
 $('#createEFormMultiSelector').waitForClickable({timeout: 20000});
 return $('#createEFormMultiSelector');
   }
   public get createEformNewTagInput() {
-    $('#addTagInput').waitForDisplayed(20000);
+    $('#addTagInput').waitForDisplayed({timeout: 20000});
 $('#addTagInput').waitForClickable({timeout: 20000});
 return $('#addTagInput');
   }
   public clickIdTableHeader() {
     $(`//*[contains(@id, 'idTableHeader')]`).click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   }
 
   public clickNameTableHeader() {
     $(`//*[contains(@id, 'nameTableHeader')]`).click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   }
 
   public clickDescriptionTableHeader() {
     $(`//*[contains(@id, 'descriptionTableHeader')]`).click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   }
 
   public getListValue(selector: any, row: number) {
@@ -62,29 +62,29 @@ return $('#addTagInput');
   }
 
   public get itemPlanningButton() {
-    $('#items-planning-pn').waitForDisplayed(20000);
+    $('#items-planning-pn').waitForDisplayed({timeout: 20000});
 $('#items-planning-pn').waitForClickable({timeout: 20000});
 return $('#items-planning-pn');
   }
 
   public get listCreateBtn() {
-    $('#listCreateBtn').waitForDisplayed(20000);
+    $('#listCreateBtn').waitForDisplayed({timeout: 20000});
 $('#listCreateBtn').waitForClickable({timeout: 20000});
 return $('#listCreateBtn');
   }
 
   public get listsButton() {
-    $('#items-planning-pn-lists').waitForDisplayed(20000);
+    $('#items-planning-pn-lists').waitForDisplayed({timeout: 20000});
 $('#items-planning-pn-lists').waitForClickable({timeout: 20000});
 return $('#items-planning-pn-lists');
   }
 
   public goToListsPage() {
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     this.itemPlanningButton.click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     this.listsButton.click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   }
 
   public createDummyLists() {
@@ -92,15 +92,15 @@ return $('#items-planning-pn-lists');
       this.listCreateBtn.click();
       itemsPlanningModalPage.createListItemName.setValue(Guid.create().toString());
       itemsPlanningModalPage.createListDescription.setValue(Guid.create().toString());
-      $('#spinner-animation').waitForDisplayed(90000, true);
+      $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
       itemsPlanningModalPage.createListSelector.addValue('Number 1');
-      $('#spinner-animation').waitForDisplayed(90000, true);
+      $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
       itemsPlanningModalPage.createListSelectorOption.click();
       itemsPlanningModalPage.createRepeatEvery.setValue(1);
       itemsPlanningModalPage.selectCreateRepeatType(1);
       itemsPlanningModalPage.createRepeatUntil.setValue('5/15/2020');
       itemsPlanningModalPage.listCreateSaveBtn.click();
-      $('#spinner-animation').waitForDisplayed(90000, true);
+      $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     }
   }
 
@@ -110,12 +110,12 @@ return $('#items-planning-pn-lists');
       const listRowObject = new ListRowObject(1);
       listRowObject.clickDeleteList();
       itemsPlanningModalPage.listDeleteDeleteBtn.click();
-      $('#spinner-animation').waitForDisplayed(90000, true);
+      $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     }
   }
   createNewEform(eFormLabel, newTagsList = [], tagAddedNum = 0) {
     this.newEformBtn.click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     // Create replaced xml and insert it in textarea
     const xml = XMLForEformFractions.XML.replace('TEST_LABEL', eFormLabel);
     browser.execute(function (xmlText) {
@@ -126,23 +126,23 @@ return $('#items-planning-pn-lists');
     const addedTags: string[] = newTagsList;
     if (newTagsList.length > 0) {
       this.createEformNewTagInput.setValue(newTagsList.join(','));
-      $('#spinner-animation').waitForDisplayed(90000, true);
+      $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     }
     // Add existing tags
     const selectedTags: string[] = [];
     if (tagAddedNum > 0) {
-      $('#spinner-animation').waitForDisplayed(90000, true);
+      $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
       for (let i = 0; i < tagAddedNum; i++) {
         this.createEformTagSelector.click();
         const selectedTag = $('.ng-option:not(.ng-option-selected)');
         selectedTags.push(selectedTag.getText());
         console.log('selectedTags is ' + JSON.stringify(selectedTags));
         selectedTag.click();
-        $('#spinner-animation').waitForDisplayed(90000, true);
+        $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
       }
     }
     this.createEformBtn.click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     return {added: addedTags, selected: selectedTags};
   }
 }
@@ -176,12 +176,12 @@ export class ListRowObject {
 
   public clickDeleteList() {
     this.deleteBtn.click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   }
 
   public clickUpdateList() {
     this.updateBtn.click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   }
 }
 

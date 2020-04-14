@@ -46,9 +46,9 @@ export class ItemsPlanningSettingsPage extends Page {
   public goToSettingsPage() {
     myEformsPage.Navbar.advancedDropdown();
     myEformsPage.Navbar.clickonSubMenuItem('Plugins');
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     pluginPage.pluginSettingsLink.click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   }
 
   public saveSettings(data: any) {
@@ -59,7 +59,7 @@ export class ItemsPlanningSettingsPage extends Page {
     this.numberOfWorkers.setValue(data.numberOfWorkers);
     this.siteIds.setValue(data.siteIds);
     this.saveSettingsBtn.click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   }
 
   public getSettings() {

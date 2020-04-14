@@ -12,7 +12,7 @@ describe('Items planning actions', function () {
     });
   it('should should create List', function () {
     itemsPlanningListPage.listCreateBtn.click();
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     const listData = {
       name: 'Test list',
       template: 'Number 1',
@@ -22,15 +22,15 @@ describe('Items planning actions', function () {
       repeatUntil: '5/15/2020'
     };
     itemsPlanningModalPage.createList(listData);
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   });
   it ('should delete existing list', function () {
-        $('#spinner-animation').waitForDisplayed(90000, true);
+        $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
 
         let listRowObject = new ListRowObject(itemsPlanningListPage.rowNum());
         listRowObject.clickDeleteList();
         itemsPlanningModalPage.listDeleteDeleteBtn.click();
-        $('#spinner-animation').waitForDisplayed(90000, true);
+        $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
         listRowObject = new ListRowObject(1);
         expect(listRowObject.id === null, 'List is not deleted');
     });

@@ -170,14 +170,14 @@
                     (click)="showEditListModal(list)">
               <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
             </button>
-            <button class="btn btn-success btn-icon mb-2"
+            <button mdbBtn class="btn-success btn-icon mb-2"
                     id="itemlist-case-results-btn"
                     [routerLink]="['/plugins/items-planning-pn/item-itemCase-results', list.id]"
                     mdbTooltip="{{ 'Show itemCase results' | translate }}">
               <fa-icon icon="briefcase" [fixedWidth]="true" size="lg"></fa-icon>
             </button>
 
-            <button class="btn btn-success btn-icon mb-2" id="edit-columnts-btn"
+            <button mdbBtn class="btn-success btn-icon mb-2" id="edit-columnts-btn"
                     (click)="openEditColumnsModal(list)"
                     mdbTooltip="{{ 'Edit columns' | translate }}">
               <fa-icon icon="table" [fixedWidth]="true" size="lg"></fa-icon>

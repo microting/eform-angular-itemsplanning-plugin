@@ -14,8 +14,7 @@
       <div class="container-fluid">
         <div class="col-md-12">
           <div class="md-form input-group">
-            <input mdbInputDirective
-                   [mdbValidate]="false" [(ngModel)]="settingsModel.sdkConnectionString"
+            <input mdbInput [(ngModel)]="settingsModel.sdkConnectionString"
                    type="text" name="sdkConnectionString" #sdkConnectionString="ngModel"
                    id="sdkConnectionString" class="form-control">
             <label for="sdkConnectionString">{{'SDK connection string' | translate}}</label>
@@ -23,8 +22,7 @@
         </div>
         <div class="col-md-12">
           <div class="md-form input-group">
-            <input mdbInputDirective
-                   [mdbValidate]="false" [(ngModel)]="settingsModel.logLevel"
+            <input mdbInput [(ngModel)]="settingsModel.logLevel"
                    type="text" name="logLevel" #loglevel="ngModel"
                    id="logLevel" class="form-control">
             <label for="logLevel">{{'Log Level' | translate}}</label>
@@ -32,8 +30,7 @@
         </div>
         <div class="col-md-12">
           <div class="md-form input-group">
-            <input mdbInputDirective
-                   [mdbValidate]="false" [(ngModel)]="settingsModel.logLimit"
+            <input mdbInput [(ngModel)]="settingsModel.logLimit"
                    type="text" name="logLimit" #loglimit="ngModel"
                    id="logLimit" class="form-control">
             <label for="logLimit">{{'Log Limit' | translate}}</label>
@@ -41,8 +38,7 @@
         </div>
         <div class="col-md-12">
           <div class="md-form input-group">
-            <input mdbInputDirective
-                   [mdbValidate]="false" [(ngModel)]="settingsModel.maxParallelism"
+            <input mdbInput [(ngModel)]="settingsModel.maxParallelism"
                    type="text" name="maxParallelism" #maxparallelism="ngModel"
                    id="maxParallelism" class="form-control">
             <label for="maxParallelism">{{'Max parallelism' | translate}}</label>
@@ -50,8 +46,7 @@
         </div>
         <div class="col-md-12">
           <div class="md-form input-group">
-            <input mdbInputDirective
-                   [mdbValidate]="false" [(ngModel)]="settingsModel.numberOfWorkers"
+            <input mdbInput [(ngModel)]="settingsModel.numberOfWorkers"
                    type="text" name="numberOfWorkers" #numberofworkers="ngModel"
                    id="numberOfWorkers" class="form-control">
             <label for="numberOfWorkers">{{'Number of workers' | translate}}</label>
@@ -59,8 +54,7 @@
         </div>
         <div class="col-md-12">
           <div class="md-form input-group">
-            <input mdbInputDirective
-                   [mdbValidate]="false" [(ngModel)]="settingsModel.token"
+            <input mdbInput [(ngModel)]="settingsModel.token"
                    type="text" name="token" #token="ngModel"
                    id="token" class="form-control">
             <label for="token">{{'Token' | translate}}</label>
@@ -68,8 +62,7 @@
         </div>
         <div class="col-md-12">
           <div class="md-form input-group">
-            <input mdbInputDirective
-                   [mdbValidate]="false" [(ngModel)]="settingsModel.siteIds"
+            <input mdbInput [(ngModel)]="settingsModel.siteIds"
                    type="text" name="siteIds" #siteIds="ngModel"
                    id="siteIds" class="form-control">
             <label for="siteIds">{{'Site ids' | translate}}</label>
