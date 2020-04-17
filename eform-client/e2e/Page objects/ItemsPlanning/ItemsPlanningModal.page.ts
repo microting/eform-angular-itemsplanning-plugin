@@ -8,7 +8,7 @@ export class ItemsPlanningModalPage extends Page {
   // Create page elements
   public get createListItemName() {
     $('#createListItemName').waitForDisplayed({timeout: 20000});
-    $('#createListItemName').waitForClickable({timeout: 20000});
+    //$('#createListItemName').waitForClickable({timeout: 20000});
     return $('#createListItemName');
   }
 
