@@ -37,7 +37,7 @@ describe('Items planning lists table sorting', function () {
       }
       expect(sorted, 'Sort by ID incorrect').deep.equal(listAfter);
     }
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   });
   it ('should be able to sort by Name', function () {
     const listBefore = $$('#listName').map(item => {
@@ -63,10 +63,10 @@ describe('Items planning lists table sorting', function () {
         sorted = listBefore;
       }
 
-      $('#spinner-animation').waitForDisplayed(90000, true);
+      $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
       expect(sorted, 'Sort by Name incorrect').deep.equal(listAfter);
     }
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   });
   it ('should be able to sort by Description', function () {
     const listBefore = $$('#listDescription').map(item => {
@@ -94,7 +94,7 @@ describe('Items planning lists table sorting', function () {
 
       expect(sorted, 'Sort by Description incorrect').deep.equal(listAfter);
     }
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
   });
   it('should clear table', function () {
     itemsPlanningListPage.clearTable();

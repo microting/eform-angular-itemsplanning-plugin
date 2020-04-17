@@ -19,7 +19,7 @@ describe('Items planning plugin settings page', function () {
       siteIds: '1,2,3'
     };
     itemsPlanningSettingsPage.saveSettings(settingsData);
-    $('#spinner-animation').waitForDisplayed(90000, true);
+    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     // Check that items planning settings saved correctly
     const savedSettings = itemsPlanningSettingsPage.getSettings();
     expect(savedSettings.sdkConnectionString, 'SDK connection string is incorrect').equal(settingsData.sdkConnectionString);

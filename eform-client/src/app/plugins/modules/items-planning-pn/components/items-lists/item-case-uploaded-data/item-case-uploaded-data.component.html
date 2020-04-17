@@ -34,7 +34,7 @@
             {{'Comment: ' | translate}} {{selectedListCase.comment}}
           </div>
           <div class="row">
-            <button class="btn btn-success"
+            <button mdbBtn class="btn-success"
             (click)="showUploadPDFModal()">{{'Upload New PDF' | translate}}
             </button>
           </div>
@@ -66,12 +66,12 @@
                   {{uploadedData.fileName}}
                 </td>
                 <td id="actionBtns">
-                  <button class="btn btn-success"
+                  <button mdbBtn class="btn-success"
                           (click)="downloadUploadedDataPdf(uploadedData.fileName)"
                           mdbTooltip="{{'Download PDF' | translate}}">
                     <fa-icon icon="download" size="lg" [fixedWidth]="true"></fa-icon>
                   </button>
-                  <button class="btn btn-danger"
+                  <button mdbBtn class="btn-danger"
                           (click)="showUploadedDataDeleteModal(uploadedData)"
                           mdbTooltip="{{'Delete' | translate}}">
                     <fa-icon icon="trash-alt" size="lg" [fixedWidth]="true"></fa-icon>

@@ -4,14 +4,14 @@
     </subheader-pn>
     <div class="modal-content">
       <div class="container-fluid">
-        <button class="btn btn-primary" *ngIf="pdfFileUploader?.queue?.length == 0"
+        <button mdbBtn class="btn-primary" *ngIf="pdfFileUploader?.queue?.length == 0"
                 (click)="pdfInput.click()" >{{'Choose File' | translate}}</button>
-        <button class="btn btn-success" *ngIf="pdfFileUploader?.queue?.length > 0"
+        <button mdbBtn class="btn-success" *ngIf="pdfFileUploader?.queue?.length > 0"
                 (click)="uploadPDF()">{{'Upload'}}</button>
         <input class="input-invisible"
                type="file" ng2FileSelect [uploader]="pdfFileUploader"
                accept="application/pdf" #pdfInput id="pdfInput">
-        <button class="btn btn-accent text-black-50" (click)="hidePDFModal()">{{'Close' | translate}}</button>
+        <button mdbBtn class="btn-accent text-black-50" (click)="hidePDFModal()">{{'Close' | translate}}</button>
       </div>
     </div>
   </div>

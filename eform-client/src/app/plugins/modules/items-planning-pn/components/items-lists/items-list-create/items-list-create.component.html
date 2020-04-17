@@ -9,8 +9,7 @@
           <div class="row">
             <div class="col-md-2 col-sm-4 col-xs-6">
               <div class="md-form">
-                <input mdbInputDirective
-                       [mdbValidate]="false"
+                <input mdbInput
                        [(ngModel)]="newListModel.name"
                        type="text" id="createListItemName"
                        name="createListItemName" class="form-control">
@@ -29,8 +28,7 @@
             </div>
             <div class="col-md-4 col-sm-4 col-xs-6">
               <div class="md-form">
-                <input mdbInputDirective
-                       [mdbValidate]="false"
+                <input mdbInput
                        [(ngModel)]="newListModel.description"
                        type="text" id="createListDescription"
                        name="createItemDescription" class="form-control">
@@ -42,8 +40,7 @@
           <div class="row mb-1">
             <div class="col-md-2 col-sm-4 col-xs-6">
               <div class="md-form">
-                <input mdbInputDirective
-                       [mdbValidate]="false"
+                <input mdbInput
                        [(ngModel)]="newListModel.repeatEvery"
                        type="text" id="createRepeatEvery"
                        name="createRepeatEvery" class="form-control">
@@ -87,8 +84,7 @@
             <ng-template [ngIf]="newListModel.repeatType == 3">
               <div class="col-md-2 col-sm-4 col-xs-6">
                 <div class="md-form">
-                  <input mdbInputDirective
-                         [mdbValidate]="false"
+                  <input mdbInput
                          [(ngModel)]="newListModel.dayOfMonth"
                          type="text" id="createDayOfMonth"
                          name="createDayOfMonth" class="form-control">
@@ -98,9 +94,8 @@
             </ng-template>
             <div class="col-md-2 col-sm-4 col-xs-6">
               <div class="md-form" [owlDateTimeTrigger]="dt1">
-                <input mdbInputDirective
+                <input mdbInput
                        [owlDateTime]="dt1"
-                       [mdbValidate]="false"
                        [(ngModel)]="newListModel.internalRepeatUntil"
                        type="text" id="createRepeatUntil"
                        name="createRepeatUntil" class="form-control">
@@ -109,7 +104,7 @@
               </div>
             </div>
           </div>
-          <button class="btn btn-success" id="addItemBtn" (click)="addNewItem()">
+          <button mdbBtn class="btn-success" id="addItemBtn" (click)="addNewItem()">
             <fa-icon icon="plus"></fa-icon>
             {{ 'Add New Item' | translate }}
           </button>
@@ -123,8 +118,7 @@
               <tr *ngFor="let item of newListModel.items">
                 <td id="itemsTableBody">
                   <div class="md-form md-form-sm">
-                    <input mdbInputDirective
-                           [mdbValidate]="false"
+                    <input mdbInput
                            [(ngModel)]="item.name"
                            type="text" id="createItemName"
                            name="createItemName" class="form-control">
@@ -133,8 +127,7 @@
                 </td>
                 <td id="listName">
                   <div class="md-form md-form-sm">
-                    <input mdbInputDirective
-                           [mdbValidate]="false"
+                    <input mdbInput
                            [(ngModel)]="item.description"
                            type="text" id="createItemDescription"
                            name="createItemDescription" class="form-control">
@@ -143,8 +136,7 @@
                 </td>
                 <td>
                   <div class="md-form md-form-sm">
-                    <input mdbInputDirective
-                           [mdbValidate]="false"
+                    <input mdbInput
                            [(ngModel)]="item.itemNumber"
                            type="text" id="createItemNumber"
                            name="createItemNumber" class="form-control">
@@ -153,8 +145,7 @@
                 </td>
                 <td>
                   <div class="md-form md-form-sm">
-                    <input mdbInputDirective
-                           [mdbValidate]="false"
+                    <input mdbInput
                            [(ngModel)]="item.locationCode"
                            type="text" id="createItemLocationCode"
                            name="createItemLocationCode" class="form-control">
@@ -163,8 +154,7 @@
                 </td>
                 <td>
                   <div class="md-form md-form-sm">
-                    <input mdbInputDirective
-                           [mdbValidate]="false"
+                    <input mdbInput
                            [(ngModel)]="item.buildYear"
                            type="text" id="createItemBuildYear"
                            name="createItemBuildYear" class="form-control">
@@ -173,8 +163,7 @@
                 </td>
                 <td>
                   <div class="md-form md-form-sm">
-                    <input mdbInputDirective
-                           [mdbValidate]="false"
+                    <input mdbInput
                            [(ngModel)]="item.type"
                            type="text" id="createItemType"
                            name="createItemType" class="form-control">
