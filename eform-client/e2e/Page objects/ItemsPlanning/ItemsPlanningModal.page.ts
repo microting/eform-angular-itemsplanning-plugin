@@ -48,7 +48,7 @@ export class ItemsPlanningModalPage extends Page {
 
   public get createRepeatUntil() {
     $('#createRepeatUntil').waitForDisplayed({timeout: 20000});
-    $('#createRepeatUntil').waitForClickable({timeout: 20000});
+    //$('#createRepeatUntil').waitForClickable({timeout: 20000});
     return $('#createRepeatUntil');
   }
 
