@@ -14,7 +14,6 @@ import {UploadedDatasModel} from '../../../models/list';
 export class UploadedDataPdfComponent implements OnInit {
   @ViewChild('frame', {static: false}) frame;
   @Output() onUploadedDataUploaded: EventEmitter<void> = new EventEmitter<void>();
-  spinnerStatus = false;
   selectedItemCase: ItemsListPnItemCaseModel = new ItemsListPnItemCaseModel();
   uploadedDatasModel: UploadedDatasModel = new UploadedDatasModel();
   pdfFileUploader: FileUploader = new FileUploader({url: 'api/items-planning-pn/uploaded-data/pdf'});
@@ -44,11 +43,10 @@ export class UploadedDataPdfComponent implements OnInit {
   }
 
   getAllUploadedData(itemCaseId: number) {
-    this.spinnerStatus = true;
     this.itemsPlanningPnUploadedDataService.getAllUploadedData(itemCaseId).subscribe((data) => {
       if (data && data.success) {
         this.uploadedDatasModel = data.model;
-        this.spinnerStatus = false;
+
       }
     });
   }

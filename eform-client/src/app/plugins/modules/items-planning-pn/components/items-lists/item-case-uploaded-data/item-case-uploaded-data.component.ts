@@ -12,7 +12,6 @@ export class ItemCaseUploadedDataComponent implements OnInit {
   @ViewChild('frame', {static: false}) frame;
   @ViewChild('uploadedDataPdfModal', {static: false}) uploadedDataPdfModal;
   @ViewChild('uploadedDataDeleteModal', {static: false}) uploadedDataDeleteModal;
-  spinnerStatus = false;
   uploadedDatasModel: UploadedDatasModel = new UploadedDatasModel();
   selectedListCase: ItemsListPnItemCaseModel = new ItemsListPnItemCaseModel();
   selectedListCaseResult: ItemsListPnCaseResultModel = new ItemsListPnCaseResultModel();
@@ -30,7 +29,6 @@ export class ItemCaseUploadedDataComponent implements OnInit {
   }
 
   getSelectedListCase(id: number) {
-    this.spinnerStatus = true;
     this.itemsPlanningPnCasesService.getSingleCase(id).subscribe((data) => {
       if (data && data.success) {
         this.selectedListCase = data.model;
@@ -41,7 +39,6 @@ export class ItemCaseUploadedDataComponent implements OnInit {
   }
 
   getAllUploadedData(itemCaseId: number) {
-    this.spinnerStatus = true;
     this.itemsPlanningPnUploadedDataService.getAllUploadedData(itemCaseId).subscribe((data) => {
       if (data && data.success) {
         this.uploadedDatasModel = data.model;

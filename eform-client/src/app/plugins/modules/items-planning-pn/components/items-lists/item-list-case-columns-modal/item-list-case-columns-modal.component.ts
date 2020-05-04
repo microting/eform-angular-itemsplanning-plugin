@@ -17,7 +17,6 @@ import moment = require('moment');
 export class ItemListCaseColumnsModalComponent implements OnInit {
   @ViewChild('frame', {static: false}) frame;
   @Output() onListUpdated: EventEmitter<void> = new EventEmitter<void>();
-  spinnerStatus = false;
   selectedListModel: ItemsListPnModel = new ItemsListPnModel();
   templatesModel: TemplateListModel = new TemplateListModel();
 
@@ -40,18 +39,16 @@ export class ItemListCaseColumnsModalComponent implements OnInit {
 
 
   getSelectedList(id: number) {
-    this.spinnerStatus = true;
     this.itemsPlanningPnListsService.getSingleList(id).subscribe((data) => {
       if (data && data.success) {
         this.selectedListModel = data.model;
         // @ts-ignore
         this.templatesModel.templates = [{id: this.selectedListModel.relatedEFormId, label: this.selectedListModel.relatedEFormName}];
-      } this.spinnerStatus = false;
+      }
     });
   }
 
   updateList() {
-    this.spinnerStatus = true;
     const model = new ItemsListPnUpdateModel(this.selectedListModel);
     if (this.selectedListModel.repeatUntil) {
       const datTime = moment(this.selectedListModel.repeatUntil);
@@ -62,12 +59,11 @@ export class ItemListCaseColumnsModalComponent implements OnInit {
           this.onListUpdated.emit();
           this.selectedListModel = new ItemsListPnModel();
           this.frame.hide();
-        } this.spinnerStatus = false;
+        }
       });
   }
 
   getColumnsForTemplate(relatedeFormId: number) {
-    this.spinnerStatus = true;
     this.eFormService.getTemplateColumns(relatedeFormId).subscribe((operation) => {
       if (operation && operation.success) {
         this.columnModels = operation.model;
@@ -76,7 +72,7 @@ export class ItemListCaseColumnsModalComponent implements OnInit {
         //     this.columnEditModel = result.model;
         //   }
         // });
-      } this.spinnerStatus = false;
+      }
     });
   }
 }

@@ -18,7 +18,6 @@ export class ItemsPlanningPnUnitImportComponent implements OnInit {
   unitImportModel: ItemsPlanningPnUnitImportModel;
   unitHeaderModel: ItemsPlanningPnHeadersModel;
   fileName: string;
-  spinnerStatus = false;
   totalColumns: number;
   totalRows: number;
   myFile: any;
@@ -77,12 +76,11 @@ export class ItemsPlanningPnUnitImportComponent implements OnInit {
   }
 
   importUnit() {
-    this.spinnerStatus = true;
     this.unitImportModel.headers = JSON.stringify(this.unitImportModel.headerList);
     return this.itemListService.importUnit(this.unitImportModel).subscribe(((data)=> {
       if (data && data.success) {
         this.unitImportModel = new ItemsPlanningPnUnitImportModel();
-      } this.spinnerStatus = false;
+      }
     }));
 }
   logThings(value) {

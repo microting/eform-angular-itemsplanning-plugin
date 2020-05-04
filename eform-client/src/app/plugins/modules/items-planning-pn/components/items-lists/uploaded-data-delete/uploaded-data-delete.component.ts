@@ -10,7 +10,6 @@ import {UploadedDataModel} from '../../../models/list';
 export class UploadedDataDeleteComponent implements OnInit {
  @ViewChild('frame', {static: false}) frame;
  @Output() onUploadedDataDeleted: EventEmitter<void> = new EventEmitter<void>();
-  spinnerStatus = false;
   selectedUploadedData: UploadedDataModel = new UploadedDataModel();
   constructor(private itemsPlanningPnUploadedDataService: ItemsPlanningPnUploadedDataService) { }
 
@@ -23,12 +22,11 @@ export class UploadedDataDeleteComponent implements OnInit {
   }
 
   deleteUploadedData() {
-    this.spinnerStatus = true;
     this.itemsPlanningPnUploadedDataService.deleteUploadedData(this.selectedUploadedData.id).subscribe((data) => {
       if (data && data.success) {
         this.onUploadedDataDeleted.emit();
         this.frame.hide();
-      } this.spinnerStatus = false;
+      }
     });
   }
 }

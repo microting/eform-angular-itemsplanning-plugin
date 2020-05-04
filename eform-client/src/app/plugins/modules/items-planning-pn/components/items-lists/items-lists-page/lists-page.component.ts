@@ -21,7 +21,6 @@ export class ListsPageComponent implements OnInit {
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   listsModel: ItemsListsPnModel = new ItemsListsPnModel();
   listRequestModel: ItemsListPnRequestModel = new ItemsListPnRequestModel();
-  spinnerStatus = false;
 
   constructor(private sharedPnService: SharedPnService,
               private itemsPlanningPnListsService: ItemsPlanningPnListsService) { }
@@ -55,14 +54,13 @@ export class ListsPageComponent implements OnInit {
   }
 
   getAllLists() {
-    this.spinnerStatus = true;
     this.listRequestModel.isSortDsc = this.localPageSettings.isSortDsc;
     this.listRequestModel.sort = this.localPageSettings.sort;
     this.listRequestModel.pageSize = this.localPageSettings.pageSize;
     this.itemsPlanningPnListsService.getAllLists(this.listRequestModel).subscribe((data) => {
       if (data && data.success) {
         this.listsModel = data.model;
-      } this.spinnerStatus = false;
+      }
     });
   }
   showEditListModal(list: ItemsListPnModel) {

@@ -26,7 +26,6 @@ export class ListCaseResultPageComponent implements OnInit {
   currentTemplate: TemplateDto = new TemplateDto;
   listCaseRequestModel: ItemListCasesPnRequestModel = new ItemListCasesPnRequestModel();
   casesModel: ItemListPnCaseResultListModel = new ItemListPnCaseResultListModel();
-  spinnerStatus = false;
 
   constructor(private activateRoute: ActivatedRoute,
               private sharedPnService: SharedPnService,
@@ -56,14 +55,13 @@ export class ListCaseResultPageComponent implements OnInit {
   }
 
   onSaveReport() {
-    this.spinnerStatus = true;
     this.listCaseRequestModel.offset = 0;
     this.itemsPlanningPnCasesService.getGeneratedReport(this.listCaseRequestModel).subscribe(((data) => {
       saveAs(data, this.listCaseRequestModel.dateFrom + '_' + this.listCaseRequestModel.dateTo + '_report.xlsx');
-      this.spinnerStatus = false;
+
     }), error => {
       this.toastrService.error();
-      this.spinnerStatus = false;
+
     });
   }
 
@@ -95,21 +93,19 @@ export class ListCaseResultPageComponent implements OnInit {
 
   getReportingSettings(eformId: number) {
     this.eFormService.getSingle(eformId).subscribe(operation => {
-      this.spinnerStatus = true;
       if (operation && operation.success) {
         this.currentTemplate = operation.model;
       }
-      this.spinnerStatus = false;
+
     });
   }
 
   getAllCases() {
-    this.spinnerStatus = true;
     this.updateLocalPageSettings();
     this.itemsPlanningPnCasesService.getAllCaseResults(this.listCaseRequestModel).subscribe((data) => {
       if (data && data.success) {
         this.casesModel = data.model;
-      } this.spinnerStatus = false;
+      }
       this.getReportingSettings(this.casesModel.sdkeFormId);
     });
   }

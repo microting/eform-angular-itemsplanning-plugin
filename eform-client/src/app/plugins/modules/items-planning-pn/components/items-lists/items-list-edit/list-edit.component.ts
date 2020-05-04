@@ -16,7 +16,6 @@ export class ListEditComponent implements OnInit {
   @ViewChild('frame', {static: false}) frame;
   @ViewChild('unitImportModal', {static: false}) importUnitModal;
   @Output() onListUpdated: EventEmitter<void> = new EventEmitter<void>();
-  spinnerStatus = false;
   selectedListModel: ItemsListPnModel = new ItemsListPnModel();
   templateRequestModel: TemplateRequestModel = new TemplateRequestModel();
   templatesModel: TemplateListModel = new TemplateListModel();
@@ -47,19 +46,17 @@ export class ListEditComponent implements OnInit {
   }
 
   getSelectedList(id: number) {
-    this.spinnerStatus = true;
     this.itemsPlanningPnListsService.getSingleList(id).subscribe((data) => {
       if (data && data.success) {
         this.selectedListModel = data.model;
         this.selectedListModel.internalRepeatUntil = this.selectedListModel.repeatUntil;
         // @ts-ignore
         this.templatesModel.templates = [{id: this.selectedListModel.relatedEFormId, label: this.selectedListModel.relatedEFormName}];
-      } this.spinnerStatus = false;
+      }
     });
   }
 
-  updateList() {
-    this.spinnerStatus = true;if (this.selectedListModel.internalRepeatUntil) {
+  updateList() {if (this.selectedListModel.internalRepeatUntil) {
       const tempDate = moment(this.selectedListModel.internalRepeatUntil).format('DD/MM/YYYY');
       const datTime = moment.utc(tempDate, 'DD/MM/YYYY');
       this.selectedListModel.repeatUntil = datTime.format('YYYY-MM-DDT00:00:00').toString();
@@ -71,7 +68,7 @@ export class ListEditComponent implements OnInit {
         this.onListUpdated.emit();
         this.selectedListModel = new ItemsListPnModel();
         this.frame.hide();
-      } this.spinnerStatus = false;
+      }
     });
   }
   showImportModal() {

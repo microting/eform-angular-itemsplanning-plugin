@@ -17,7 +17,6 @@ export class ListCasePageComponent implements OnInit {
   localPageSettings: PageSettingsModel = new PageSettingsModel();
   listCaseRequestModel: ItemListCasesPnRequestModel = new ItemListCasesPnRequestModel();
   casesModel: ItemsListCasePnModel = new ItemsListCasePnModel();
-  spinnerStatus = false;
   id: number;
 
   constructor(private activateRoute: ActivatedRoute,
@@ -51,7 +50,6 @@ export class ListCasePageComponent implements OnInit {
     this.uploadedDataModal.show(itemCase);
   }
   getAllCases() {
-    this.spinnerStatus = true;
     this.listCaseRequestModel.isSortDsc = this.localPageSettings.isSortDsc;
     this.listCaseRequestModel.sort = this.localPageSettings.sort;
     this.listCaseRequestModel.pageSize = this.localPageSettings.pageSize;
@@ -59,7 +57,7 @@ export class ListCasePageComponent implements OnInit {
     this.itemsPlanningPnCasesService.getAllCases(this.listCaseRequestModel).subscribe((data) => {
       if (data && data.success) {
         this.casesModel = data.model;
-      } this.spinnerStatus = false;
+      }
     });
   }
 

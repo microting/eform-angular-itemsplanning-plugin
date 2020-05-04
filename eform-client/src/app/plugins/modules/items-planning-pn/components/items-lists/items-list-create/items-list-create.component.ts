@@ -21,7 +21,6 @@ export class ItemsListCreateComponent implements OnInit {
   @ViewChild('unitImportModal', {static: false}) importUnitModal;
   @Output() listCreated: EventEmitter<void> = new EventEmitter<void>();
   // @Output() deploymentFinished: EventEmitter<void> = new EventEmitter<void>();
-  spinnerStatus = false;
   newListModel: ItemsListPnCreateModel = new ItemsListPnCreateModel();
   // sitesDto: Array<SiteNameDto> = [];
   // deployModel: DeployModel = new DeployModel();
@@ -57,7 +56,6 @@ export class ItemsListCreateComponent implements OnInit {
   }
 
   createItemsList() {
-    this.spinnerStatus = true;
 
     if (this.newListModel.internalRepeatUntil) {
       const tempDate = moment(this.newListModel.internalRepeatUntil).format('DD/MM/YYYY');
@@ -71,7 +69,7 @@ export class ItemsListCreateComponent implements OnInit {
         // this.submitDeployment();
         this.newListModel = new ItemsListPnCreateModel();
         this.frame.hide();
-      } this.spinnerStatus = false;
+      }
     });
   }
 
@@ -83,7 +81,7 @@ export class ItemsListCreateComponent implements OnInit {
   //       if (operation && operation.success) {
   //         this.sitesDto = operation.model;
   //       }
-  //       this.spinnerStatus = false;
+  //
   //     });
   //   }
   // }
@@ -108,7 +106,7 @@ export class ItemsListCreateComponent implements OnInit {
   //       this.frame.hide();
   //       this.deploymentFinished.emit();
   //     }
-  //     this.spinnerStatus = false;
+  //
   //   });
   // }
   addNewItem() {
