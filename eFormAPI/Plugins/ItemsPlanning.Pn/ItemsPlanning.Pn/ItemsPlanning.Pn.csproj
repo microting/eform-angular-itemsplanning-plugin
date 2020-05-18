@@ -23,10 +23,10 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
       <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.8" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.6" />
-      <PackageReference Include="Microting.eForm" Version="3.2.1" />
+      <PackageReference Include="Microting.eForm" Version="3.2.2" />
       <PackageReference Include="Microting.eFormApi.BasePn" Version="1.2.59" />
       <PackageReference Include="McMaster.NETCore.Plugins" Version="0.2.1" />
-      <PackageReference Include="Microting.ItemsPlanningBase" Version="1.1.115" />
+      <PackageReference Include="Microting.ItemsPlanningBase" Version="1.1.116" />
     </ItemGroup>
 
     <ItemGroup>
