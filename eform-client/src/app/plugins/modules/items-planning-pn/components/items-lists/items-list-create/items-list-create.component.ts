@@ -4,11 +4,12 @@ import {ItemsPlanningPnListsService} from '../../../services';
 import {SiteNameDto} from '../../../../../../common/models/dto';
 import {DeployModel} from '../../../../../../common/models/eforms';
 import {EFormService} from '../../../../../../common/services/eform';
-import {SitesService} from '../../../../../../common/services/advanced';
+import {EntitySearchService, SitesService} from '../../../../../../common/services/advanced';
 import {AuthService} from 'src/app/common/services';
 import {ItemsListPnCreateModel, ItemsListPnItemModel, ItemsListPnModel} from '../../../models/list';
 import {TemplateListModel, TemplateRequestModel} from 'src/app/common/models/eforms';
 import moment = require('moment');
+import {Location} from '@angular/common';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class ItemsListCreateComponent implements OnInit {
               private sitesService: SitesService,
               private authService: AuthService,
               private eFormService: EFormService,
-              private cd: ChangeDetectorRef) {
+              private cd: ChangeDetectorRef,
+              private location: Location) {
     this.typeahead
       .pipe(
         debounceTime(200),
@@ -55,6 +57,10 @@ export class ItemsListCreateComponent implements OnInit {
     // this.loadAllSites();
   }
 
+  goBack() {
+    this.location.back();
+  }
+
   createItemsList() {
 
     if (this.newListModel.internalRepeatUntil) {
@@ -68,7 +74,7 @@ export class ItemsListCreateComponent implements OnInit {
         this.listCreated.emit();
         // this.submitDeployment();
         this.newListModel = new ItemsListPnCreateModel();
-        this.frame.hide();
+        this.location.back();
       }
     });
   }

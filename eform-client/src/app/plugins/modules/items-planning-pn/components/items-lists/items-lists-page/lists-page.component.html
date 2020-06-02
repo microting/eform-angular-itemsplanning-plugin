@@ -1,17 +1,17 @@
 <subheader-pn [title]="'Lists' | translate">
   <div class="p-3">
-    <button *ngIf="pluginClaimsHelper.check(itemsPlanningPnClaims.createItemsLists)"
+    <button mdbBtn *ngIf="pluginClaimsHelper.check(itemsPlanningPnClaims.createItemsLists)"
       id="listCreateBtn"
-      class="btn btn-success"
+      class="btn-success btn-small-height"
       mdbTooltip="{{ 'Create List' | translate }}"
-      (click)="showCreateListModal()">{{ 'New List' | translate }}
+      [routerLink]="['/plugins/items-planning-pn/lists/create']">{{ 'New List' | translate }}
     </button>
   </div>
 </subheader-pn>
 
 <div class="container-fluid">
   <div class="row p-1 mt-4 table-responsive no-gutters">
-    <table class="table table-sm table-striped text-center z-depth-1">
+    <table mdbTable striped="true" hover="true" small="true" class="z-depth-1 text-center">
       <thead>
       <tr>
         <th scope="col" class="table-header-sortable" id="idTableHeader"
@@ -133,7 +133,7 @@
             {{'Month' | translate}}
           </div>
         </td>
-        <td id="listRepeatUntil">
+        <td id="listDayOfWeek">
           <div *ngIf="list.dayOfWeek == 1">
             {{'Monday' | translate}}
           </div>
@@ -156,7 +156,7 @@
             {{'Sunday' | translate}}
           </div>
         </td>
-        <td id="listRepeatUntil">
+        <td id="listDayOfMonth">
           {{list.dayOfMonth}}
         </td>
         <td id="listRepeatUntil">
@@ -167,7 +167,7 @@
             <button id="updateListBtn"
               class="btn btn-accent text-black-50 btn-icon mb-2"
                     mdbTooltip="{{ 'Edit List' | translate }}"
-                    (click)="showEditListModal(list)">
+                    [routerLink]="['/plugins/items-planning-pn/lists/edit/' + list.id]">
               <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
             </button>
             <button mdbBtn class="btn-success btn-icon mb-2"
@@ -211,12 +211,6 @@
     </div>
   </div>
 </div>
-
-<app-items-planning-pn-items-list-create #createListModal
-                                         (listCreated)="getAllLists()">
-</app-items-planning-pn-items-list-create>
-<app-items-planning-pn-list-edit #editListModal
-                               (onListUpdated)="getAllLists()"></app-items-planning-pn-list-edit>
 <app-items-planning-pn-list-delete #deleteListModal
                                      (onListDeleted)="getAllLists()"></app-items-planning-pn-list-delete>
 

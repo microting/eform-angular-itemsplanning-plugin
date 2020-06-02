@@ -1,11 +1,17 @@
-<div mdbModal class="modal fade" #frame="mdbModal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>{{ 'Edit List' | translate }}</h3>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
+<eform-page-subheader [title]="'Edit searchable list' | translate">
+  <div class="p-3">
+    <button mdbBtn id="listEditSaveBtn" class="btn-success btn-small-height" [disabled]="!selectedListModel.name" (click)="updateList()">
+      {{ 'Save' | translate }}
+    </button>
+    <button mdbBtn id="listEditCancelBtn" class="btn-accent text-black-50 btn-small-height" (click)="goBack()">{{'Cancel' | translate}}</button>
+  </div>
+</eform-page-subheader>
+
+<div class="container-fluid">
+  <div class="row">
+    <div  class="col-md-12 col-xs-12" role="main">
+      <mdb-card>
+        <mdb-card-body>
           <div class="row">
             <div class="col-md-2 col-sm-4 col-xs-6">
               <div class="md-form">
@@ -32,7 +38,7 @@
                        [(ngModel)]="selectedListModel.description"
                        type="text" id="editListDescription"
                        name="editItemDescription" class="form-control">
-                <label for="editItemDescription">{{'Description' | translate}}</label>
+                <label for="editListDescription">{{'Description' | translate}}</label>
               </div>
             </div>
 
@@ -104,16 +110,16 @@
               </div>
             </div>
           </div>
-          <button mdbBtn class="btn-success" id="addItemBtn" (click)="addNewItem()">
+          <button mdbBtn class="btn-success btn-small-height" id="addItemBtn" (click)="addNewItem()">
             <fa-icon icon="plus"></fa-icon>
             {{ 'Add New Item' | translate }}
           </button>
-          <button type="btn btn-success" id="importItemBtn" name="button" (click)="showImportModal()">
+          <button mdbBtn class="btn-small-height" id="importItemBtn" name="button" (click)="showImportModal()">
             <fa-icon icon="file-import"></fa-icon>
             {{ 'Import New Items' | translate }}
           </button>
           <div class="row p-1 mt-2 table-responsive no-gutters">
-            <table class="table table-sm text-center z-depth-1 pr-2 pl-2">
+            <table mdbTable striped="true" hover="true" small="true" class="z-depth-1 text-center">
               <tbody id="itemsTableBody">
               <tr *ngFor="let item of selectedListModel.items; index as i">
                 <td>
@@ -183,14 +189,8 @@
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="listEditSaveBtn" class="btn btn-success" [disabled]="!selectedListModel.name" (click)="updateList()">
-          {{ 'Save' | translate }}
-        </button>
-        <button id="listEditCancelBtn" class="btn btn-accent text-black-50" (click)="frame.hide()">{{'Cancel' | translate}}</button>
-      </div>
+        </mdb-card-body>
+      </mdb-card>
     </div>
   </div>
 </div>
