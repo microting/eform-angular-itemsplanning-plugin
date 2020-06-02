@@ -34,7 +34,7 @@ export class ItemCaseUploadedDataComponent implements OnInit {
         this.selectedListCase = data.model;
         this.frame.show(this.selectedListCase);
         this.getAllUploadedData(id);
-      }this.spinnerStatus = false;
+      }
     });
   }
 
@@ -42,7 +42,7 @@ export class ItemCaseUploadedDataComponent implements OnInit {
     this.itemsPlanningPnUploadedDataService.getAllUploadedData(itemCaseId).subscribe((data) => {
       if (data && data.success) {
         this.uploadedDatasModel = data.model;
-      }this.spinnerStatus = false;
+      }
     });
   }
 
