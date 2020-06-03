@@ -6,6 +6,9 @@ import {TemplateListModel, TemplateRequestModel} from '../../../../../../common/
 import {debounceTime, switchMap} from 'rxjs/operators';
 import {EFormService} from '../../../../../../common/services/eform';
 import * as moment from 'moment';
+import {ActivatedRoute} from '@angular/router';
+import {EntitySearchService} from 'src/app/common/services/advanced';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-items-planning-pn-list-edit',
@@ -16,14 +19,16 @@ export class ListEditComponent implements OnInit {
   @ViewChild('frame', {static: false}) frame;
   @ViewChild('unitImportModal', {static: false}) importUnitModal;
   @Output() onListUpdated: EventEmitter<void> = new EventEmitter<void>();
-  spinnerStatus = false;
   selectedListModel: ItemsListPnModel = new ItemsListPnModel();
   templateRequestModel: TemplateRequestModel = new TemplateRequestModel();
   templatesModel: TemplateListModel = new TemplateListModel();
   typeahead = new EventEmitter<string>();
-  constructor(private itemsPlanningPnListsService: ItemsPlanningPnListsService,
+  selectedListId: number;
+  constructor(private activateRoute: ActivatedRoute,
+              private itemsPlanningPnListsService: ItemsPlanningPnListsService,
               private cd: ChangeDetectorRef,
-              private eFormService: EFormService) {
+              private eFormService: EFormService,
+              private location: Location) {
     this.typeahead
       .pipe(
         debounceTime(200),
@@ -36,30 +41,35 @@ export class ListEditComponent implements OnInit {
         this.templatesModel = items.model;
         this.cd.markForCheck();
       });
+    const activatedRouteSub = this.activateRoute.params.subscribe(params => {
+      this.selectedListId = +params['id'];
+    });
   }
 
   ngOnInit() {
+    this.getSelectedList(this.selectedListId);
+    // this.frame.show();
   }
 
   show(listModel: ItemsListPnModel) {
-    this.getSelectedList(listModel.id);
-    this.frame.show();
   }
 
   getSelectedList(id: number) {
-    this.spinnerStatus = true;
     this.itemsPlanningPnListsService.getSingleList(id).subscribe((data) => {
       if (data && data.success) {
         this.selectedListModel = data.model;
         this.selectedListModel.internalRepeatUntil = this.selectedListModel.repeatUntil;
         // @ts-ignore
         this.templatesModel.templates = [{id: this.selectedListModel.relatedEFormId, label: this.selectedListModel.relatedEFormName}];
-      } this.spinnerStatus = false;
+      }
     });
   }
 
-  updateList() {
-    this.spinnerStatus = true;if (this.selectedListModel.internalRepeatUntil) {
+  goBack() {
+    this.location.back();
+  }
+
+  updateList() {if (this.selectedListModel.internalRepeatUntil) {
       const tempDate = moment(this.selectedListModel.internalRepeatUntil).format('DD/MM/YYYY');
       const datTime = moment.utc(tempDate, 'DD/MM/YYYY');
       this.selectedListModel.repeatUntil = datTime.format('YYYY-MM-DDT00:00:00').toString();
@@ -70,8 +80,8 @@ export class ListEditComponent implements OnInit {
       if (data && data.success) {
         this.onListUpdated.emit();
         this.selectedListModel = new ItemsListPnModel();
-        this.frame.hide();
-      } this.spinnerStatus = false;
+        this.goBack();
+      }
     });
   }
   showImportModal() {

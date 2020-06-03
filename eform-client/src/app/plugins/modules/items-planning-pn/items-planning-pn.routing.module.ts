@@ -9,7 +9,7 @@ import {
   ListCasePageComponent,
   ListCaseResultPageComponent,
   ItemCaseUploadedDataComponent,
-  ItemsPlanningPnUnitImportComponent
+  ItemsPlanningPnUnitImportComponent, ListEditComponent, ItemsListCreateComponent
 } from './components';
 import {ItemsPlanningPnClaims} from './enums';
 
@@ -24,6 +24,16 @@ export const routes: Routes = [
         path: 'lists',
         canActivate: [AuthGuard],
         component: ListsPageComponent
+      },
+      {
+        path: 'lists/edit/:id',
+        canActivate: [AuthGuard],
+        component: ListEditComponent
+      },
+      {
+        path: 'lists/create',
+        canActivate: [AuthGuard],
+        component: ItemsListCreateComponent
       },
       {
         path: 'item-cases/:id',

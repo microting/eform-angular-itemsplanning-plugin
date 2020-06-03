@@ -1,13 +1,21 @@
-<div mdbModal class="modal fade" #frame="mdbModal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>{{ 'New List' | translate }}</h3>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
+<eform-page-subheader>
+  <div class="p-3">
+    <button mdbBtn id="listCreateSaveBtn" class="btn-success btn-small-height" [disabled]="!newListModel.name"
+            (click)="createItemsList()">
+      {{ 'Create' | translate }}
+    </button>
+    <button mdbBtn id="listCreateCancelBtn" class="btn-accent text-black-50 btn-small-height"
+            (click)="goBack()">{{'Cancel' | translate}}</button>
+  </div>
+</eform-page-subheader>
+
+<div class="container-fluid">
+  <div class="row">
+    <div  class="col-md-12 col-xs-12" role="main">
+      <mdb-card>
+        <mdb-card-body>
           <div class="row">
-            <div class="col-md-2 col-sm-4 col-xs-6">
+            <div class="col-md-4 col-sm-4 col-xs-6">
               <div class="md-form">
                 <input mdbInput
                        [(ngModel)]="newListModel.name"
@@ -16,7 +24,7 @@
                 <label for="createListItemName">{{'List Name' | translate}}</label>
               </div>
             </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 ng-select-wrapper">
+            <div class="col-md-4 col-sm-4 col-xs-6 ng-select-wrapper">
               <ng-select [items]="templatesModel.templates"
                          bindLabel="label"
                          [placeholder]="('Selected template' | translate)"
@@ -38,7 +46,7 @@
 
           </div>
           <div class="row mb-1">
-            <div class="col-md-2 col-sm-4 col-xs-6">
+            <div class="col-md-4 col-sm-4 col-xs-6">
               <div class="md-form">
                 <input mdbInput
                        [(ngModel)]="newListModel.repeatEvery"
@@ -47,7 +55,7 @@
                 <label for="createRepeatEvery">{{'Repeat every' | translate}}</label>
               </div>
             </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 ng-select-wrapper">
+            <div class="col-md-4 col-sm-4 col-xs-6 ng-select-wrapper">
                 <ng-select [items]="[
                 {id: 1, name: 'Day' | translate},
                 {id: 2, name: 'Week' | translate},
@@ -62,7 +70,7 @@
                 </ng-select>
             </div>
             <ng-template [ngIf]="newListModel.repeatType == 2">
-              <div class="col-md-2 col-sm-4 col-xs-6 ng-select-wrapper">
+              <div class="col-md-4 col-sm-4 col-xs-6 ng-select-wrapper">
                 <ng-select [items]="[
                                       {id: 1, name: 'Monday' | translate},
                                       {id: 2, name: 'Tuesday' | translate},
@@ -82,7 +90,7 @@
               </div>
             </ng-template>
             <ng-template [ngIf]="newListModel.repeatType == 3">
-              <div class="col-md-2 col-sm-4 col-xs-6">
+              <div class="col-md-4 col-sm-4 col-xs-6">
                 <div class="md-form">
                   <input mdbInput
                          [(ngModel)]="newListModel.dayOfMonth"
@@ -92,7 +100,7 @@
                 </div>
               </div>
             </ng-template>
-            <div class="col-md-2 col-sm-4 col-xs-6">
+            <div class="col-md-4 col-sm-4 col-xs-6">
               <div class="md-form" [owlDateTimeTrigger]="dt1">
                 <input mdbInput
                        [owlDateTime]="dt1"
@@ -104,11 +112,11 @@
               </div>
             </div>
           </div>
-          <button mdbBtn class="btn-success" id="addItemBtn" (click)="addNewItem()">
+          <button mdbBtn class="btn-success btn-small-height" id="addItemBtn" (click)="addNewItem()">
             <fa-icon icon="plus"></fa-icon>
             {{ 'Add New Item' | translate }}
           </button>
-          <button type="btn btn-success" id="importItemBtn" name="button" (click)="showImportModal()">
+          <button mdbBtn class="btn-small-height" id="importItemBtn" name="button" (click)="showImportModal()">
           <fa-icon icon="file-import"></fa-icon>
           {{ 'Import New Items' | translate }}
         </button>
@@ -183,19 +191,9 @@
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="listCreateSaveBtn" class="btn btn-success" [disabled]="!newListModel.name"
-                (click)="createItemsList()">
-          {{ 'Create' | translate }}
-        </button>
-        <button id="listCreateCancelBtn" class="btn btn-accent text-black-50"
-                (click)="frame.hide()">{{'Cancel' | translate}}</button>
-      </div>
+        </mdb-card-body>
+      </mdb-card>
     </div>
   </div>
 </div>
-
-<spinner-pn [spinnerVisibility]="spinnerStatus"></spinner-pn>
 <app-items-planning-pn-unit-import #unitImportModal></app-items-planning-pn-unit-import>

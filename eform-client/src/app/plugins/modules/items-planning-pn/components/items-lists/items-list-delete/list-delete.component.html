@@ -29,13 +29,11 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="listDeleteDeleteBtn" class="btn btn-danger" (click)="deleteList()">
+        <button mdbBtn id="listDeleteDeleteBtn" class="btn-danger btn-small-height" (click)="deleteList()">
           {{ 'Delete' | translate }}
         </button>
-        <button id="listDeleteCancelBtn" class="btn btn-accent text-black-50" (click)="frame.hide()">{{'Cancel' | translate}}</button>
+        <button mdbBtn id="listDeleteCancelBtn" class="btn-accent text-black-50 btn-small-height" (click)="frame.hide()">{{'Cancel' | translate}}</button>
       </div>
     </div>
   </div>
 </div>
-
-<spinner-pn [spinnerVisibility]="spinnerStatus"></spinner-pn>

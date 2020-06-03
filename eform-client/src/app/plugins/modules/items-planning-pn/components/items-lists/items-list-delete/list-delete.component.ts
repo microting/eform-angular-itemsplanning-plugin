@@ -12,7 +12,6 @@ import {ItemsListPnModel} from '../../../models/list';
 export class ListDeleteComponent implements OnInit {
   @ViewChild('frame', {static: false}) frame;
   @Output() onListDeleted: EventEmitter<void> = new EventEmitter<void>();
-  spinnerStatus = false;
   selectedListModel: ItemsListPnModel = new ItemsListPnModel();
   constructor(private trashInspectionPnListsService: ItemsPlanningPnListsService) { }
 
@@ -25,12 +24,11 @@ export class ListDeleteComponent implements OnInit {
   }
 
   deleteList() {
-    this.spinnerStatus = true;
     this.trashInspectionPnListsService.deleteList(this.selectedListModel.id).subscribe((data) => {
       if (data && data.success) {
         this.onListDeleted.emit();
         this.frame.hide();
-      } this.spinnerStatus = false;
+      }
     });
   }
 }

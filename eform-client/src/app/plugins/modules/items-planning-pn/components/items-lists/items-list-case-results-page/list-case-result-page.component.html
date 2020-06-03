@@ -18,10 +18,10 @@
       </div>
     </div>
     <div class="col-md-3 text-center pt-3">
-      <button mdbBtn class="btn-success" [disabled]="generateForm.invalid" (click)="onGenerateReport()">
+      <button mdbBtn class="btn-success btn-small-height" [disabled]="generateForm.invalid" (click)="onGenerateReport()">
         {{'Generate' | translate}}
       </button>
-      <button mdbBtn class="btn-success" [disabled]="generateForm.invalid" (click)="onSaveReport()">
+      <button mdbBtn class="btn-success btn-small-height" [disabled]="generateForm.invalid" (click)="onSaveReport()">
         {{ 'Download' | translate }}
       </button>
     </div>
@@ -34,7 +34,7 @@
 <div class="container-fluid">
 
   <div class="row p-1 mt-4 table-responsive no-gutters">
-    <table class="table table-sm table-striped text-center z-depth-1">
+    <table mdbTable striped="true" hover="true" small="true" class="z-depth-1 text-center">
       <thead>
       <tr>
         <th scope="col" class="table-header-sortable" id="idTableHeader"
@@ -385,6 +385,4 @@
     </div>
   </div>
 </div>
-
-<spinner-pn [spinnerVisibility]="spinnerStatus"></spinner-pn>
 <app-item-case-uploaded-data #uploadedDataModal></app-item-case-uploaded-data>

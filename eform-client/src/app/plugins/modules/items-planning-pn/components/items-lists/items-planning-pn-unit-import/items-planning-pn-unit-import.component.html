@@ -1,17 +1,36 @@
-<div mdbModal class="modal fade" #frame="mdbModal">
-  <div class="modal-dialog modal-lg">
+<div mdbModal class="modal fade" #frame="mdbModal" style="overflow-y: auto" tabindex="-1">
+  <div class="modal-dialog modal-full-height modal-top" role="dialog">
     <div class="modal-content">
-
       <subheader-pn [title]="'Import Items' | translate">
       </subheader-pn>
       <subheader-pn
         [heandingSizeRem]="1">
       </subheader-pn>
-      <input type="file" class="form-control" id="files" accept="text/csv" (change)="csv2Array($event)">
-
       <div class="p-3">
+        <div class="row">
+          <div class="col-md-12">
+            <input #fileUploader id="fileUploaded" type="file" class="form-control" id="files" accept="text/csv" (change)="csv2Array($event)" style="display: none">
+            <button mdbBtn (click)="fileUploader.click()" class="btn-small-height">
+              {{'Select file' | translate}}
+            </button>
+
+            <button mdbBtn class="btn-danger btn-small-height"
+                    (click)="frame.hide()"
+                    id="cancelImportBtn"
+                    mdbTooltip="{{'Cancel' | translate}}">
+              {{'Cancel' | translate}}
+            </button>
+            <button mdbBtn class="btn-success btn-small-height"
+                    (click)="importUnit()"
+                    routerLink="/plugins/items-planning-pn/lists"
+                    id="continueImportBtn"
+                    mdbTooltip="{{'Import the item' | translate}}">
+              {{'Import the item' | translate}}
+            </button>
+          </div>
+        </div>
         <div class="row p-1 table-responsive-lg no-gutters">
-          <table class="table mh-100 table-striped text-center z-depth-1" *ngIf="tableData">
+          <table mdbTable striped="true" hover="true" small="true" class="z-depth-1 text-center" *ngIf="tableData">
             <thead>
             <tr>
               <th scope="row"  class="table-header-sortable th-lg" *ngFor="let cols of tableData[0]; let i = index" [attr.data-index]="i">
@@ -46,16 +65,6 @@
             </tbody>
           </table>
         </div>
-        <button mdbBtn class="btn-danger"
-                routerLink="/plugins/items-planning-pn/lists"
-                id="cancelImportBtn"
-                mdbTooltip="{{'Cancel' | translate}}"><i class="material-icons">cancel</i></button>
-        <button mdbBtn class="btn-success"
-                (click)="importUnit()"
-                routerLink="/plugins/items-planning-pn/lists"
-                id="continueImportBtn"
-                mdbTooltip="{{'Import the item' | translate}}">Continue Import
-        </button>
       </div>
     </div>
   </div>

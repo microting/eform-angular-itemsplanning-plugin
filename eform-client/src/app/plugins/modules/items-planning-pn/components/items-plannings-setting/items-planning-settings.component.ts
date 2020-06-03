@@ -13,7 +13,6 @@ import {ItemsPlanningBaseSettingsModel} from '../../models/items-planning-base-s
   styleUrls: ['./items-planning-settings.component.scss']
 })
 export class ItemsPlanningSettingsComponent implements OnInit {
-  spinnerStatus = false;
   typeahead = new EventEmitter<string>();
   settingsModel: ItemsPlanningBaseSettingsModel = new ItemsPlanningBaseSettingsModel();
   templatesModel: TemplateListModel = new TemplateListModel();
@@ -44,20 +43,18 @@ export class ItemsPlanningSettingsComponent implements OnInit {
   }
 
   getSettings() {
-    this.spinnerStatus = true;
     this.itemsPlanningPnSettingsService.getAllSettings().subscribe((data) => {
       if (data && data.success) {
         this.settingsModel = data.model;
-      } this.spinnerStatus = false;
+      }
     });
   }
   updateSettings() {
-    this.spinnerStatus = true;
     this.itemsPlanningPnSettingsService.updateSettings(this.settingsModel)
       .subscribe((data) => {
         if (data && data.success) {
 
-        } this.spinnerStatus = false;
+        }
       });
   }
 }
