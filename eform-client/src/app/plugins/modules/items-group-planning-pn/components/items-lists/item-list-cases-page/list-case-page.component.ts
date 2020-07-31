@@ -33,13 +33,13 @@ export class ListCasePageComponent implements OnInit {
 
   getLocalPageSettings() {
     this.localPageSettings = this.sharedPnService.getLocalPageSettings
-    ('itemsPlanningPnSettings', 'ItemListCases').settings;
+    ('itemsGroupPlanningPnSettings', 'ItemListCases').settings;
     this.getAllInitialData();
   }
 
   updateLocalPageSettings() {
     this.sharedPnService.updateLocalPageSettings
-    ('itemsPlanningPnSettings', this.localPageSettings, 'ItemListCases');
+    ('itemsGroupPlanningPnSettings', this.localPageSettings, 'ItemListCases');
     this.getAllCases();
   }
 

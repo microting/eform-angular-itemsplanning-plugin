@@ -23,21 +23,21 @@ namespace ItemsGroupPlanning.Pn.Controllers
 
 
         [HttpGet]
-        [Route("api/items-planning-pn/list-cases/")]
+        [Route("api/items-group-planning-pn/list-cases/")]
         public async Task<OperationDataResult<ItemsListCasePnModel>> GetSingleList(ItemListCasesPnRequestModel requestModel)
         {
             return await _listService.GetSingleList(requestModel);
         }
 
         [HttpGet]
-        [Route("api/items-planning-pn/list-case-results")]
+        [Route("api/items-group-planning-pn/list-case-results")]
         public async Task<OperationDataResult<ItemListPnCaseResultListModel>> GetSingleListResults(ItemListCasesPnRequestModel requestModel)
         {
             return await _listService.GetSingleListResults(requestModel);
         }
         
         [HttpGet]
-        [Route("api/items-planning-pn/list-case-results/excel")]
+        [Route("api/items-group-planning-pn/list-case-results/excel")]
         [ProducesResponseType(typeof(string), 400)]
         public async Task GenerateSingleListResults(ItemListCasesPnRequestModel requestModel)
         {
@@ -89,14 +89,14 @@ namespace ItemsGroupPlanning.Pn.Controllers
         
 
         [HttpGet]
-        [Route("api/items-planning-pn/list-cases/{id}/{caseId}")]
+        [Route("api/items-group-planning-pn/list-cases/{id}/{caseId}")]
         public async Task<OperationDataResult<ItemsListPnItemCaseModel>> GetSingleCase(int caseId)
         {
             return await _listService.GetSingleCase(caseId);
         }
 
         [HttpGet]
-        [Route("api/items-planning-pn/list-case-file-report/{caseId}")]
+        [Route("api/items-group-planning-pn/list-case-file-report/{caseId}")]
         [AllowAnonymous]
         public async Task<IActionResult> ItemListCaseResult(int caseId, string token, string fileType)
         {
