@@ -93,7 +93,7 @@ namespace ItemsGroupPlanning.Pn
             IConfiguration configuration)
         {
             services.ConfigurePluginDbOptions<ItemsPlanningBaseSettings>(
-                configuration.GetSection("ItemsPlanningBaseSettings"));
+                configuration.GetSection("ItemsGroupPlanningBaseSettings"));
         }
 
         public void ConfigureDbContext(IServiceCollection services, string connectionString)
@@ -136,8 +136,8 @@ namespace ItemsGroupPlanning.Pn
             var result = new MenuModel();
             result.LeftMenu.Add(new MenuItemModel()
             {
-                Name = localizationService.GetString("ItemsPlanning"),
-                E2EId = "items-planning-pn",
+                Name = localizationService.GetString("ItemsGroupPlanning"),
+                E2EId = "items-group-planning-pn",
                 Link = "",
                 Guards = new List<string>() { ItemsGroupPlanningClaims.AccessItemsGroupPlanningPlugin },
                 MenuItems = new List<MenuItemModel>()
@@ -145,15 +145,15 @@ namespace ItemsGroupPlanning.Pn
                     new MenuItemModel()
                     {
                         Name = localizationService.GetString("Lists"),
-                        E2EId = "items-planning-pn-lists",
-                        Link = "/plugins/items-planning-pn/lists",
+                        E2EId = "items-group-planning-pn-lists",
+                        Link = "/plugins/items-group-planning-pn/lists",
                         Position = 0,
                     },
                     new MenuItemModel()
                     {
                         Name = localizationService.GetString("Reports"),
-                        E2EId = "items-planning-pn-reports",
-                        Link = "/plugins/items-planning-pn/reports",
+                        E2EId = "items-group-planning-pn-reports",
+                        Link = "/plugins/items-group-planning-pn/reports",
                         Position = 2,
                     }
                 }
