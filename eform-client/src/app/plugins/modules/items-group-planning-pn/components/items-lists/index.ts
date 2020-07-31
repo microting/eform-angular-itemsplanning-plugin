@@ -8,4 +8,4 @@ export * from './item-list-case-columns-modal/item-list-case-columns-modal.compo
 export * from './item-case-uploaded-data/item-case-uploaded-data.component';
 export * from './uploaded-data-pdf/uploaded-data-pdf.component';
 export * from './uploaded-data-delete/uploaded-data-delete.component';
-export * from './items-planning-pn-unit-import/items-group-planning-pn-unit-import.component';
+export * from './items-group-planning-pn-unit-import/items-group-planning-pn-unit-import.component';

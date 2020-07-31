@@ -8,7 +8,7 @@ import {PluginClaimsHelper} from '../../../../../../common/helpers';
 import {ItemsGroupPlanningPnClaims} from '../../../enums';
 
 @Component({
-  selector: 'app-items-planning-pn-lists-page',
+  selector: 'app-items-group-planning-pn-lists-page',
   templateUrl: './lists-page.component.html',
   styleUrls: ['./lists-page.component.scss']
 })

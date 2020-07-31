@@ -13,7 +13,7 @@ import {EFormService} from '../../../../../../common/services/eform';
 import {TemplateDto} from '../../../../../../common/models/dto';
 
 @Component({
-  selector: 'app-items-planning-pn-list-case-result-page',
+  selector: 'app-items-group-planning-pn-list-case-result-page',
   templateUrl: './list-case-result-page.component.html',
   styleUrls: ['./list-case-result-page.component.scss']
 })

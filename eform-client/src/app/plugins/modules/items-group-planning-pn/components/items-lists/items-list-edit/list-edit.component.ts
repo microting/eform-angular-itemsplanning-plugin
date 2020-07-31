@@ -11,7 +11,7 @@ import {EntitySearchService} from 'src/app/common/services/advanced';
 import {Location} from '@angular/common';
 
 @Component({
-  selector: 'app-items-planning-pn-list-edit',
+  selector: 'app-items-group-planning-pn-list-edit',
   templateUrl: './list-edit.component.html',
   styleUrls: ['./list-edit.component.scss']
 })

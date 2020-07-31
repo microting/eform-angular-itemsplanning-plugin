@@ -7,7 +7,7 @@ import {ItemsGroupPlanningPnCasesService} from '../../../services/items-group-pl
 import {ItemListCasesPnRequestModel} from '../../../models/list/item-list-cases-pn-request.model';
 
 @Component({
-  selector: 'app-items-planning-pn-list-case-page',
+  selector: 'app-items-group-planning-pn-list-case-page',
   templateUrl: './list-case-page.component.html',
   styleUrls: ['./list-case-page.component.scss']
 })

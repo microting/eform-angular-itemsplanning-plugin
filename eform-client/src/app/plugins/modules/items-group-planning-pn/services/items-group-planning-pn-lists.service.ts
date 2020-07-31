@@ -11,10 +11,10 @@ import {
   ItemsListPnModel,
   ItemsListsPnModel,
   ItemsListPnUpdateModel,
-  ItemsListPnRequestModel, ItemsListPnCreateModel, ItemsPlanningPnUnitImportModel
+  ItemsListPnRequestModel, ItemsListPnCreateModel, ItemsGroupPlanningPnUnitImportModel
 } from '../models/list';
 
-export let ItemsPlanningPnListsMethods = {
+export let ItemsGroupPlanningPnListsMethods = {
   Lists: 'api/items-group-planning-pn/lists',
 };
 @Injectable({
@@ -27,26 +27,26 @@ export class ItemsGroupPlanningPnListsService extends BaseService {
   }
 
   getAllLists(model: ItemsListPnRequestModel): Observable<OperationDataResult<ItemsListsPnModel>> {
-    return this.get(ItemsPlanningPnListsMethods.Lists, model);
+    return this.get(ItemsGroupPlanningPnListsMethods.Lists, model);
   }
 
   getSingleList(listId: number): Observable<OperationDataResult<ItemsListPnModel>> {
-    return this.get(ItemsPlanningPnListsMethods.Lists + '/' + listId);
+    return this.get(ItemsGroupPlanningPnListsMethods.Lists + '/' + listId);
   }
 
   updateList(model: ItemsListPnUpdateModel): Observable<OperationResult> {
-    return this.put(ItemsPlanningPnListsMethods.Lists, model);
+    return this.put(ItemsGroupPlanningPnListsMethods.Lists, model);
   }
 
   createList(model: ItemsListPnCreateModel): Observable<OperationResult> {
-    return this.post(ItemsPlanningPnListsMethods.Lists, model);
+    return this.post(ItemsGroupPlanningPnListsMethods.Lists, model);
   }
 
   deleteList(fractionId: number): Observable<OperationResult> {
-    return this.delete(ItemsPlanningPnListsMethods.Lists + '/' + fractionId);
+    return this.delete(ItemsGroupPlanningPnListsMethods.Lists + '/' + fractionId);
   }
 
-  importUnit(model: ItemsPlanningPnUnitImportModel): Observable<OperationResult> {
-    return this.post(ItemsPlanningPnListsMethods.Lists + '/import', model);
+  importUnit(model: ItemsGroupPlanningPnUnitImportModel): Observable<OperationResult> {
+    return this.post(ItemsGroupPlanningPnListsMethods.Lists + '/import', model);
   }
 }

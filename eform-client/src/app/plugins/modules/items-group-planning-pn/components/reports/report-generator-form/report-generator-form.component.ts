@@ -10,7 +10,7 @@ import {ItemsListPnItemModel} from '../../../models/list';
 import {DateTimeAdapter} from 'ng-pick-datetime-ex';
 
 @Component({
-  selector: 'app-items-planning-pn-report-generator-form',
+  selector: 'app-items-group-planning-pn-report-generator-form',
   templateUrl: './report-generator-form.component.html',
   styleUrls: ['./report-generator-form.component.scss']
 })

@@ -8,7 +8,7 @@ import {OperationDataResult} from 'src/app/common/models/operation.models';
 import {BaseService} from 'src/app/common/services/base.service';
 import {ReportPnFullModel, ReportPnGenerateModel} from '../models/report';
 
-export let ItemsPlanningPnReportsMethods = {
+export let ItemsGroupPlanningPnReportsMethods = {
   Reports: 'api/items-group-planning-pn/reports',
 };
 
@@ -19,11 +19,11 @@ export class ItemsGroupPlanningPnReportsService extends BaseService {
   }
 
   generateReport(model: ReportPnGenerateModel): Observable<OperationDataResult<ReportPnFullModel>> {
-    return this.get(ItemsPlanningPnReportsMethods.Reports, model);
+    return this.get(ItemsGroupPlanningPnReportsMethods.Reports, model);
   }
 
   getGeneratedReport(model: ReportPnGenerateModel): Observable<any> {
-    return this.getBlobData(ItemsPlanningPnReportsMethods.Reports + '/excel', model);
+    return this.getBlobData(ItemsGroupPlanningPnReportsMethods.Reports + '/excel', model);
   }
 
 }

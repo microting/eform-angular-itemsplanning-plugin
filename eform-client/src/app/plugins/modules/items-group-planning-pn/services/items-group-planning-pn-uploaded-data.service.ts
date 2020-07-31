@@ -8,7 +8,7 @@ import {OperationDataResult, OperationResult} from '../../../../common/models';
 import {Injectable} from '@angular/core';
 
 
-export let ItemsPlanningPnUploadedDataMethods = {
+export let ItemsGroupPlanningPnUploadedDataMethods = {
   UploadedDatas: 'api/items-group-planning-pn/uploaded-data',
   DownloadPDF: 'api/items-group-planning-pn/uploaded-data/download-pdf/'
 };
@@ -22,14 +22,14 @@ export class ItemsGroupPlanningPnUploadedDataService extends BaseService {
   }
 
   getAllUploadedData(itemCaseId: number): Observable<OperationDataResult<UploadedDatasModel>> {
-    return this.get(ItemsPlanningPnUploadedDataMethods.UploadedDatas + '/get-all/' + itemCaseId);
+    return this.get(ItemsGroupPlanningPnUploadedDataMethods.UploadedDatas + '/get-all/' + itemCaseId);
   }
 
   deleteUploadedData(uploadedDataId: number): Observable<OperationResult> {
-    return this.delete(ItemsPlanningPnUploadedDataMethods.UploadedDatas + '/' + uploadedDataId);
+    return this.delete(ItemsGroupPlanningPnUploadedDataMethods.UploadedDatas + '/' + uploadedDataId);
   }
 
   downloadUploadedDataPdf(fileName: string): Observable<OperationResult> {
-    return this.get(ItemsPlanningPnUploadedDataMethods.DownloadPDF, fileName);
+    return this.get(ItemsGroupPlanningPnUploadedDataMethods.DownloadPDF, fileName);
   }
 }
