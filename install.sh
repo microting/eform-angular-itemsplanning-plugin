@@ -33,7 +33,7 @@ if [ -d "/var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plu
 fi
 
 su ubuntu -c \
-"cp -av /var/www/microting/eform-angular-items-group-planning-plugin/eFormAPI/Plugins/ItemsGroupPlanning.Pn/ItemsGroupPlanning.Pn/out /var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/ItemsGroupPlanning"
+"cp -av /var/www/microting/eform-angular-items-group-planning-plugin/out /var/www/microting/eform-angular-frontend/eFormAPI/eFormAPI.Web/out/Plugins/ItemsGroupPlanning"
 
 
 echo "Recompile angular"
