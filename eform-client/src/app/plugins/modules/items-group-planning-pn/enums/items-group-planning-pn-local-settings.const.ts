@@ -7,7 +7,7 @@ import {ItemListCasesPnRequestModel} from '../models/list/item-list-cases-pn-req
 
 export const ItemsGroupPlanningPnLocalSettings = [
   new ApplicationPageModel({
-      name: 'ItemGroupLists',
+      name: 'ItemLists',
       settings: new PageSettingsModel({
         pageSize: 10,
         sort: 'Id',
@@ -16,7 +16,7 @@ export const ItemsGroupPlanningPnLocalSettings = [
     },
   ),
   new ApplicationPageModel({
-      name: 'ItemGroupListCases',
+      name: 'ItemListCases',
       settings: new PageSettingsModel({
         pageSize: 10,
         sort: 'Id',
@@ -25,7 +25,7 @@ export const ItemsGroupPlanningPnLocalSettings = [
     },
   ),
   new ItemListResultsPageModel({
-      name: 'ItemGroupCaseResults',
+      name: 'ItemCaseResults',
       settings: {
         pageSize: 10,
         sort: 'Id',

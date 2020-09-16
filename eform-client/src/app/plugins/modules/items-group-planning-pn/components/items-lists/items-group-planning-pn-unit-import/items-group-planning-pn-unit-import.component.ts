@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {FileUploader} from 'ng2-file-upload';
 import {Papa} from 'ngx-papaparse';
-import {ItemsPlanningPnHeadersModel, ItemsPlanningPnUnitImportModel} from '../../../models/list';
+import {ItemsGroupPlanningPnHeadersModel, ItemsGroupPlanningPnUnitImportModel} from '../../../models/list';
 import {ItemsGroupPlanningPnListsService} from '../../../services';
 
 const URL = '';
 
 @Component({
-  selector: 'app-items-planning-pn-unit-import',
+  selector: 'app-items-group-planning-pn-unit-import',
   templateUrl: './items-group-planning-pn-unit-import.component.html',
   styleUrls: ['./items-group-planning-pn-unit-import.component.scss']
 })
@@ -15,8 +15,8 @@ export class ItemsGroupPlanningPnUnitImportComponent implements OnInit {
   @ViewChild('frame', {static: false}) frame;
   public data: any = [];
   uploader: FileUploader;
-  unitImportModel: ItemsPlanningPnUnitImportModel;
-  unitHeaderModel: ItemsPlanningPnHeadersModel;
+  unitImportModel: ItemsGroupPlanningPnUnitImportModel;
+  unitHeaderModel: ItemsGroupPlanningPnHeadersModel;
   fileName: string;
   totalColumns: number;
   totalRows: number;
@@ -31,9 +31,9 @@ export class ItemsGroupPlanningPnUnitImportComponent implements OnInit {
     {value: 3, label: 'Type'}
   ];
   constructor(private itemListService: ItemsGroupPlanningPnListsService) {
-    this.unitImportModel = new ItemsPlanningPnUnitImportModel();
+    this.unitImportModel = new ItemsGroupPlanningPnUnitImportModel();
     this.options.forEach((option) => {
-        this.unitHeaderModel = new ItemsPlanningPnHeadersModel();
+        this.unitHeaderModel = new ItemsGroupPlanningPnHeadersModel();
         this.unitHeaderModel.headerLabel = option.label;
         this.unitHeaderModel.headerValue = null;
         this.unitImportModel.headerList.push(this.unitHeaderModel);
@@ -79,7 +79,7 @@ export class ItemsGroupPlanningPnUnitImportComponent implements OnInit {
     this.unitImportModel.headers = JSON.stringify(this.unitImportModel.headerList);
     return this.itemListService.importUnit(this.unitImportModel).subscribe(((data)=> {
       if (data && data.success) {
-        this.unitImportModel = new ItemsPlanningPnUnitImportModel();
+        this.unitImportModel = new ItemsGroupPlanningPnUnitImportModel();
       }
     }));
 }

@@ -5,7 +5,7 @@ import {ReportPnFullModel, ReportPnGenerateModel} from '../../../models/report';
 import {ItemsGroupPlanningPnReportsService} from '../../../services';
 
 @Component({
-  selector: 'app-items-planning-pn-report-generator',
+  selector: 'app-items-group-planning-pn-report-generator',
   templateUrl: './report-generator-container.component.html',
   styleUrls: ['./report-generator-container.component.scss']
 })

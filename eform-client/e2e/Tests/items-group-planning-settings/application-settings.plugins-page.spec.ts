@@ -18,7 +18,7 @@ describe('Application settings page - site header section', function () {
 
         const plugin = pluginsPage.getFirstPluginRowObj();
         expect(plugin.id).equal(1);
-        expect(plugin.name).equal('Microting Items Planning Plugin');
+        expect(plugin.name).equal('Microting Items Group Planning Plugin');
         expect(plugin.version).equal('1.0.0.0');
 
     });
@@ -39,7 +39,7 @@ describe('Application settings page - site header section', function () {
         // $('Microting Items Planning Plugin').waitForDisplayed({timeout: 10000});
         const plugin = pluginsPage.getFirstPluginRowObj();
         expect(plugin.id).equal(1);
-        expect(plugin.name).equal('Microting Items Planning Plugin');
+        expect(plugin.name).equal('Microting Items Group Planning Plugin');
         expect(plugin.version).equal('1.0.0.0');
         plugin.settingsBtn.waitForDisplayed({timeout: 20000});
     });

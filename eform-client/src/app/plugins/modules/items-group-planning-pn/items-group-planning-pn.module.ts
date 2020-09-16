@@ -21,7 +21,7 @@ import {
   UploadedDataDeleteComponent,
   ItemsGroupPlanningPnUnitImportComponent
 } from './components/items-lists';
-import {ItemsGroupPlanningSettingsComponent} from './components/items-plannings-setting';
+import {ItemsGroupPlanningSettingsComponent} from './components/items-group-plannings-setting';
 import {RouterModule} from '@angular/router';
 import {ItemsGroupPlanningPnRouting} from './items-group-planning-pn.routing.module';
 import {ItemsGroupPlanningPnListsService,

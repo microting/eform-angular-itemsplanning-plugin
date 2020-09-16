@@ -19,7 +19,7 @@ namespace ItemsGroupPlanning.Pn.Controllers
 
         [HttpGet]
         [Authorize(Roles = EformRole.Admin)]
-        [Route("api/items-planning-pn/settings")]
+        [Route("api/items-group-planning-pn/settings")]
         public async Task<OperationDataResult<ItemsPlanningBaseSettings>> GetSettings()
         {
             return await _itemsPlanningPnSettingsService.GetSettings();
@@ -27,7 +27,7 @@ namespace ItemsGroupPlanning.Pn.Controllers
         
         [HttpPost]
         [Authorize(Roles = EformRole.Admin)]
-        [Route("api/items-planning-pn/settings")]
+        [Route("api/items-group-planning-pn/settings")]
         public async Task<OperationResult> UpdateSettings([FromBody] ItemsPlanningBaseSettings itemsPlanningBaseSettings)
         {
             return await _itemsPlanningPnSettingsService.UpdateSettings(itemsPlanningBaseSettings);

@@ -6,6 +6,6 @@ export * from './items-list-pn-create.model';
 export * from './item-list-pn-case-result-list.model';
 export * from './item-case-uploaded-data.model';
 export * from './uploaded-data.model';
-export * from './items-planning-pn-headers.model';
-export * from './items-planning-pn-unit-import.model';
+export * from './items-group-planning-pn-headers.model';
+export * from './items-group-planning-pn-unit-import.model';
 export * from './item-list-results-settings.model';

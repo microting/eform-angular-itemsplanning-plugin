@@ -7,8 +7,8 @@ import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {ItemsGroupPlanningBaseSettingsModel} from '../models/items-group-planning-base-settings.model';
 
-export let ItemsPlanningSettingsMethods = {
-  ItemsPlanningSettings: 'api/items-group-planning-pn/settings'
+export let ItemsGroupPlanningSettingsMethods = {
+  ItemsGroupPlanningSettings: 'api/items-group-planning-pn/settings'
 
 };
 @Injectable()
@@ -19,9 +19,9 @@ export class ItemsGroupPlanningPnSettingsService extends BaseService {
   }
 
   getAllSettings(): Observable<OperationDataResult<ItemsGroupPlanningBaseSettingsModel>> {
-    return this.get(ItemsPlanningSettingsMethods.ItemsPlanningSettings);
+    return this.get(ItemsGroupPlanningSettingsMethods.ItemsGroupPlanningSettings);
   }
   updateSettings(model: ItemsGroupPlanningBaseSettingsModel): Observable<OperationResult> {
-    return this.post(ItemsPlanningSettingsMethods.ItemsPlanningSettings, model);
+    return this.post(ItemsGroupPlanningSettingsMethods.ItemsGroupPlanningSettings, model);
   }
 }

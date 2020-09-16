@@ -8,7 +8,7 @@ import {PluginClaimsHelper} from '../../../../../../common/helpers';
 import {ItemsGroupPlanningPnClaims} from '../../../enums';
 
 @Component({
-  selector: 'app-items-planning-pn-lists-page',
+  selector: 'app-items-group-planning-pn-lists-page',
   templateUrl: './lists-page.component.html',
   styleUrls: ['./lists-page.component.scss']
 })
@@ -39,13 +39,13 @@ export class ListsPageComponent implements OnInit {
 
   getLocalPageSettings() {
     this.localPageSettings = this.sharedPnService.getLocalPageSettings
-    ('itemsPlanningPnSettings', 'ItemLists').settings;
+    ('itemsGroupPlanningPnSettings', 'ItemLists').settings;
     this.getAllInitialData();
   }
 
   updateLocalPageSettings() {
     this.sharedPnService.updateLocalPageSettings
-    ('itemsPlanningPnSettings', this.localPageSettings, 'ItemLists');
+    ('itemsGroupPlanningPnSettings', this.localPageSettings, 'ItemLists');
     this.getAllLists();
   }
 

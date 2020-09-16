@@ -5,7 +5,7 @@ import {
 import {ItemsListPnModel} from '../../../models/list';
 
 @Component({
-  selector: 'app-items-planning-pn-list-delete',
+  selector: 'app-items-group-planning-pn-list-delete',
   templateUrl: './list-delete.component.html',
   styleUrls: ['./list-delete.component.scss']
 })

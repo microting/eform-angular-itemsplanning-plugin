@@ -21,7 +21,7 @@ namespace ItemsGroupPlanning.Pn.Controllers
         }
 
         [HttpGet]
-        [Route("api/items-planning-pn/reports")]
+        [Route("api/items-group-planning-pn/reports")]
         public async Task<OperationDataResult<ReportModel>> GenerateReport(GenerateReportModel requestModel)
         {
             return await _reportService.GenerateReport(requestModel);
@@ -34,7 +34,7 @@ namespace ItemsGroupPlanning.Pn.Controllers
         /// <returns code="200">Return excel blob</returns>
         /// <returns code="400">Error message</returns>
         [HttpGet]
-        [Route("api/items-planning-pn/reports/excel")]
+        [Route("api/items-group-planning-pn/reports/excel")]
         [ProducesResponseType(typeof(string), 400)]
         public async Task GenerateReportFile(GenerateReportModel requestModel)
         {

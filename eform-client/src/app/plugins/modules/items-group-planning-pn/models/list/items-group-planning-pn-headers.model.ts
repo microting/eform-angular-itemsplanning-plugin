@@ -1,4 +1,4 @@
-export class ItemsPlanningPnHeadersModel {
+export class ItemsGroupPlanningPnHeadersModel {
   headerLabel: string;
   headerValue: number;
 }

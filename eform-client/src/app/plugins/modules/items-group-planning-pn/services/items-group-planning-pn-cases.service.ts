@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {ItemListCasesPnRequestModel} from '../models/list/item-list-cases-pn-request.model';
 
-export let ItemsPlanningPnCasesMethods = {
+export let ItemsGroupPlanningPnCasesMethods = {
   Cases: 'api/items-group-planning-pn/list-cases',
   CaseResults: 'api/items-group-planning-pn/list-case-results'
 };
@@ -24,18 +24,18 @@ export class ItemsGroupPlanningPnCasesService extends BaseService {
   }
 
   getAllCases(model: ItemListCasesPnRequestModel): Observable<OperationDataResult<ItemsListCasePnModel>> {
-    return this.get(ItemsPlanningPnCasesMethods.Cases, model);
+    return this.get(ItemsGroupPlanningPnCasesMethods.Cases, model);
   }
 
   getAllCaseResults(model: ItemListCasesPnRequestModel): Observable<OperationDataResult<ItemListPnCaseResultListModel>> {
-    return this.get(ItemsPlanningPnCasesMethods.CaseResults, model);
+    return this.get(ItemsGroupPlanningPnCasesMethods.CaseResults, model);
   }
 
   getSingleCase(caseId: number): Observable<OperationDataResult<ItemsListPnItemCaseModel>> {
-    return this.get(ItemsPlanningPnCasesMethods.Cases + '/:id/' + caseId);
+    return this.get(ItemsGroupPlanningPnCasesMethods.Cases + '/:id/' + caseId);
   }
 
   getGeneratedReport(model: ItemListCasesPnRequestModel): Observable<any> {
-    return this.getBlobData(ItemsPlanningPnCasesMethods.CaseResults + '/excel', model);
+    return this.getBlobData(ItemsGroupPlanningPnCasesMethods.CaseResults + '/excel', model);
   }
 }

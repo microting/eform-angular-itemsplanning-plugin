@@ -62,9 +62,9 @@ return $('#addTagInput');
   }
 
   public get itemPlanningButton() {
-    $('#items-planning-pn').waitForDisplayed({timeout: 20000});
-$('#items-planning-pn').waitForClickable({timeout: 20000});
-return $('#items-planning-pn');
+    $('#items-group-planning-pn').waitForDisplayed({timeout: 20000});
+$('#items-group-planning-pn').waitForClickable({timeout: 20000});
+return $('#items-group-planning-pn');
   }
 
   public get listCreateBtn() {
@@ -74,9 +74,9 @@ return $('#listCreateBtn');
   }
 
   public get listsButton() {
-    $('#items-planning-pn-lists').waitForDisplayed({timeout: 20000});
-$('#items-planning-pn-lists').waitForClickable({timeout: 20000});
-return $('#items-planning-pn-lists');
+    $('#items-group-planning-pn-lists').waitForDisplayed({timeout: 20000});
+$('#items-group-planning-pn-lists').waitForClickable({timeout: 20000});
+return $('#items-group-planning-pn-lists');
   }
 
   public goToListsPage() {

@@ -11,7 +11,7 @@ import {Location} from '@angular/common';
 
 
 @Component({
-  selector: 'app-items-planning-pn-items-list-create',
+  selector: 'app-items-group-planning-pn-items-list-create',
   templateUrl: './items-list-create.component.html',
   styleUrls: ['./items-list-create.component.scss']
 })

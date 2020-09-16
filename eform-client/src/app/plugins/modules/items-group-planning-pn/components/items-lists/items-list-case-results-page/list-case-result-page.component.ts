@@ -13,7 +13,7 @@ import {EFormService} from '../../../../../../common/services/eform';
 import {TemplateDto} from '../../../../../../common/models/dto';
 
 @Component({
-  selector: 'app-items-planning-pn-list-case-result-page',
+  selector: 'app-items-group-planning-pn-list-case-result-page',
   templateUrl: './list-case-result-page.component.html',
   styleUrls: ['./list-case-result-page.component.scss']
 })
@@ -66,8 +66,8 @@ export class ListCaseResultPageComponent implements OnInit {
   }
 
   getLocalPageSettings() {
-    const itemsPlanningPnSettings = JSON.parse(localStorage.getItem('itemsPlanningPnSettings'));
-    const settings = itemsPlanningPnSettings.find(x => x.name === 'ItemCaseResults').settings;
+    const itemsGroupPlanningPnSettings = JSON.parse(localStorage.getItem('itemsGroupPlanningPnSettings'));
+    const settings = itemsGroupPlanningPnSettings.find(x => x.name === 'ItemCaseResults').settings;
 
     if (settings.listId === this.listCaseRequestModel.listId) {
       this.listCaseRequestModel = {
@@ -85,10 +85,10 @@ export class ListCaseResultPageComponent implements OnInit {
   }
 
   updateLocalPageSettings() {
-    const itemsPlanningPnSettings = JSON.parse(localStorage.getItem('itemsPlanningPnSettings'));
-    const i = itemsPlanningPnSettings.findIndex(x => x.name === 'ItemCaseResults');
-    itemsPlanningPnSettings[i].settings = this.listCaseRequestModel;
-    localStorage.setItem('itemsPlanningPnSettings', JSON.stringify(itemsPlanningPnSettings));
+    const itemsGroupPlanningPnSettings = JSON.parse(localStorage.getItem('itemsGroupPlanningPnSettings'));
+    const i = itemsGroupPlanningPnSettings.findIndex(x => x.name === 'ItemCaseResults');
+    itemsGroupPlanningPnSettings[i].settings = this.listCaseRequestModel;
+    localStorage.setItem('itemsGroupPlanningPnSettings', JSON.stringify(itemsGroupPlanningPnSettings));
   }
 
   getReportingSettings(eformId: number) {

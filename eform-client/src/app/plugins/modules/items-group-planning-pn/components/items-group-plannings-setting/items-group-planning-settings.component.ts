@@ -8,7 +8,7 @@ import {EFormService} from 'src/app/common/services/eform';
 import {ItemsGroupPlanningBaseSettingsModel} from '../../models/items-group-planning-base-settings.model';
 
 @Component({
-  selector: 'app-items-planning-settings',
+  selector: 'app-items-group-planning-settings',
   templateUrl: './items-group-planning-settings.component.html',
   styleUrls: ['./items-group-planning-settings.component.scss']
 })

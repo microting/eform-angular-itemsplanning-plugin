@@ -36,11 +36,11 @@ export class ItemsGroupPlanningSettingsPage extends Page {
   }
 
   public get itemsPlanningBtn() {
-    return browser.$('#items-planning-pn');
+    return browser.$('#items-group-planning-pn');
   }
 
   public get itemsPlanningSettingsBtn() {
-    return browser.$('#items-planning-pn-settings');
+    return browser.$('#items-group-planning-pn-settings');
   }
 
   public goToSettingsPage() {
@@ -64,14 +64,14 @@ export class ItemsGroupPlanningSettingsPage extends Page {
 
   public getSettings() {
       browser.pause(500);
-    return new ItemsPlanningSettings();
+    return new ItemsGroupPlanningSettings();
   }
 }
 
 const itemsPlanningSettingsPage = new ItemsGroupPlanningSettingsPage();
 export default itemsPlanningSettingsPage;
 
-export class ItemsPlanningSettings {
+export class ItemsGroupPlanningSettings {
   constructor() {
     this.sdkConnectionString = itemsPlanningSettingsPage.sdkConnectionString.getValue();
     this.logLevel = itemsPlanningSettingsPage.logLevel.getValue();
