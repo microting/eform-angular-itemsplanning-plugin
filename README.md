@@ -12,21 +12,6 @@ Build status
 | Danish | 0% | 0% |
 | German | 0% | 0% |
 
-# Plugin manual installation tutorial
-Extract zip content to a root application directory.
-On front-end part plugins will be included into `eform-client/src/app/plugins/modules` To include module into front-end application add routing block to plugins.routing.module.ts
-
-
-```
-{
-    ...
-},
-{
-    path: 'items-planning-pn',
-    canActivate: [AuthGuard],
-    loadChildren: './modules/items-planning-pn/items-planning-pn.module#ItemsPlanningPnModule'
-}
-```
 
 On the back-end part no need to do anything if you’re unpacking plugin binaries to `eFormApi/eFormAPI/Plugins`. 
 If building plugin from source code – you’re need to open solution of plugin and build it in **Visual Studio 2017**.
@@ -38,7 +23,7 @@ This is expection you to have eform-angular-frontend installed as default in /va
 
 ```
 cd /var/www/microting/
-curl -s -L https://raw.githubusercontent.com/microting/eform-angular-itemsplanning-plugin/stable/install.sh | sudo bash
+curl -s -L https://raw.githubusercontent.com/microting/eform-angular-items-group-planning-plugin/stable/install.sh | sudo bash
 ```
 
 ## Contributing
