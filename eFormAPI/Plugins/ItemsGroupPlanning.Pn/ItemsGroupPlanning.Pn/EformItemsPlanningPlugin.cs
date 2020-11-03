@@ -1,4 +1,4 @@
-/*
+﻿/*
 The MIT License (MIT)
 
 Copyright (c) 2007 - 2019 Microting A/S
@@ -38,9 +38,11 @@ namespace ItemsGroupPlanning.Pn
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microting.eFormApi.BasePn;
+    using Microting.eFormApi.BasePn.Infrastructure.Consts;
     using Microting.eFormApi.BasePn.Infrastructure.Database.Extensions;
     using Microting.eFormApi.BasePn.Infrastructure.Helpers;
     using Microting.eFormApi.BasePn.Infrastructure.Models.Application;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.Application.NavigationMenu;
     using Microting.eFormApi.BasePn.Infrastructure.Settings;
     using Microting.ItemsGroupPlanningBase.Infrastructure.Const;
     using Microting.ItemsGroupPlanningBase.Infrastructure.Data;
@@ -127,6 +129,162 @@ namespace ItemsGroupPlanning.Pn
             _bus = rebusService.GetBus();
 
         }
+
+        public List<PluginMenuItemModel> GetNavigationMenu(IServiceProvider serviceProvider)
+        {
+            var pluginMenu = new List<PluginMenuItemModel>()
+                {
+                    new PluginMenuItemModel
+                    {
+                        Name = "Dropdown",
+                        E2EId = "items-group-planning-pn",
+                        Link = "",
+                        Type = MenuItemTypeEnum.Dropdown,
+                        Position = 0,
+                        Translations = new List<PluginMenuTranslationModel>()
+                        {
+                            new PluginMenuTranslationModel
+                            {
+                                 LocaleName = LocaleNames.English,
+                                 Name = "Items group planning",
+                                 Language = LanguageNames.English,
+                            },
+                            new PluginMenuTranslationModel
+                            {
+                                 LocaleName = LocaleNames.German,
+                                 Name = "Items group planning",
+                                 Language = LanguageNames.German,
+                            },
+                            new PluginMenuTranslationModel
+                            {
+                                 LocaleName = LocaleNames.Danish,
+                                 Name = "Varegruppeplanlægning",
+                                 Language = LanguageNames.Danish,
+                            }
+                        },
+                        ChildItems = new List<PluginMenuItemModel>()
+                        {
+                            new PluginMenuItemModel
+                            {
+                                Name = "Lists",
+                                E2EId = "items-group-planning-pn-lists",
+                                Link = "/plugins/items-group-planning-pn/lists",
+                                Type = MenuItemTypeEnum.Link,
+                                Position = 0,
+                                MenuTemplate = new PluginMenuTemplateModel()
+                                {
+                                    Name = "Lists",
+                                    E2EId = "items-group-planning-pn-lists",
+                                    DefaultLink = "/plugins/items-group-planning-pn/lists",
+                                    Permissions = new List<PluginMenuTemplatePermissionModel>(),
+                                    Translations = new List<PluginMenuTranslationModel>
+                                    {
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.English,
+                                            Name = "Lists",
+                                            Language = LanguageNames.English,
+                                        },
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.German,
+                                            Name = "Lists",
+                                            Language = LanguageNames.German,
+                                        },
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.Danish,
+                                            Name = "Lister",
+                                            Language = LanguageNames.Danish,
+                                        },
+                                    }
+                                },
+                                Translations = new List<PluginMenuTranslationModel>
+                                    {
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.English,
+                                            Name = "Lists",
+                                            Language = LanguageNames.English,
+                                        },
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.German,
+                                            Name = "Lists",
+                                            Language = LanguageNames.German,
+                                        },
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.Danish,
+                                            Name = "Lister",
+                                            Language = LanguageNames.Danish,
+                                        },
+                                    }
+                            },
+                            new PluginMenuItemModel
+                            {
+                                Name = "Reports",
+                                E2EId = "items-group-planning-pn-reports",
+                                Link = "/plugins/items-group-planning-pn/reports",
+                                Type = MenuItemTypeEnum.Link,
+                                Position = 1,
+                                MenuTemplate = new PluginMenuTemplateModel()
+                                {
+                                    Name = "Reports",
+                                    E2EId = "items-group-planning-pn-reports",
+                                    DefaultLink = "/plugins/items-group-planning-pn/reports",
+                                    Permissions = new List<PluginMenuTemplatePermissionModel>(),
+                                    Translations = new List<PluginMenuTranslationModel>
+                                    {
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.English,
+                                            Name = "Reports",
+                                            Language = LanguageNames.English,
+                                        },
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.German,
+                                            Name = "Reports",
+                                            Language = LanguageNames.German,
+                                        },
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.Danish,
+                                            Name = "Rapporter",
+                                            Language = LanguageNames.Danish,
+                                        },
+                                    }
+                                },
+                                Translations = new List<PluginMenuTranslationModel>
+                                    {
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.English,
+                                            Name = "Reports",
+                                            Language = LanguageNames.English,
+                                        },
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.German,
+                                            Name = "Reports",
+                                            Language = LanguageNames.German,
+                                        },
+                                        new PluginMenuTranslationModel
+                                        {
+                                            LocaleName = LocaleNames.Danish,
+                                            Name = "Rapporter",
+                                            Language = LanguageNames.Danish,
+                                        },
+                                    }
+                            }
+                        }
+                    }
+                };
+
+            return pluginMenu;
+        }
+
 
         public MenuModel HeaderMenu(IServiceProvider serviceProvider)
         {
