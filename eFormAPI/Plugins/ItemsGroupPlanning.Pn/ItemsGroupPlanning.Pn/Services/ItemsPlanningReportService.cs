@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Microting.eForm.Infrastructure.Data.Entities;
+
 namespace ItemsGroupPlanning.Pn.Services
 {
     using System;
@@ -47,16 +49,19 @@ namespace ItemsGroupPlanning.Pn.Services
         private readonly ILogger<ItemsPlanningReportService> _logger;
         private readonly IItemsPlanningLocalizationService _itemsPlanningLocalizationService;
         private readonly IExcelService _excelService;
+        private readonly IUserService _userService;
         private readonly ItemsGroupPlanningPnDbContext _dbContext;
         private readonly IEFormCoreService _coreHelper;
 
         // ReSharper disable once SuggestBaseTypeForParameter
         public ItemsPlanningReportService(IItemsPlanningLocalizationService itemsPlanningLocalizationService,
+            IUserService userService,
             ILogger<ItemsPlanningReportService> logger, IExcelService excelService, ItemsGroupPlanningPnDbContext dbContext,
             IEFormCoreService coreHelper)
         {
             _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
             _logger = logger;
+            _userService = userService;
             _excelService = excelService;
             _dbContext = dbContext;
             _coreHelper = coreHelper;
@@ -66,25 +71,29 @@ namespace ItemsGroupPlanning.Pn.Services
         {
             try
             {
-                var core = _coreHelper.GetCore();
+                var core = await _coreHelper.GetCore();
+                await using var dbContext = core.dbContextHelper.GetDbContext();
+
                 var itemList = await _dbContext.ItemLists.FirstAsync(x => x.Id == model.ItemList);
                 var item = await _dbContext.Items.FirstAsync(x => x.Id == model.Item);
-                var template = await core.Result.TemplateRead(itemList.RelatedEFormId);
+                var locale = await _userService.GetCurrentUserLocale();
+                Language language = dbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+                var template = await core.ReadeForm(itemList.RelatedEFormId, language);
 
                 var casesQuery = _dbContext.ItemCases.Where(x => x.ItemId == item.Id);
 
                 if (model.DateFrom != null)
                 {
-                    casesQuery = casesQuery.Where(x => 
+                    casesQuery = casesQuery.Where(x =>
                         x.CreatedAt >= new DateTime(model.DateFrom.Value.Year, model.DateFrom.Value.Month, model.DateFrom.Value.Day, 0, 0, 0));
                 }
 
                 if (model.DateTo != null)
                 {
-                    casesQuery = casesQuery.Where(x => 
+                    casesQuery = casesQuery.Where(x =>
                         x.CreatedAt <= new DateTime(model.DateTo.Value.Year, model.DateTo.Value.Month, model.DateTo.Value.Day, 23, 59, 59));
                 }
-                
+
                 var itemCases = await casesQuery.ToListAsync();
 
                 var reportModel = GetReportData(model, item, itemCases, template);
@@ -144,10 +153,10 @@ namespace ItemsGroupPlanning.Pn.Services
                     _itemsPlanningLocalizationService.GetString("ErrorWhileGeneratingReportFile"));
             }
         }
-        
+
         private ReportModel GetReportData(
-            GenerateReportModel model, 
-            Item item, 
+            GenerateReportModel model,
+            Item item,
             IEnumerable<ItemCase> itemCases,
             CoreElement template)
         {
@@ -164,7 +173,7 @@ namespace ItemsGroupPlanning.Pn.Services
             // Go through template elements and get fields and options labels
             foreach (var element in template.ElementList)
             {
-                if (!(element is DataElement dataElement)) 
+                if (!(element is DataElement dataElement))
                     continue;
 
                 var dataItems = dataElement.DataItemList;
@@ -255,7 +264,7 @@ namespace ItemsGroupPlanning.Pn.Services
                 // Get the reply and work with its ElementList
                 foreach (var element in core.Result.CaseRead((int)@case.MicrotingUId, (int)@case.CheckUIid).Result.ElementList)
                 {
-                    if (!(element is CheckListValue checkListValue)) 
+                    if (!(element is CheckListValue checkListValue))
                         continue;
 
                     // Get the values for each field from the reply
@@ -276,8 +285,8 @@ namespace ItemsGroupPlanning.Pn.Services
                                 var selectedKeys = field.FieldValues[0].Value.Split('|');
 
                                 optionModel.Values.Add(
-                                    selectedKeys.Contains(optionModel.Key) 
-                                        ? _itemsPlanningLocalizationService.GetString("Yes") 
+                                    selectedKeys.Contains(optionModel.Key)
+                                        ? _itemsPlanningLocalizationService.GetString("Yes")
                                         : ""
                                 );
                             }
