@@ -44,8 +44,8 @@ export class ItemsGroupPlanningSettingsPage extends Page {
   }
 
   public goToSettingsPage() {
-    myEformsPage.Navbar.advancedDropdown();
-    myEformsPage.Navbar.clickonSubMenuItem('Plugins');
+    myEformsPage.Navbar.advancedDropdownClick();
+    myEformsPage.Navbar.clickOnSubMenuItem('Plugins');
     $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
     pluginPage.pluginSettingsLink.click();
     $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
