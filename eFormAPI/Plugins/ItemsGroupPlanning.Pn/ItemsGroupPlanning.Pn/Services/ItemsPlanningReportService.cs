@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Microting.eForm.Infrastructure;
 using Microting.eForm.Infrastructure.Data.Entities;
 
 namespace ItemsGroupPlanning.Pn.Services
@@ -96,7 +97,7 @@ namespace ItemsGroupPlanning.Pn.Services
 
                 var itemCases = await casesQuery.ToListAsync();
 
-                var reportModel = GetReportData(model, item, itemCases, template);
+                var reportModel = await GetReportData(model, item, itemCases, template);
 
                 return new OperationDataResult<ReportModel>(true, reportModel);
             }
@@ -154,13 +155,14 @@ namespace ItemsGroupPlanning.Pn.Services
             }
         }
 
-        private ReportModel GetReportData(
+        private async Task<ReportModel> GetReportData(
             GenerateReportModel model,
             Item item,
             IEnumerable<ItemCase> itemCases,
             CoreElement template)
         {
-            var core = _coreHelper.GetCore();
+            var core = await _coreHelper.GetCore();
+            await using MicrotingDbContext microtingDbContext = core.dbContextHelper.GetDbContext();
 
             var finalModel = new ReportModel
             {
@@ -227,11 +229,12 @@ namespace ItemsGroupPlanning.Pn.Services
                 timeZoneInfo = TimeZoneInfo.Local;
             }
 
-            var casesList = core.Result.CaseReadAll(template.Id, null, null, timeZoneInfo).Result
+            var casesList = core.CaseReadAll(template.Id, null, null, timeZoneInfo).Result
                 .Where(c => itemCases.Select(ic => ic.MicrotingSdkCaseId).Contains(c.Id))
                 .ToList();
 
             // Go through all itemCases
+
             foreach (var ic in itemCases)
             {
                 finalModel.Ids.Add($"{ic.Id} / {ic.MicrotingSdkCaseId}");
@@ -262,7 +265,10 @@ namespace ItemsGroupPlanning.Pn.Services
                 }
 
                 // Get the reply and work with its ElementList
-                foreach (var element in core.Result.CaseRead((int)@case.MicrotingUId, (int)@case.CheckUIid).Result.ElementList)
+                var locale = await _userService.GetCurrentUserLocale();
+                Language language = core.dbContextHelper.GetDbContext().Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+
+                foreach (var element in core.CaseRead((int)@case.MicrotingUId, (int)@case.CheckUIid, language).Result.ElementList)
                 {
                     if (!(element is CheckListValue checkListValue))
                         continue;

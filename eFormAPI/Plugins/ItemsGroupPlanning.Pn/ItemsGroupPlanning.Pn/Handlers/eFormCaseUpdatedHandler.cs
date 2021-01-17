@@ -1,3 +1,6 @@
+using Microting.eForm.Infrastructure;
+using Microting.eForm.Infrastructure.Data.Entities;
+
 namespace ItemsGroupPlanning.Pn.Handlers
 {
     using System.Collections.Generic;
@@ -21,36 +24,43 @@ namespace ItemsGroupPlanning.Pn.Handlers
             _dbContext = dbContext;
             _sdkCore = sdkCore;
         }
-        
+
         public async Task Handle(eFormCaseUpdated message)
         {
             ItemCaseSite itemCaseSite = await _dbContext.ItemCaseSites.SingleOrDefaultAsync(x => x.MicrotingSdkCaseId == message.caseId);
-            
+
             if (itemCaseSite != null)
             {
                 var caseDto = await _sdkCore.CaseReadByCaseId(message.caseId);
                 var microtingUId = caseDto.MicrotingUId;
                 var microtingCheckUId = caseDto.CheckUId;
-                var theCase = await _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId);
+                await using MicrotingDbContext microtingDbContext = _sdkCore.dbContextHelper.GetDbContext();
+                Site site = await microtingDbContext.Sites.SingleAsync(x => x.Id == itemCaseSite.MicrotingSdkSiteId);
+                Language language = await microtingDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
+                var theCase = await _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId, language);
 
                 itemCaseSite = await SetFieldValue(itemCaseSite, theCase.Id);
 
                 await itemCaseSite.Update(_dbContext);
-                
+
                 ItemCase itemCase = await _dbContext.ItemCases.SingleOrDefaultAsync(x => x.Id == itemCaseSite.ItemCaseId);
 
                 itemCase = await SetFieldValue(itemCase, theCase.Id);
                 await itemCase.Update(_dbContext);
             }
         }
-        
+
         private async Task<ItemCaseSite> SetFieldValue(ItemCaseSite itemCaseSite, int caseId)
         {
             Item item = _dbContext.Items.SingleOrDefault(x => x.Id == itemCaseSite.ItemId);
             ItemList itemList = _dbContext.ItemLists.SingleOrDefault(x => x.Id == item.ItemListId);
             List<int> caseIds = new List<int>();
             caseIds.Add(itemCaseSite.MicrotingSdkCaseId);
-            List<FieldValue> fieldValues = await _sdkCore.Advanced_FieldValueReadList(caseIds);
+
+            await using MicrotingDbContext microtingDbContext = _sdkCore.dbContextHelper.GetDbContext();
+            Site site = await microtingDbContext.Sites.SingleAsync(x => x.Id == itemCaseSite.MicrotingSdkSiteId);
+            Language language = await microtingDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
+            List<FieldValue> fieldValues = await _sdkCore.Advanced_FieldValueReadList(caseIds, language);
 
             if (itemList == null) return itemCaseSite;
 
@@ -128,7 +138,11 @@ namespace ItemsGroupPlanning.Pn.Handlers
             ItemList itemList = _dbContext.ItemLists.SingleOrDefault(x => x.Id == item.ItemListId);
             List<int> caseIds = new List<int>();
             caseIds.Add(itemCase.MicrotingSdkCaseId);
-            List<FieldValue> fieldValues = await _sdkCore.Advanced_FieldValueReadList(caseIds);
+
+            await using MicrotingDbContext microtingDbContext = _sdkCore.dbContextHelper.GetDbContext();
+            Site site = await microtingDbContext.Sites.SingleAsync(x => x.Id == itemCase.MicrotingSdkSiteId);
+            Language language = await microtingDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
+            List<FieldValue> fieldValues = await _sdkCore.Advanced_FieldValueReadList(caseIds, language);
 
             if (itemList == null) return itemCase;
 
