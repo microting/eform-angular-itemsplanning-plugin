@@ -34,7 +34,7 @@ namespace ItemsGroupPlanning.Pn.Handlers
                 var caseDto = await _sdkCore.CaseReadByCaseId(message.caseId);
                 var microtingUId = caseDto.MicrotingUId;
                 var microtingCheckUId = caseDto.CheckUId;
-                await using MicrotingDbContext microtingDbContext = _sdkCore.dbContextHelper.GetDbContext();
+                await using MicrotingDbContext microtingDbContext = _sdkCore.DbContextHelper.GetDbContext();
                 Site site = await microtingDbContext.Sites.SingleAsync(x => x.Id == itemCaseSite.MicrotingSdkSiteId);
                 Language language = await microtingDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
                 var theCase = await _sdkCore.CaseRead((int)microtingUId, (int)microtingCheckUId, language);
@@ -57,7 +57,7 @@ namespace ItemsGroupPlanning.Pn.Handlers
             List<int> caseIds = new List<int>();
             caseIds.Add(itemCaseSite.MicrotingSdkCaseId);
 
-            await using MicrotingDbContext microtingDbContext = _sdkCore.dbContextHelper.GetDbContext();
+            await using MicrotingDbContext microtingDbContext = _sdkCore.DbContextHelper.GetDbContext();
             Site site = await microtingDbContext.Sites.SingleAsync(x => x.Id == itemCaseSite.MicrotingSdkSiteId);
             Language language = await microtingDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
             List<FieldValue> fieldValues = await _sdkCore.Advanced_FieldValueReadList(caseIds, language);
@@ -139,7 +139,7 @@ namespace ItemsGroupPlanning.Pn.Handlers
             List<int> caseIds = new List<int>();
             caseIds.Add(itemCase.MicrotingSdkCaseId);
 
-            await using MicrotingDbContext microtingDbContext = _sdkCore.dbContextHelper.GetDbContext();
+            await using MicrotingDbContext microtingDbContext = _sdkCore.DbContextHelper.GetDbContext();
             Site site = await microtingDbContext.Sites.SingleAsync(x => x.Id == itemCase.MicrotingSdkSiteId);
             Language language = await microtingDbContext.Languages.SingleAsync(x => x.Id == site.LanguageId);
             List<FieldValue> fieldValues = await _sdkCore.Advanced_FieldValueReadList(caseIds, language);
