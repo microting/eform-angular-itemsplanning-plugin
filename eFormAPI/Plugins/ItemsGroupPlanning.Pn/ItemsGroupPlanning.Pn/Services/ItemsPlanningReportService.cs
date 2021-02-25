@@ -73,7 +73,7 @@ namespace ItemsGroupPlanning.Pn.Services
             try
             {
                 var core = await _coreHelper.GetCore();
-                await using var dbContext = core.dbContextHelper.GetDbContext();
+                await using var dbContext = core.DbContextHelper.GetDbContext();
 
                 var itemList = await _dbContext.ItemLists.FirstAsync(x => x.Id == model.ItemList);
                 var item = await _dbContext.Items.FirstAsync(x => x.Id == model.Item);
@@ -162,7 +162,7 @@ namespace ItemsGroupPlanning.Pn.Services
             CoreElement template)
         {
             var core = await _coreHelper.GetCore();
-            await using MicrotingDbContext microtingDbContext = core.dbContextHelper.GetDbContext();
+            await using MicrotingDbContext microtingDbContext = core.DbContextHelper.GetDbContext();
 
             var finalModel = new ReportModel
             {
@@ -266,7 +266,7 @@ namespace ItemsGroupPlanning.Pn.Services
 
                 // Get the reply and work with its ElementList
                 var locale = await _userService.GetCurrentUserLocale();
-                Language language = core.dbContextHelper.GetDbContext().Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+                Language language = core.DbContextHelper.GetDbContext().Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
 
                 foreach (var element in core.CaseRead((int)@case.MicrotingUId, (int)@case.CheckUIid, language).Result.ElementList)
                 {

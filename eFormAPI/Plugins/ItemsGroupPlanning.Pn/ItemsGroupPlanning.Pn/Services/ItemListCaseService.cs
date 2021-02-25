@@ -215,7 +215,12 @@ namespace ItemsGroupPlanning.Pn.Services
 
             var itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
 
-            List<FieldDto> allFields = await _core.GetCore().Result.Advanced_TemplateFieldReadAll(itemList.RelatedEFormId);
+            var core = await _core.GetCore();
+            await using MicrotingDbContext microtingDbContext = core.DbContextHelper.GetDbContext();
+            var locale = await _userService.GetCurrentUserLocale();
+            Language language = microtingDbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+
+            List<FieldDto> allFields = await _core.GetCore().Result.Advanced_TemplateFieldReadAll(itemList.RelatedEFormId, language);
 
             int i = 0;
             List<int> toBeRemoved = new List<int>();
@@ -454,9 +459,9 @@ namespace ItemsGroupPlanning.Pn.Services
                     Item item = await _dbContext.Items.SingleOrDefaultAsync(x => x.Id == itemCase.ItemId);
                     ItemList itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == item.ItemListId);
 
-                    await using MicrotingDbContext microtingDbContext = core.dbContextHelper.GetDbContext();
+                    await using MicrotingDbContext microtingDbContext = core.DbContextHelper.GetDbContext();
                     var locale = await _userService.GetCurrentUserLocale();
-                    Language language = core.dbContextHelper.GetDbContext().Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+                    Language language = microtingDbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
                     if (itemList != null)
                     {
                         eFormId = itemList.RelatedEFormId;

@@ -113,7 +113,7 @@ namespace ItemsGroupPlanning.Pn.Services
             try
             {
                 var core = await _coreHelper.GetCore();
-                await using var dbContext = core.dbContextHelper.GetDbContext();
+                await using var dbContext = core.DbContextHelper.GetDbContext();
 
                 var locale = await _userService.GetCurrentUserLocale();
                 Language language = dbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
@@ -247,7 +247,7 @@ namespace ItemsGroupPlanning.Pn.Services
             {
 
                 var core = await _coreHelper.GetCore();
-                await using var dbContext = core.dbContextHelper.GetDbContext();
+                await using var dbContext = core.DbContextHelper.GetDbContext();
 
                 var locale = await _userService.GetCurrentUserLocale();
                 Language language = dbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
