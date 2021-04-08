@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.0.96](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.96) (2021-04-04)
+
+[Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.95...v1.0.96)
+
+**Implemented enhancements:**
+
+- Bump Microting.ItemsGroupPlanningBase from 2.0.81 to 2.0.85 [\#92](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/92)
+- Bump Microting.eFormApi.BasePn from 2.0.99 to 2.0.110 [\#91](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/91)
+- Bump Microting.eForm from 4.4.3 to 4.4.17 [\#90](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/90)
+
 ## [v1.0.95](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.95) (2021-04-02)
 
 [Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.94...v1.0.95)
