@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.0.97](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.97) (2021-04-08)
+
+[Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.96...v1.0.97)
+
 ## [v1.0.96](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.96) (2021-04-04)
 
 [Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.95...v1.0.96)
