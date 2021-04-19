@@ -1,5 +1,14 @@
 # Changelog
 
+## [v1.0.105](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.105) (2021-04-19)
+
+[Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.104...v1.0.105)
+
+**Implemented enhancements:**
+
+- Bump Microting.ItemsGroupPlanningBase from 2.0.95 to 2.0.97 [\#137](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/137)
+- Bump Microting.eForm from 4.4.35 to 4.4.37 [\#136](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/136)
+
 ## [v1.0.104](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.104) (2021-04-15)
 
 [Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.103...v1.0.104)
@@ -502,6 +511,10 @@
 
 [Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.7...v1.0.8)
 
+**Merged pull requests:**
+
+- Permission updates [\#17](https://github.com/microting/eform-angular-items-group-planning-plugin/pull/17) ([Gid733](https://github.com/Gid733))
+
 ## [v1.0.7](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.7) (2019-10-31)
 
 [Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.6...v1.0.7)
@@ -596,7 +609,6 @@
 
 **Merged pull requests:**
 
-- Permission updates [\#17](https://github.com/microting/eform-angular-items-group-planning-plugin/pull/17) ([Gid733](https://github.com/Gid733))
 - Added new fields for scheduler [\#10](https://github.com/microting/eform-angular-items-group-planning-plugin/pull/10) ([Gid733](https://github.com/Gid733))
 - Tests finish PR [\#9](https://github.com/microting/eform-angular-items-group-planning-plugin/pull/9) ([Gid733](https://github.com/Gid733))
 - Tests PR [\#8](https://github.com/microting/eform-angular-items-group-planning-plugin/pull/8) ([Gid733](https://github.com/Gid733))
