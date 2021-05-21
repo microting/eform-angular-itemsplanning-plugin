@@ -1,3 +1,6 @@
+using eFormCore;
+using Microting.eForm.Infrastructure.Data.Entities;
+
 namespace ItemsGroupPlanning.Pn.Services
 {
     using System;
@@ -24,17 +27,20 @@ namespace ItemsGroupPlanning.Pn.Services
         private readonly ItemsGroupPlanningPnDbContext _dbContext;
         private readonly IItemsPlanningLocalizationService _itemsPlanningLocalizationService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IEFormCoreService _core;
+        private readonly IUserService _userService;
+        private readonly IEFormCoreService _coreHelper;
 
         public ItemsListService(
             ItemsGroupPlanningPnDbContext dbContext,
             IItemsPlanningLocalizationService itemsPlanningLocalizationService,
-            IHttpContextAccessor httpContextAccessor, IEFormCoreService core)
+            IUserService userService,
+            IHttpContextAccessor httpContextAccessor, IEFormCoreService coreHelper)
         {
             _dbContext = dbContext;
             _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
             _httpContextAccessor = httpContextAccessor;
-            _core = core;
+            _coreHelper = coreHelper;
+            _userService = userService;
         }
 
         public async Task<OperationDataResult<ItemsListsModel>> Index(ItemsListRequestModel pnRequestModel)
@@ -104,63 +110,63 @@ namespace ItemsGroupPlanning.Pn.Services
 
         public async Task<OperationResult> Create(ItemsListPnModel model)
         {
-            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+            try
             {
-                try
+                var core = await _coreHelper.GetCore();
+                await using var dbContext = core.DbContextHelper.GetDbContext();
+
+                var locale = await _userService.GetCurrentUserLocale();
+                Language language = dbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+                var template = await core.TemplateItemRead(model.RelatedEFormId, language);
+                var itemsList = new ItemList
                 {
-                    var template = await _core.GetCore().Result.TemplateItemRead(model.RelatedEFormId);
-                    var itemsList = new ItemList
+                    Name = model.Name,
+                    Description = model.Description,
+                    CreatedByUserId = UserId,
+                    CreatedAt = DateTime.UtcNow,
+                    RepeatEvery = model.RepeatEvery,
+                    RepeatUntil = model.RepeatUntil,
+                    RepeatType = model.RepeatType,
+                    DayOfWeek = model.DayOfWeek,
+                    DayOfMonth = model.DayOfMonth,
+                    Enabled = true,
+                    Items = new List<Item>(),
+                    RelatedEFormId = model.RelatedEFormId,
+                    RelatedEFormName = template?.Label
+                };
+
+                await itemsList.Create(_dbContext);
+
+                foreach (var itemModel in model.Items)
+                {
+                    var item = new Item()
                     {
-                        Name = model.Name,
-                        Description = model.Description,
-                        CreatedByUserId = UserId,
+                        LocationCode = itemModel.LocationCode,
+                        ItemNumber = itemModel.ItemNumber,
+                        Description = itemModel.Description,
+                        Name = itemModel.Name,
+                        Version = 1,
+                        WorkflowState = Constants.WorkflowStates.Created,
                         CreatedAt = DateTime.UtcNow,
-                        RepeatEvery = model.RepeatEvery,
-                        RepeatUntil = model.RepeatUntil,
-                        RepeatType = model.RepeatType,
-                        DayOfWeek = model.DayOfWeek,
-                        DayOfMonth = model.DayOfMonth,
+                        UpdatedAt = DateTime.UtcNow,
                         Enabled = true,
-                        Items = new List<Item>(),
-                        RelatedEFormId = model.RelatedEFormId,
-                        RelatedEFormName = template?.Label
+                        BuildYear = itemModel.BuildYear,
+                        Type = itemModel.Type,
+                        ItemListId = itemsList.Id,
+                        CreatedByUserId = UserId,
                     };
-
-                    await itemsList.Create(_dbContext);
-
-                    foreach (var itemModel in model.Items)
-                    {
-                        var item = new Item()
-                        {
-                            LocationCode = itemModel.LocationCode,
-                            ItemNumber = itemModel.ItemNumber,
-                            Description = itemModel.Description,
-                            Name = itemModel.Name,
-                            Version = 1,
-                            WorkflowState = Constants.WorkflowStates.Created,
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow,
-                            Enabled = true,
-                            BuildYear = itemModel.BuildYear,
-                            Type = itemModel.Type,
-                            ItemListId = itemsList.Id,
-                            CreatedByUserId = UserId,
-                        };
-                        await item.Save(_dbContext);
-                    }
-
-                    transaction.Commit();
-                    return new OperationResult(
-                        true,
-                        _itemsPlanningLocalizationService.GetString("ListCreatedSuccessfully"));
+                    await item.Save(_dbContext);
                 }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    Trace.TraceError(e.Message);
-                    return new OperationResult(false,
-                        _itemsPlanningLocalizationService.GetString("ErrorWhileCreatingList"));
-                }
+
+                return new OperationResult(
+                    true,
+                    _itemsPlanningLocalizationService.GetString("ListCreatedSuccessfully"));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+                return new OperationResult(false,
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileCreatingList"));
             }
         }
         public async Task<OperationDataResult<ItemsListPnModel>> Read(int listId)
@@ -237,133 +243,134 @@ namespace ItemsGroupPlanning.Pn.Services
         }
         public async Task<OperationResult> Update(ItemsListPnModel updateModel)
         {
-            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+            try
             {
-                try
+
+                var core = await _coreHelper.GetCore();
+                await using var dbContext = core.DbContextHelper.GetDbContext();
+
+                var locale = await _userService.GetCurrentUserLocale();
+                Language language = dbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+                var template = await _coreHelper.GetCore().Result.TemplateItemRead(updateModel.RelatedEFormId, language);
+                var itemsList = new ItemList
                 {
-                    var template = await _core.GetCore().Result.TemplateItemRead(updateModel.RelatedEFormId);
-                    var itemsList = new ItemList
-                    {
-                        Id = updateModel.Id,
-                        RepeatUntil = updateModel.RepeatUntil,
-                        RepeatEvery = updateModel.RepeatEvery,
-                        RepeatType = updateModel.RepeatType,
-                        DayOfWeek = updateModel.DayOfWeek,
-                        DayOfMonth = updateModel.DayOfMonth,
-                        Description = updateModel.Description,
-                        Name = updateModel.Name,
-                        UpdatedAt = DateTime.UtcNow,
-                        UpdatedByUserId = UserId,
-                        RelatedEFormId = updateModel.RelatedEFormId,
-                        RelatedEFormName = template?.Label,
-                        LabelEnabled = updateModel.LabelEnabled,
-                        DescriptionEnabled = updateModel.DescriptionEnabled,
-                        DeployedAtEnabled = updateModel.DeployedAtEnabled,
-                        DoneAtEnabled = updateModel.DoneAtEnabled,
-                        DoneByUserNameEnabled = updateModel.DoneByUserNameEnabled,
-                        UploadedDataEnabled = updateModel.UploadedDataEnabled,
-                        ItemNumberEnabled = updateModel.ItemNumberEnabled,
-                        LocationCodeEnabled = updateModel.LocationCodeEnabled,
-                        BuildYearEnabled = updateModel.BuildYearEnabled,
-                        TypeEnabled = updateModel.TypeEnabled,
-                        NumberOfImagesEnabled = updateModel.NumberOfImagesEnabled,
-                        SdkFieldId1 = updateModel.SdkFieldId1,
-                        SdkFieldId2 = updateModel.SdkFieldId2,
-                        SdkFieldId3 = updateModel.SdkFieldId3,
-                        SdkFieldId4 = updateModel.SdkFieldId4,
-                        SdkFieldId5 = updateModel.SdkFieldId5,
-                        SdkFieldId6 = updateModel.SdkFieldId6,
-                        SdkFieldId7 = updateModel.SdkFieldId7,
-                        SdkFieldId8 = updateModel.SdkFieldId8,
-                        SdkFieldId9 = updateModel.SdkFieldId9,
-                        SdkFieldId10 = updateModel.SdkFieldId10,
-                        SdkFieldEnabled1 = updateModel.SdkFieldId1 != null,
-                        SdkFieldEnabled2 = updateModel.SdkFieldId2 != null,
-                        SdkFieldEnabled3 = updateModel.SdkFieldId3 != null,
-                        SdkFieldEnabled4 = updateModel.SdkFieldId4 != null,
-                        SdkFieldEnabled5 = updateModel.SdkFieldId5 != null,
-                        SdkFieldEnabled6 = updateModel.SdkFieldId6 != null,
-                        SdkFieldEnabled7 = updateModel.SdkFieldId7 != null,
-                        SdkFieldEnabled8 = updateModel.SdkFieldId8 != null,
-                        SdkFieldEnabled9 = updateModel.SdkFieldId9 != null,
-                        SdkFieldEnabled10 = updateModel.SdkFieldId10 != null,
-                        LastExecutedTime = updateModel.LastExecutedTime
+                    Id = updateModel.Id,
+                    RepeatUntil = updateModel.RepeatUntil,
+                    RepeatEvery = updateModel.RepeatEvery,
+                    RepeatType = updateModel.RepeatType,
+                    DayOfWeek = updateModel.DayOfWeek,
+                    DayOfMonth = updateModel.DayOfMonth,
+                    Description = updateModel.Description,
+                    Name = updateModel.Name,
+                    UpdatedAt = DateTime.UtcNow,
+                    UpdatedByUserId = UserId,
+                    RelatedEFormId = updateModel.RelatedEFormId,
+                    RelatedEFormName = template?.Label,
+                    LabelEnabled = updateModel.LabelEnabled,
+                    DescriptionEnabled = updateModel.DescriptionEnabled,
+                    DeployedAtEnabled = updateModel.DeployedAtEnabled,
+                    DoneAtEnabled = updateModel.DoneAtEnabled,
+                    DoneByUserNameEnabled = updateModel.DoneByUserNameEnabled,
+                    UploadedDataEnabled = updateModel.UploadedDataEnabled,
+                    ItemNumberEnabled = updateModel.ItemNumberEnabled,
+                    LocationCodeEnabled = updateModel.LocationCodeEnabled,
+                    BuildYearEnabled = updateModel.BuildYearEnabled,
+                    TypeEnabled = updateModel.TypeEnabled,
+                    NumberOfImagesEnabled = updateModel.NumberOfImagesEnabled,
+                    SdkFieldId1 = updateModel.SdkFieldId1,
+                    SdkFieldId2 = updateModel.SdkFieldId2,
+                    SdkFieldId3 = updateModel.SdkFieldId3,
+                    SdkFieldId4 = updateModel.SdkFieldId4,
+                    SdkFieldId5 = updateModel.SdkFieldId5,
+                    SdkFieldId6 = updateModel.SdkFieldId6,
+                    SdkFieldId7 = updateModel.SdkFieldId7,
+                    SdkFieldId8 = updateModel.SdkFieldId8,
+                    SdkFieldId9 = updateModel.SdkFieldId9,
+                    SdkFieldId10 = updateModel.SdkFieldId10,
+                    SdkFieldEnabled1 = updateModel.SdkFieldId1 != null,
+                    SdkFieldEnabled2 = updateModel.SdkFieldId2 != null,
+                    SdkFieldEnabled3 = updateModel.SdkFieldId3 != null,
+                    SdkFieldEnabled4 = updateModel.SdkFieldId4 != null,
+                    SdkFieldEnabled5 = updateModel.SdkFieldId5 != null,
+                    SdkFieldEnabled6 = updateModel.SdkFieldId6 != null,
+                    SdkFieldEnabled7 = updateModel.SdkFieldId7 != null,
+                    SdkFieldEnabled8 = updateModel.SdkFieldId8 != null,
+                    SdkFieldEnabled9 = updateModel.SdkFieldId9 != null,
+                    SdkFieldEnabled10 = updateModel.SdkFieldId10 != null,
+                    LastExecutedTime = updateModel.LastExecutedTime
 
-                    };
-                    await itemsList.Update(_dbContext);
+                };
+                await itemsList.Update(_dbContext);
 
-                    // update current items
-                    var items = await _dbContext.Items
-                        .Where(x => x.ItemListId == itemsList.Id)
-                        .ToListAsync();
+                // update current items
+                var items = await _dbContext.Items
+                    .Where(x => x.ItemListId == itemsList.Id)
+                    .ToListAsync();
 
-                    foreach (var item in items)
-                    {
-                        var itemModel = updateModel.Items.FirstOrDefault(x => x.Id == item.Id);
-                        if (itemModel != null)
-                        {
-                            item.Description = itemModel.Description;
-                            item.ItemNumber = itemModel.ItemNumber;
-                            item.LocationCode = itemModel.LocationCode;
-                            item.Name = itemModel.Name;
-                            item.UpdatedAt = DateTime.UtcNow;
-                            item.UpdatedByUserId = UserId;
-                            item.BuildYear = itemModel.BuildYear;
-                            item.Type = itemModel.Type;
-                            await item.Update(_dbContext);
-                        }
-                    }
-
-                    // Remove old
-                    var itemModelIds = updateModel.Items.Select(x => x.Id).ToArray();
-                    var itemsForRemove = await _dbContext.Items
-                        .Where(x => !itemModelIds.Contains(x.Id) && x.ItemListId == itemsList.Id)
-                        .ToListAsync();
-
-                    foreach (var itemForRemove in itemsForRemove)
-                    {
-                        await itemForRemove.Delete(_dbContext);
-                    }
-
-                    // Create new
-                    foreach (var itemModel in updateModel.Items)
-                    {
-                        var item = items.FirstOrDefault(x => x.Id == itemModel.Id);
-                        if (item == null)
-                        {
-                            var newItem = new Item()
-                            {
-                                LocationCode = itemModel.LocationCode,
-                                ItemNumber = itemModel.ItemNumber,
-                                Description = itemModel.Description,
-                                Name = itemModel.Name,
-                                Version = 1,
-                                WorkflowState = Constants.WorkflowStates.Created,
-                                CreatedAt = DateTime.UtcNow,
-                                CreatedByUserId = UserId,
-                                UpdatedAt = DateTime.UtcNow,
-                                Enabled = true,
-                                BuildYear = itemModel.BuildYear,
-                                Type = itemModel.Type,
-                                ItemListId = itemsList.Id,
-                            };
-                            await newItem.Save(_dbContext);
-                        }
-                    }
-
-                    transaction.Commit();
-                    return new OperationResult(
-                        true,
-                        _itemsPlanningLocalizationService.GetString("ListUpdatedSuccessfully"));
-                }
-                catch (Exception e)
+                foreach (var item in items)
                 {
-                    Trace.TraceError(e.Message);
-                    transaction.Rollback();
-                    return new OperationResult(
-                        false,
-                        _itemsPlanningLocalizationService.GetString("ErrorWhileUpdatingList"));
+                    var itemModel = updateModel.Items.FirstOrDefault(x => x.Id == item.Id);
+                    if (itemModel != null)
+                    {
+                        item.Description = itemModel.Description;
+                        item.ItemNumber = itemModel.ItemNumber;
+                        item.LocationCode = itemModel.LocationCode;
+                        item.Name = itemModel.Name;
+                        item.UpdatedAt = DateTime.UtcNow;
+                        item.UpdatedByUserId = UserId;
+                        item.BuildYear = itemModel.BuildYear;
+                        item.Type = itemModel.Type;
+                        await item.Update(_dbContext);
+                    }
                 }
+
+                // Remove old
+                var itemModelIds = updateModel.Items.Select(x => x.Id).ToArray();
+                var itemsForRemove = await _dbContext.Items
+                    .Where(x => !itemModelIds.Contains(x.Id) && x.ItemListId == itemsList.Id)
+                    .ToListAsync();
+
+                foreach (var itemForRemove in itemsForRemove)
+                {
+                    await itemForRemove.Delete(_dbContext);
+                }
+
+                // Create new
+                foreach (var itemModel in updateModel.Items)
+                {
+                    var item = items.FirstOrDefault(x => x.Id == itemModel.Id);
+                    if (item == null)
+                    {
+                        var newItem = new Item()
+                        {
+                            LocationCode = itemModel.LocationCode,
+                            ItemNumber = itemModel.ItemNumber,
+                            Description = itemModel.Description,
+                            Name = itemModel.Name,
+                            Version = 1,
+                            WorkflowState = Constants.WorkflowStates.Created,
+                            CreatedAt = DateTime.UtcNow,
+                            CreatedByUserId = UserId,
+                            UpdatedAt = DateTime.UtcNow,
+                            Enabled = true,
+                            BuildYear = itemModel.BuildYear,
+                            Type = itemModel.Type,
+                            ItemListId = itemsList.Id,
+                        };
+                        await newItem.Save(_dbContext);
+                    }
+                }
+
+                return new OperationResult(
+                    true,
+                    _itemsPlanningLocalizationService.GetString("ListUpdatedSuccessfully"));
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.Message);
+                return new OperationResult(
+                    false,
+                    _itemsPlanningLocalizationService.GetString("ErrorWhileUpdatingList"));
             }
         }
 
@@ -391,8 +398,8 @@ namespace ItemsGroupPlanning.Pn.Services
             }
         }
 
-        
-        
+
+
         private Item FindItem(bool numberExists, int numberColumn, bool itemNameExists,
             int itemNameColumn, JToken headers, JToken itemObj)
         {
@@ -412,7 +419,7 @@ namespace ItemsGroupPlanning.Pn.Services
 
             return item;
         }
-        
+
         public async Task<OperationResult> ImportUnit(UnitImportModel unitAsJson)
         {
             try
@@ -423,7 +430,7 @@ namespace ItemsGroupPlanning.Pn.Services
 
                     JToken headers = rawHeadersJson;
                     IEnumerable<JToken> itemObjects = rawJson.Skip(1);
-                    
+
                     foreach (JToken itemObj in itemObjects)
                     {
                         bool numberExists = int.TryParse(headers[0]["headerValue"].ToString(), out int numberColumn);
@@ -444,16 +451,16 @@ namespace ItemsGroupPlanning.Pn.Services
                                     Name = itemModel.Name,
                                     Description = itemModel.Description,
                                     LocationCode = itemModel.LocationCode,
-                                 
+
 
                                 };
                                await newItem.Save(_dbContext);
-  
+
                             }
                             else
                             {
                                 if (existingItem.WorkflowState == Constants.WorkflowStates.Removed)
-                                {                                    
+                                {
                                     Item item = await _dbContext.Items.SingleOrDefaultAsync(x => x.Id == existingItem.Id);
                                     if (item != null)
                                     {
@@ -468,7 +475,7 @@ namespace ItemsGroupPlanning.Pn.Services
                                 }
                             }
                         }
-                        
+
                     }
                 }
                 return new OperationResult(true,
@@ -477,7 +484,7 @@ namespace ItemsGroupPlanning.Pn.Services
             catch (Exception e)
             {
                 Trace.TraceError(e.Message);
-                _core.LogException(e.Message);
+                _coreHelper.LogException(e.Message);
                 return new OperationResult(false,
                     _itemsPlanningLocalizationService.GetString("ErrorWhileImportingItems"));
             }
