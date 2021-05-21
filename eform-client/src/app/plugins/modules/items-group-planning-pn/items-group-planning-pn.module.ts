@@ -1,13 +1,13 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {SharedPnModule} from '../shared/shared-pn.module';
-import {MDBBootstrapModule} from 'angular-bootstrap-md';
-import {TranslateModule} from '@ngx-translate/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgSelectModule} from '@ng-select/ng-select';
-import {EformSharedModule} from '../../../common/modules/eform-shared/eform-shared.module';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {ItemsGroupPlanningPnLayoutComponent} from './layouts';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SharedPnModule } from '../shared/shared-pn.module';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { EformSharedModule } from 'src/app/common/modules/eform-shared/eform-shared.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ItemsGroupPlanningPnLayoutComponent } from './layouts';
 import {
   ItemListCaseColumnsModalComponent,
   ItemsListCreateComponent,
@@ -19,23 +19,25 @@ import {
   ItemCaseUploadedDataComponent,
   UploadedDataPdfComponent,
   UploadedDataDeleteComponent,
-  ItemsGroupPlanningPnUnitImportComponent
+  ItemsGroupPlanningPnUnitImportComponent,
 } from './components/items-lists';
-import {ItemsGroupPlanningSettingsComponent} from './components/items-group-plannings-setting';
-import {RouterModule} from '@angular/router';
-import {ItemsGroupPlanningPnRouting} from './items-group-planning-pn.routing.module';
-import {ItemsGroupPlanningPnListsService,
+import { ItemsGroupPlanningSettingsComponent } from './components/items-group-plannings-setting';
+import { RouterModule } from '@angular/router';
+import { ItemsGroupPlanningPnRouting } from './items-group-planning-pn.routing.module';
+import {
+  ItemsGroupPlanningPnListsService,
   ItemsGroupPlanningPnSettingsService,
   ItemsGroupPlanningPnReportsService,
   ItemsGroupPlanningPnCasesService,
-  ItemsGroupPlanningPnUploadedDataService} from './services';
+  ItemsGroupPlanningPnUploadedDataService,
+} from './services';
 import {
   ReportGeneratorContainerComponent,
   ReportGeneratorFormComponent,
-  ReportPreviewTableComponent
+  ReportPreviewTableComponent,
 } from './components/reports';
-import {FileUploadModule} from 'ng2-file-upload';
-import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
+import { FileUploadModule } from 'ng2-file-upload';
+import { OwlDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 
 @NgModule({
   imports: [
@@ -51,7 +53,7 @@ import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
     ItemsGroupPlanningPnRouting,
     ReactiveFormsModule,
     FileUploadModule,
-    OwlDateTimeModule
+    OwlDateTimeModule,
   ],
   declarations: [
     ItemsGroupPlanningPnLayoutComponent,
@@ -69,15 +71,14 @@ import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
     ItemCaseUploadedDataComponent,
     UploadedDataPdfComponent,
     UploadedDataDeleteComponent,
-    ItemsGroupPlanningPnUnitImportComponent
+    ItemsGroupPlanningPnUnitImportComponent,
   ],
   providers: [
     ItemsGroupPlanningPnSettingsService,
     ItemsGroupPlanningPnListsService,
     ItemsGroupPlanningPnReportsService,
     ItemsGroupPlanningPnCasesService,
-    ItemsGroupPlanningPnUploadedDataService
-  ]
+    ItemsGroupPlanningPnUploadedDataService,
+  ],
 })
-
-export class ItemsGroupPlanningPnModule { }
+export class ItemsGroupPlanningPnModule {}
