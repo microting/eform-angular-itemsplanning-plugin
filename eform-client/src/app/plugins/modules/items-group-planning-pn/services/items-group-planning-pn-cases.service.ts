@@ -1,41 +1,53 @@
-import {BaseService} from '../../../../common/services/base.service';
-import {HttpClient} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
-import {Observable} from 'rxjs';
-import {OperationDataResult} from '../../../../common/models';
-import {ItemListPnCaseResultListModel} from '../models/list';
-import {ItemsListCasePnModel, ItemsListPnItemCaseModel} from '../models/list/items-list-case-pn.model';
-import {Router} from '@angular/router';
-import {Injectable} from '@angular/core';
-import {ItemListCasesPnRequestModel} from '../models/list/item-list-cases-pn-request.model';
+import { Observable } from 'rxjs';
+import { OperationDataResult } from 'src/app/common/models';
+import {
+  ItemListPnCaseResultListModel,
+  ItemsListCasePnModel,
+  ItemsListPnItemCaseModel,
+  ItemListCasesPnRequestModel,
+} from '../models';
+import { Injectable } from '@angular/core';
+import { ApiBaseService } from 'src/app/common/services';
 
 export let ItemsGroupPlanningPnCasesMethods = {
   Cases: 'api/items-group-planning-pn/list-cases',
-  CaseResults: 'api/items-group-planning-pn/list-case-results'
+  CaseResults: 'api/items-group-planning-pn/list-case-results',
 };
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
+export class ItemsGroupPlanningPnCasesService {
+  constructor(private apiBaseService: ApiBaseService) {}
 
-export class ItemsGroupPlanningPnCasesService extends BaseService {
-
-  constructor(private _http: HttpClient, router: Router, toastrService: ToastrService) {
-    super(_http, router, toastrService);
+  getAllCases(
+    model: ItemListCasesPnRequestModel
+  ): Observable<OperationDataResult<ItemsListCasePnModel>> {
+    return this.apiBaseService.post(
+      ItemsGroupPlanningPnCasesMethods.Cases,
+      model
+    );
   }
 
-  getAllCases(model: ItemListCasesPnRequestModel): Observable<OperationDataResult<ItemsListCasePnModel>> {
-    return this.get(ItemsGroupPlanningPnCasesMethods.Cases, model);
+  getAllCaseResults(
+    model: ItemListCasesPnRequestModel
+  ): Observable<OperationDataResult<ItemListPnCaseResultListModel>> {
+    return this.apiBaseService.post<
+      OperationDataResult<ItemListPnCaseResultListModel>
+    >(ItemsGroupPlanningPnCasesMethods.CaseResults, model);
   }
 
-  getAllCaseResults(model: ItemListCasesPnRequestModel): Observable<OperationDataResult<ItemListPnCaseResultListModel>> {
-    return this.get(ItemsGroupPlanningPnCasesMethods.CaseResults, model);
-  }
-
-  getSingleCase(caseId: number): Observable<OperationDataResult<ItemsListPnItemCaseModel>> {
-    return this.get(ItemsGroupPlanningPnCasesMethods.Cases + '/:id/' + caseId);
+  getSingleCase(
+    caseId: number
+  ): Observable<OperationDataResult<ItemsListPnItemCaseModel>> {
+    return this.apiBaseService.get(ItemsGroupPlanningPnCasesMethods.Cases, {
+      caseId: caseId,
+    });
   }
 
   getGeneratedReport(model: ItemListCasesPnRequestModel): Observable<any> {
-    return this.getBlobData(ItemsGroupPlanningPnCasesMethods.CaseResults + '/excel', model);
+    return this.apiBaseService.getBlobData(
+      ItemsGroupPlanningPnCasesMethods.CaseResults + '/excel',
+      model
+    );
   }
 }

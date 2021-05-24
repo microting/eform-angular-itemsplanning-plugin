@@ -1,5 +1,4 @@
-import {ItemsListPnItemModel} from './items-list-pn-item.model';
-import {Moment} from 'moment';
+import { ItemsListPnItemModel } from './items-list-pn-item.model';
 
 export class ItemsListsPnModel {
   total: number;

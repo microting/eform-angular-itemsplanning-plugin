@@ -22,16 +22,16 @@ namespace ItemsGroupPlanning.Pn.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/items-group-planning-pn/list-cases/")]
-        public async Task<OperationDataResult<ItemsListCasePnModel>> GetSingleList(ItemListCasesPnRequestModel requestModel)
+        public async Task<OperationDataResult<ItemsListCasePnModel>> GetSingleList([FromBody] ItemListCasesPnRequestModel requestModel)
         {
             return await _listService.GetSingleList(requestModel);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/items-group-planning-pn/list-case-results")]
-        public async Task<OperationDataResult<ItemListPnCaseResultListModel>> GetSingleListResults(ItemListCasesPnRequestModel requestModel)
+        public async Task<OperationDataResult<ItemListPnCaseResultListModel>> GetSingleListResults([FromBody] ItemListCasesPnRequestModel requestModel)
         {
             return await _listService.GetSingleListResults(requestModel);
         }
@@ -89,7 +89,7 @@ namespace ItemsGroupPlanning.Pn.Controllers
         
 
         [HttpGet]
-        [Route("api/items-group-planning-pn/list-cases/{id}/{caseId}")]
+        [Route("api/items-group-planning-pn/list-cases")]
         public async Task<OperationDataResult<ItemsListPnItemCaseModel>> GetSingleCase(int caseId)
         {
             return await _listService.GetSingleCase(caseId);

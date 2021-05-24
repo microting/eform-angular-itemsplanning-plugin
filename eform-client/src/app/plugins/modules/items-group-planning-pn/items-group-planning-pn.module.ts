@@ -8,20 +8,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { EformSharedModule } from 'src/app/common/modules/eform-shared/eform-shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ItemsGroupPlanningPnLayoutComponent } from './layouts';
-import {
-  ItemListCaseColumnsModalComponent,
-  ItemsListCreateComponent,
-  ListCasePageComponent,
-  ListCaseResultPageComponent,
-  ListDeleteComponent,
-  ListEditComponent,
-  ListsPageComponent,
-  ItemCaseUploadedDataComponent,
-  UploadedDataPdfComponent,
-  UploadedDataDeleteComponent,
-  ItemsGroupPlanningPnUnitImportComponent,
-} from './components/items-lists';
-import { ItemsGroupPlanningSettingsComponent } from './components/items-group-plannings-setting';
 import { RouterModule } from '@angular/router';
 import { ItemsGroupPlanningPnRouting } from './items-group-planning-pn.routing.module';
 import {
@@ -31,13 +17,26 @@ import {
   ItemsGroupPlanningPnCasesService,
   ItemsGroupPlanningPnUploadedDataService,
 } from './services';
+import { FileUploadModule } from 'ng2-file-upload';
+import { OwlDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import {
+  ItemCaseUploadedDataComponent,
+  ItemListCaseColumnsModalComponent,
+  ItemsGroupPlanningPnUnitImportComponent,
+  ItemsGroupPlanningSettingsComponent,
+  ItemsListCreateComponent,
+  ListCasePageComponent,
+  ListCaseResultPageComponent,
+  ListDeleteComponent,
+  ListEditComponent,
+  ListsPageComponent,
   ReportGeneratorContainerComponent,
   ReportGeneratorFormComponent,
   ReportPreviewTableComponent,
-} from './components/reports';
-import { FileUploadModule } from 'ng2-file-upload';
-import { OwlDateTimeModule } from '@danielmoncada/angular-datetime-picker';
+  UploadedDataDeleteComponent,
+  UploadedDataPdfComponent,
+} from './components';
+import { itemsGroupPlanningStoreProviders } from './store-providers.config';
 
 @NgModule({
   imports: [
@@ -79,6 +78,7 @@ import { OwlDateTimeModule } from '@danielmoncada/angular-datetime-picker';
     ItemsGroupPlanningPnReportsService,
     ItemsGroupPlanningPnCasesService,
     ItemsGroupPlanningPnUploadedDataService,
+    ...itemsGroupPlanningStoreProviders,
   ],
 })
 export class ItemsGroupPlanningPnModule {}

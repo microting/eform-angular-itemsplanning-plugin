@@ -1,10 +1,10 @@
 export class ItemListCasesPnRequestModel {
   pageSize: number;
   sort: string;
-  pageIndex: number;
+  // pageIndex: number;
   isSortDsc: boolean;
   offset: number;
-  nameFilter: string;
+  // nameFilter: string;
   listId: number;
   dateTo: string;
   dateFrom: string;
@@ -13,8 +13,8 @@ export class ItemListCasesPnRequestModel {
     this.sort = 'Id';
     this.isSortDsc = true;
     this.pageSize = 10;
-    this.pageIndex = 1;
+    // this.pageIndex = 1;
     this.offset = 0;
-    this.nameFilter = '';
+    // this.nameFilter = '';
   }
 }

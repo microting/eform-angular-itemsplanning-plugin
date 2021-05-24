@@ -1,64 +1,76 @@
-using Microting.eForm.Infrastructure;
-using Microting.eForm.Infrastructure.Data.Entities;
+/*
+The MIT License (MIT)
+
+Copyright (c) 2007 - 2021 Microting A/S
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 
 namespace ItemsGroupPlanning.Pn.Services
 {
+    using Abstractions;
+    using Infrastructure.Models;
+    using Infrastructure.Models.Settings;
+    using Microsoft.EntityFrameworkCore;
+    using Microting.eForm.Dto;
+    using Microting.eForm.Infrastructure.Constants;
+    using Microting.eFormApi.BasePn.Abstractions;
+    using Microting.eFormApi.BasePn.Infrastructure.Helpers;
+    using Microting.eFormApi.BasePn.Infrastructure.Helpers.PluginDbOptions;
+    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
+    using Microting.ItemsGroupPlanningBase.Infrastructure.Data;
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Linq;
-    using Abstractions;
-    using Infrastructure.Models;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.EntityFrameworkCore;
-    using Microting.eForm.Dto;
-    using Microting.eForm.Infrastructure.Constants;
-    using Microting.eFormApi.BasePn.Abstractions;
-    using Microting.eFormApi.BasePn.Infrastructure.Database.Entities;
-    using Microting.eFormApi.BasePn.Infrastructure.Extensions;
-    using Microting.eFormApi.BasePn.Infrastructure.Helpers;
-    using Microting.eFormApi.BasePn.Infrastructure.Models.API;
-    using Microting.ItemsGroupPlanningBase.Infrastructure.Data;
-    using Microting.ItemsGroupPlanningBase.Infrastructure.Data.Entities;
-    using Rebus.Bus;
 
-    public class ItemListCaseService :IItemsListCaseService
+    public class ItemListCaseService : IItemsListCaseService
     {
         private readonly ItemsGroupPlanningPnDbContext _dbContext;
         private readonly IItemsPlanningLocalizationService _itemsPlanningLocalizationService;
         private readonly IExcelService _excelService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IEFormCoreService _core;
-        private readonly IRebusService _rebusService;
-        private readonly IBus _bus;
         private readonly IUserService _userService;
+        private readonly IPluginDbOptions<ItemsPlanningBaseSettings> _options;
 
         public ItemListCaseService(
             ItemsGroupPlanningPnDbContext dbContext,
             IUserService userService,
             IItemsPlanningLocalizationService itemsPlanningLocalizationService,
             IExcelService excelService,
-            IHttpContextAccessor httpContextAccessor, IEFormCoreService core,
-            IRebusService rebusService)
+            IEFormCoreService core,
+            IPluginDbOptions<ItemsPlanningBaseSettings> options)
         {
             _dbContext = dbContext;
             _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
-            _httpContextAccessor = httpContextAccessor;
             _core = core;
             _userService = userService;
             _excelService = excelService;
-            _rebusService = rebusService;
-            _bus = rebusService.GetBus();
+            _options = options;
         }
 
         public async Task<OperationDataResult<ItemsListCasePnModel>> GetSingleList(ItemListCasesPnRequestModel requestModel)
         {
             try
             {
-
                 var newItems = (_dbContext.Items.Where(item => item.ItemListId == requestModel.ListId)
                     .Join(_dbContext.ItemCases, item => item.Id, itemCase => itemCase.ItemId,
                         (item, itemCase) => new
@@ -80,61 +92,45 @@ namespace ItemsGroupPlanning.Pn.Services
                             itemCase.Status
                         }));
 
-                if (!string.IsNullOrEmpty(requestModel.Sort))
-                {
-                    if (requestModel.IsSortDsc)
-                    {
-                        newItems = newItems
-                            .CustomOrderByDescending(requestModel.Sort);
-                    }
-                    else
-                    {
-                        newItems = newItems
-                            .CustomOrderBy(requestModel.Sort);
-                    }
-                }
-                else
-                {
-                    newItems = newItems
-                        .OrderBy(x => x.Id);
-                }
+                newItems
+                    = newItems
+                        .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
 
+                newItems = QueryHelper.AddSortToQuery(newItems, requestModel.Sort, requestModel.IsSortDsc);
+
+                var total = await newItems.Select(x => x.BuildYear).CountAsync();
 
                 newItems
                     = newItems
-                        .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                         .Skip(requestModel.Offset)
                         .Take(requestModel.PageSize);
 
                 if (newItems.Any())
                 {
 
-                    ItemsListCasePnModel itemsListCasePnModel = new ItemsListCasePnModel();
-                    itemsListCasePnModel.Items = await newItems.Select(x => new ItemsListPnItemCaseModel()
+                    var itemsListCasePnModel = new ItemsListCasePnModel
                     {
-                        Id = x.Id,
-                        Date = x.CreatedAt,
-                        CreatedAt = x.CreatedAt,
-                        Name = x.Name,
-                        ItemNumber = x.ItemNumber,
-                        BuildYear = x.BuildYear,
-                        Description = x.Description,
-                        Type = x.Type,
-                        Comment = x.Comment,
-                        Location = x.Location,
-                        FieldStatus = x.FieldStatus,
-                        NumberOfImages = x.NumberOfImages,
-                        SdkCaseId = x.MicrotingSdkCaseId,
-                        SdkeFormId = x.MicrotingSdkeFormId,
-                        Status = x.Status
-                    }).ToListAsync();
+                        Items = await newItems.Select(x => new ItemsListPnItemCaseModel()
+                        {
+                            Id = x.Id,
+                            Date = x.CreatedAt,
+                            CreatedAt = x.CreatedAt,
+                            Name = x.Name,
+                            ItemNumber = x.ItemNumber,
+                            BuildYear = x.BuildYear,
+                            Description = x.Description,
+                            Type = x.Type,
+                            Comment = x.Comment,
+                            Location = x.Location,
+                            FieldStatus = x.FieldStatus,
+                            NumberOfImages = x.NumberOfImages,
+                            SdkCaseId = x.MicrotingSdkCaseId,
+                            SdkeFormId = x.MicrotingSdkeFormId,
+                            Status = x.Status
+                        }).ToListAsync(),
+                        Total = total,
+                    };
 
-                    itemsListCasePnModel.Total = await (_dbContext.Items.Where(item => item.ItemListId == requestModel.ListId)
-                        .Join(_dbContext.ItemCases, item => item.Id, itemCase => itemCase.ItemId,
-                            (item, itemCase) => new
-                            {
-                                itemCase.Id
-                            })).CountAsync();
 
                     return new OperationDataResult<ItemsListCasePnModel>(
                         true,
@@ -166,16 +162,16 @@ namespace ItemsGroupPlanning.Pn.Services
             string excelFile = null;
             try
             {
-                ItemListPnCaseResultListModel reportDataResult = await GetTableData(requestModel);
+                var reportDataResult = await GetTableData(requestModel);
                 if (reportDataResult == null)
                 {
                     return new OperationDataResult<FileStreamModel>(false, "ERROR");
                 }
 
-                ItemList itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
+                var itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
 
                 excelFile = _excelService.CopyTemplateForNewAccount("report_template_lists");
-                bool writeResult = _excelService.WriteTableToExcel(itemList.Name,itemList.Description,
+                var writeResult = _excelService.WriteTableToExcel(itemList.Name, itemList.Description,
                     reportDataResult,
                     requestModel,
                     excelFile);
@@ -185,7 +181,7 @@ namespace ItemsGroupPlanning.Pn.Services
                     throw new Exception($"Error while writing excel file {excelFile}");
                 }
 
-                FileStreamModel result = new FileStreamModel()
+                var result = new FileStreamModel()
                 {
                     FilePath = excelFile,
                     FileStream = new FileStream(excelFile, FileMode.Open),
@@ -201,7 +197,7 @@ namespace ItemsGroupPlanning.Pn.Services
                 }
 
                 Trace.TraceError(e.Message);
-//                _logger.LogError(e.Message);
+                //_logger.LogError(e.Message);
                 return new OperationDataResult<FileStreamModel>(
                     false,
                     _itemsPlanningLocalizationService.GetString("ErrorWhileGeneratingReportFile"));
@@ -210,90 +206,58 @@ namespace ItemsGroupPlanning.Pn.Services
 
         private async Task<ItemListPnCaseResultListModel> GetTableData(ItemListCasesPnRequestModel requestModel)
         {
-            PluginConfigurationValue pluginConfigurationValue =
-                await _dbContext.PluginConfigurationValues.SingleOrDefaultAsync(x => x.Name == "ItemsPlanningBaseSettings:Token");
+            var pluginConfigurationValue = _options.Value.Token;
 
-            var itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
+            var itemList = await _dbContext.ItemLists
+                .SingleOrDefaultAsync(x => x.Id == requestModel.ListId);
 
             var core = await _core.GetCore();
-            await using MicrotingDbContext microtingDbContext = core.DbContextHelper.GetDbContext();
+            await using var microtingDbContext = core.DbContextHelper.GetDbContext();
             var locale = await _userService.GetCurrentUserLocale();
-            Language language = microtingDbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
-            List<FieldDto> allFields = await _core.GetCore().Result.Advanced_TemplateFieldReadAll(itemList.RelatedEFormId, language);
+            var language = microtingDbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+            var allFields = await core.Advanced_TemplateFieldReadAll(itemList.RelatedEFormId, language);
 
-            int i = 0;
-            List<int> toBeRemoved = new List<int>();
-            foreach (FieldDto field in allFields)
+            // filter fields
+            allFields = allFields.Where(x => x.FieldType != Constants.FieldTypes.SaveButton).ToList();
+
+            var itemListPnCaseResultListModel = new ItemListPnCaseResultListModel
             {
-                if (field.FieldType == Constants.FieldTypes.SaveButton)
-                {
-                    toBeRemoved.Add(i);
-                }
+                LabelEnabled = itemList.LabelEnabled,
+                DescriptionEnabled = itemList.DescriptionEnabled,
+                DeployedAtEnabled = itemList.DeployedAtEnabled,
+                DoneAtEnabled = itemList.DoneAtEnabled,
+                DoneByUserNameEnabled = itemList.DoneByUserNameEnabled,
+                UploadedDataEnabled = itemList.UploadedDataEnabled,
+                ItemNumberEnabled = itemList.ItemNumberEnabled,
+                LocationCodeEnabled = itemList.LocationCodeEnabled,
+                BuildYearEnabled = itemList.BuildYearEnabled,
+                TypeEnabled = itemList.TypeEnabled,
+                NumberOfImagesEnabled = itemList.NumberOfImagesEnabled,
+                SdkeFormId = itemList.RelatedEFormId,
+                FieldEnabled1 = itemList.SdkFieldEnabled1,
+                FieldEnabled2 = itemList.SdkFieldEnabled2,
+                FieldEnabled3 = itemList.SdkFieldEnabled3,
+                FieldEnabled4 = itemList.SdkFieldEnabled4,
+                FieldEnabled5 = itemList.SdkFieldEnabled5,
+                FieldEnabled6 = itemList.SdkFieldEnabled6,
+                FieldEnabled7 = itemList.SdkFieldEnabled7,
+                FieldEnabled8 = itemList.SdkFieldEnabled8,
+                FieldEnabled9 = itemList.SdkFieldEnabled9,
+                FieldEnabled10 = itemList.SdkFieldEnabled10,
+                FieldName1 = itemList.SdkFieldEnabled1 ? allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId1)?.Label : "",
+                FieldName2 = itemList.SdkFieldEnabled2 ? allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId2)?.Label : "",
+                FieldName3 = itemList.SdkFieldEnabled3 ? allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId3)?.Label : "",
+                FieldName4 = itemList.SdkFieldEnabled4 ? allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId4)?.Label : "",
+                FieldName5 = itemList.SdkFieldEnabled5 ? allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId5)?.Label : "",
+                FieldName6 = itemList.SdkFieldEnabled6 ? allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId6)?.Label : "",
+                FieldName7 = itemList.SdkFieldEnabled7 ? allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId7)?.Label : "",
+                FieldName8 = itemList.SdkFieldEnabled8 ? allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId8)?.Label : "",
+                FieldName9 = itemList.SdkFieldEnabled9 ? allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId9)?.Label : "",
+                FieldName10 = itemList.SdkFieldEnabled10 ? allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId10)?.Label : "",
+            };
 
-                i += 1;
-            }
-
-            foreach (int i1 in toBeRemoved)
-            {
-                allFields.RemoveAt(i1);
-            }
-
-            ItemListPnCaseResultListModel itemListPnCaseResultListModel = new ItemListPnCaseResultListModel();
-            itemListPnCaseResultListModel.Total = 0;
-            itemListPnCaseResultListModel.LabelEnabled = itemList.LabelEnabled;
-            itemListPnCaseResultListModel.DescriptionEnabled = itemList.DescriptionEnabled;
-            itemListPnCaseResultListModel.DeployedAtEnabled = itemList.DeployedAtEnabled;
-            itemListPnCaseResultListModel.DoneAtEnabled = itemList.DoneAtEnabled;
-            itemListPnCaseResultListModel.DoneByUserNameEnabled = itemList.DoneByUserNameEnabled;
-            itemListPnCaseResultListModel.UploadedDataEnabled = itemList.UploadedDataEnabled;
-            itemListPnCaseResultListModel.ItemNumberEnabled = itemList.ItemNumberEnabled;
-            itemListPnCaseResultListModel.LocationCodeEnabled = itemList.LocationCodeEnabled;
-            itemListPnCaseResultListModel.BuildYearEnabled = itemList.BuildYearEnabled;
-            itemListPnCaseResultListModel.TypeEnabled = itemList.TypeEnabled;
-            itemListPnCaseResultListModel.NumberOfImagesEnabled = itemList.NumberOfImagesEnabled;
-            itemListPnCaseResultListModel.SdkeFormId = itemList.RelatedEFormId;
-
-            itemListPnCaseResultListModel.FieldEnabled1 = itemList.SdkFieldEnabled1;
-            if ( itemListPnCaseResultListModel.FieldEnabled1)
-                itemListPnCaseResultListModel.FieldName1 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId1)?.Label;
-
-            itemListPnCaseResultListModel.FieldEnabled2 = itemList.SdkFieldEnabled2;
-            if (itemListPnCaseResultListModel.FieldEnabled2)
-                itemListPnCaseResultListModel.FieldName2 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId2)?.Label;
-
-            itemListPnCaseResultListModel.FieldEnabled3 = itemList.SdkFieldEnabled3;
-            if (itemListPnCaseResultListModel.FieldEnabled3)
-                itemListPnCaseResultListModel.FieldName3 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId3)?.Label;
-
-            itemListPnCaseResultListModel.FieldEnabled4 = itemList.SdkFieldEnabled4;
-            if (itemListPnCaseResultListModel.FieldEnabled4)
-                itemListPnCaseResultListModel.FieldName4 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId4)?.Label;
-
-            itemListPnCaseResultListModel.FieldEnabled5 = itemList.SdkFieldEnabled5;
-            if (itemListPnCaseResultListModel.FieldEnabled5)
-                itemListPnCaseResultListModel.FieldName5 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId5)?.Label;
-
-            itemListPnCaseResultListModel.FieldEnabled6 = itemList.SdkFieldEnabled6;
-            if (itemListPnCaseResultListModel.FieldEnabled6)
-                itemListPnCaseResultListModel.FieldName6 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId6)?.Label;
-
-            itemListPnCaseResultListModel.FieldEnabled7 = itemList.SdkFieldEnabled7;
-            if (itemListPnCaseResultListModel.FieldEnabled7)
-                itemListPnCaseResultListModel.FieldName7 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId7)?.Label;
-
-            itemListPnCaseResultListModel.FieldEnabled8 = itemList.SdkFieldEnabled8;
-            if (itemListPnCaseResultListModel.FieldEnabled8)
-                itemListPnCaseResultListModel.FieldName8 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId8)?.Label;
-
-            itemListPnCaseResultListModel.FieldEnabled9 = itemList.SdkFieldEnabled9;
-            if (itemListPnCaseResultListModel.FieldEnabled9)
-                itemListPnCaseResultListModel.FieldName9 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId9)?.Label;
-
-            itemListPnCaseResultListModel.FieldEnabled10 = itemList.SdkFieldEnabled10;
-            if (itemListPnCaseResultListModel.FieldEnabled10)
-                itemListPnCaseResultListModel.FieldName10 = allFields.SingleOrDefault(x => x.Id == itemList.SdkFieldId10)?.Label;
-
-            var newItems = (_dbContext.Items.Where(item => item.ItemListId == requestModel.ListId)
+            var newItems = _dbContext.Items
+                .Where(item => item.ItemListId == requestModel.ListId)
                 .Join(_dbContext.ItemCases, item => item.Id, itemCase => itemCase.ItemId,
                     (item, itemCase) => new
                     {
@@ -321,7 +285,7 @@ namespace ItemsGroupPlanning.Pn.Services
                         itemCase.SdkFieldValue10,
                         itemCase.WorkflowState,
                         itemCase.NumberOfImages
-                    }));
+                    });
 
             if (requestModel.DateFrom != null)
             {
@@ -335,76 +299,52 @@ namespace ItemsGroupPlanning.Pn.Services
                     x.CreatedAt <= new DateTime(requestModel.DateTo.Value.Year, requestModel.DateTo.Value.Month, requestModel.DateTo.Value.Day, 23, 59, 59));
             }
 
-            if (!string.IsNullOrEmpty(requestModel.Sort))
-            {
-                if (requestModel.IsSortDsc)
-                {
-                    newItems = newItems
-                        .CustomOrderByDescending(requestModel.Sort);
-                }
-                else
-                {
-                    newItems = newItems
-                        .CustomOrderBy(requestModel.Sort);
-                }
-            }
-            else
-            {
-                newItems = newItems
-                    .OrderBy(x => x.Id);
-            }
+            // Add sort
+            newItems = QueryHelper.AddSortToQuery(newItems, requestModel.Sort, requestModel.IsSortDsc);
 
-            itemListPnCaseResultListModel.Total = newItems.Count(x => x.WorkflowState != Constants.WorkflowStates.Removed);
+            newItems = newItems
+                .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed);
 
+            // Get total
+            itemListPnCaseResultListModel.Total = await newItems.Select(x => x.Id).CountAsync();
+
+            // Pagination
             newItems
                 = newItems
-                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                     .Skip(requestModel.Offset)
                     .Take(requestModel.PageSize);
 
-            itemListPnCaseResultListModel.Items = new List<ItemsListPnCaseResultModel>();
-
-            foreach (var item in newItems.ToList())
-            {
-                Console.WriteLine($"[DBG] ItemListCaseService.GetSingleListResults: Looking at case with id {item.Id} with status {item.Status}");
-
-                try
+            // add select and get from db
+            itemListPnCaseResultListModel.Items = newItems
+                .Select(x => new ItemsListPnCaseResultModel
                 {
-                    ItemsListPnCaseResultModel newItem = new ItemsListPnCaseResultModel()
-                    {
-                        Id = item.Id,
-                        DoneAt = item.MicrotingSdkCaseDoneAt,
-                        DeployedAt = item.CreatedAt,
-                        DoneByUserName = item.DoneByUserName,
-                        Label = item.Name,
-                        Description = item.Description,
-                        ItemNumber = item.ItemNumber,
-                        LocationCode = item.LocationCode,
-                        BuildYear = item.BuildYear,
-                        Type = item.Type,
-                        NumberOfImages = item.NumberOfImages,
-                        Field1 = item.SdkFieldValue1,
-                        Field2 = item.SdkFieldValue2,
-                        Field3 = item.SdkFieldValue3,
-                        Field4 = item.SdkFieldValue4,
-                        Field5 = item.SdkFieldValue5,
-                        Field6 = item.SdkFieldValue6,
-                        Field7 = item.SdkFieldValue7,
-                        Field8 = item.SdkFieldValue8,
-                        Field9 = item.SdkFieldValue9,
-                        Field10 = item.SdkFieldValue10,
-                        SdkCaseId = item.MicrotingSdkCaseId,
-                        SdkeFormId = itemList.RelatedEFormId,
-                        Status = item.Status,
-                        Token = pluginConfigurationValue.Value
-                    };
-                    itemListPnCaseResultListModel.Items.Add(newItem);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+                    Id = x.Id,
+                    DoneAt = x.MicrotingSdkCaseDoneAt,
+                    DeployedAt = x.CreatedAt,
+                    DoneByUserName = x.DoneByUserName,
+                    Label = x.Name,
+                    Description = x.Description,
+                    ItemNumber = x.ItemNumber,
+                    LocationCode = x.LocationCode,
+                    BuildYear = x.BuildYear,
+                    Type = x.Type,
+                    NumberOfImages = x.NumberOfImages,
+                    Field1 = x.SdkFieldValue1,
+                    Field2 = x.SdkFieldValue2,
+                    Field3 = x.SdkFieldValue3,
+                    Field4 = x.SdkFieldValue4,
+                    Field5 = x.SdkFieldValue5,
+                    Field6 = x.SdkFieldValue6,
+                    Field7 = x.SdkFieldValue7,
+                    Field8 = x.SdkFieldValue8,
+                    Field9 = x.SdkFieldValue9,
+                    Field10 = x.SdkFieldValue10,
+                    SdkCaseId = x.MicrotingSdkCaseId,
+                    SdkeFormId = itemList.RelatedEFormId,
+                    Status = x.Status,
+                    Token = pluginConfigurationValue,
+                })
+                .ToList();
 
             return itemListPnCaseResultListModel;
         }
@@ -413,27 +353,22 @@ namespace ItemsGroupPlanning.Pn.Services
         {
             try
             {
-                ItemsListPnItemCaseModel itemCaseModel = new ItemsListPnItemCaseModel();
-
                 var itemCase = await _dbContext.ItemCases.FirstOrDefaultAsync(x => x.Id == caseId);
                 var item = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == itemCase.ItemId);
 
+                var itemCaseModel = new ItemsListPnItemCaseModel
+                {
+                    Id = itemCase.Id,
+                    Comment = itemCase.Comment,
+                    Status = itemCase.Status,
+                    NumberOfImages = itemCase.NumberOfImages,
+                    Location = itemCase.Location,
+                    Description = item.Description,
+                    ItemNumber = item.ItemNumber,
+                    BuildYear = item.BuildYear,
+                    Type = item.Type,
+                };
 
-                itemCaseModel.Id = itemCase.Id;
-                itemCaseModel.Comment = itemCase.Comment;
-                itemCaseModel.Status = itemCase.Status;
-                itemCaseModel.NumberOfImages = itemCase.NumberOfImages;
-                itemCaseModel.Location = itemCase.Location;
-                itemCaseModel.Description = item.Description;
-                itemCaseModel.ItemNumber = item.ItemNumber;
-                itemCaseModel.BuildYear = item.BuildYear;
-                itemCaseModel.Type = item.Type;
-//
-//                if (itemCaseModel == null)
-//                {
-//                    return new OperationDataResult<ItemsListPnItemCaseModel>(false,
-//                        _itemsPlanningLocalizationService.GetString(($"ListItemCase with ID: {caseId} does not exist")));
-//                }
                 return new OperationDataResult<ItemsListPnItemCaseModel>(true, itemCaseModel);
             }
             catch (Exception e)
@@ -441,32 +376,30 @@ namespace ItemsGroupPlanning.Pn.Services
                 Console.WriteLine(e);
                 throw;
             }
-            return new OperationDataResult<ItemsListPnItemCaseModel>(false, "Not done yet.");
         }
 
         public async Task<string> DownloadEFormPdf(int caseId, string token, string fileType)
         {
-            PluginConfigurationValue pluginConfigurationValue =
-                await _dbContext.PluginConfigurationValues.SingleOrDefaultAsync(x => x.Name == "ItemsPlanningBaseSettings:Token");
-            if (token == pluginConfigurationValue.Value)
+            var pluginConfigurationValue = _options.Value.Token;
+            if (token == pluginConfigurationValue)
             {
                 try
                 {
                     var core = await _core.GetCore();
-                    int eFormId = 0;
-                    ItemCase itemCase = await _dbContext.ItemCases.FirstOrDefaultAsync(x => x.Id == caseId);
-                    Item item = await _dbContext.Items.SingleOrDefaultAsync(x => x.Id == itemCase.ItemId);
-                    ItemList itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == item.ItemListId);
+                    var eFormId = 0;
+                    var itemCase = await _dbContext.ItemCases.FirstOrDefaultAsync(x => x.Id == caseId);
+                    var item = await _dbContext.Items.SingleOrDefaultAsync(x => x.Id == itemCase.ItemId);
+                    var itemList = await _dbContext.ItemLists.SingleOrDefaultAsync(x => x.Id == item.ItemListId);
 
-                    await using MicrotingDbContext microtingDbContext = core.DbContextHelper.GetDbContext();
+                    await using var microtingDbContext = core.DbContextHelper.GetDbContext();
                     var locale = await _userService.GetCurrentUserLocale();
-                    Language language = microtingDbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+                    var language = microtingDbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
                     if (itemList != null)
                     {
                         eFormId = itemList.RelatedEFormId;
                     }
 
-                    string xmlContent = new XElement("ItemCase",
+                    var xmlContent = new XElement("ItemCase",
                         new XElement("ItemId", item.Id),
                         new XElement("ItemNumber", item.ItemNumber),
                         new XElement("ItemName", item.Name),
@@ -481,17 +414,15 @@ namespace ItemsGroupPlanning.Pn.Services
                         var filePath = await core.CaseToPdf(itemCase.MicrotingSdkCaseId, eFormId.ToString(),
                             DateTime.Now.ToString("yyyyMMddHHmmssffff"),
                             $"{core.GetSdkSetting(Settings.httpServerAddress)}/" + "api/template-files/get-image/", fileType, xmlContent, language);
-                        if (!System.IO.File.Exists(filePath))
+                        if (!File.Exists(filePath))
                         {
                             throw new FileNotFoundException();
                         }
 
                         return filePath;
                     }
-                    else
-                    {
-                        throw new Exception("could not find case of eform!");
-                    }
+
+                    throw new Exception("Could not find case of eform!");
 
                 }
                 catch (Exception exception)

@@ -85,8 +85,8 @@ export class ReportGeneratorFormComponent implements OnInit {
     return new ReportPnGenerateModel({
       itemList: formValue.itemList,
       item: formValue.item,
-      dateFrom: format(formValue.dateRange[0], 'YYYY-MM-DD'),
-      dateTo: format(formValue.dateRange[1], 'YYYY-MM-DD'),
+      dateFrom: format(formValue.dateRange[0], 'yyyy-MM-dd'),
+      dateTo: format(formValue.dateRange[1], 'yyyy-MM-dd'),
     });
   }
 }

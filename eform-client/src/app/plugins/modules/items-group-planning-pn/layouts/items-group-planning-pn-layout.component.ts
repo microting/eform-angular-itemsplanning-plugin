@@ -1,31 +1,24 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {LocaleService} from '../../../../common/services/auth';
-import {TranslateService} from '@ngx-translate/core';
-import {ItemsGroupPlanningPnLocalSettings} from '../enums';
-import {SharedPnService} from '../../shared/services';
-declare var require: any;
+import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { translates } from './../i18n/translates';
+import { AuthStateService } from 'src/app/common/store';
 
 @Component({
   selector: 'app-items-group-planning-pn-layout',
-  template: `<router-outlet></router-outlet>`
+  template: `<router-outlet></router-outlet>`,
 })
-export class ItemsGroupPlanningPnLayoutComponent implements AfterViewInit, OnInit {
-  constructor(private localeService: LocaleService,
-              private translateService: TranslateService,
-              private sharedPnService: SharedPnService) {
+export class ItemsGroupPlanningPnLayoutComponent
+  implements AfterContentInit, OnInit {
+  constructor(
+    private translateService: TranslateService,
+    private authStateService: AuthStateService
+  ) {}
 
+  ngOnInit() {}
+
+  ngAfterContentInit() {
+    const lang = this.authStateService.currentUserLocale;
+    const i18n = translates[lang];
+    this.translateService.setTranslation(lang, i18n, true);
   }
-
-  ngOnInit() {
-    this.sharedPnService.initLocalPageSettings('itemsGroupPlanningPnSettings', ItemsGroupPlanningPnLocalSettings);
-  }
-
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      const lang = this.localeService.getCurrentUserLocale();
-      const i18n = require(`../i18n/${lang}.json`);
-      this.translateService.setTranslation(lang, i18n, true);
-    }, 1000);
-
-  }}
+}

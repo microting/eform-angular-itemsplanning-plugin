@@ -1,0 +1,97 @@
+<eform-subheader [title]="'Cases' | translate"> </eform-subheader>
+
+<div class="container-fluid">
+  <div class="row p-1 mt-4 table-responsive no-gutters">
+    <table
+      mdbTable
+      striped="true"
+      hover="true"
+      small="true"
+      class="z-depth-1 text-center"
+    >
+      <thead
+        table-headers
+        [tableHeaders]="tableHeaders"
+        [sort]="itemsListCasesStateService.getSort() | async"
+        (sortChanged)="sortTable($event)"
+      ></thead>
+      <tbody id="tableBody">
+        <tr *ngFor="let itemCase of casesModel.items">
+          <td id="caseId">
+            {{ itemCase.id }}
+          </td>
+          <td>
+            <date-formatter
+              [date]="itemCase.date"
+              [Format]="'datetime'"
+            ></date-formatter>
+          </td>
+          <td>
+            {{ itemCase.itemNumber }}
+          </td>
+          <td>
+            {{ itemCase.buildYear }}
+          </td>
+          <td>
+            {{ itemCase.description }}
+          </td>
+          <td>
+            {{ itemCase.type }}
+          </td>
+          <td>
+            {{ itemCase.location }}
+          </td>
+          <td>
+            {{ itemCase.fieldStatus }}
+          </td>
+          <td>
+            {{ itemCase.comment }}
+          </td>
+          <td>
+            {{ itemCase.numberOfImages }}
+          </td>
+          <td>
+            <button
+              mdbBtn
+              class="btn-success"
+              (click)="showListCasePdfModal(itemCase)"
+              mdbTooltip="{{ 'Show/Edit PDF' | translate }}"
+            >
+              <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </td>
+          <td>
+            <button
+              mdbBtn
+              class="btn-success btn-icon mb-2"
+              *ngIf="itemCase.status === 100"
+              [routerLink]="[
+                '/cases/edit/' + itemCase.sdkCaseId + '/' + itemCase.sdkeFormId
+              ]"
+              mdbTooltip="{{ 'Edit Case' | translate }}"
+            >
+              <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row justify-content-between mr-2 ml-2">
+    <div class="col-md-1">
+      <eform-page-size
+        [pageSize]="itemsListCasesStateService.getPageSize() | async"
+        (onPageSizeChanged)="onPageSizeChanged($event)"
+      >
+      </eform-page-size>
+    </div>
+    <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
+      <eform-pagination
+        [pagination]="itemsListCasesStateService.getPagination() | async"
+        (onPageChanged)="changePage($event)"
+      ></eform-pagination>
+    </div>
+  </div>
+</div>
+
+<app-item-case-uploaded-data #uploadedDataModal></app-item-case-uploaded-data>

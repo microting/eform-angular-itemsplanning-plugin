@@ -18,9 +18,9 @@ namespace ItemsGroupPlanning.Pn.Controllers
             _listService = listService;
         }
 
-        [HttpGet]
-        [Route("api/items-group-planning-pn/lists")]
-        public async Task<OperationDataResult<ItemsListsModel>> Index(ItemsListRequestModel requestModel)
+        [HttpPost]
+        [Route("api/items-group-planning-pn/lists/index")]
+        public async Task<OperationDataResult<ItemsListsModel>> Index([FromBody]ItemsListRequestModel requestModel)
         {
             return await _listService.Index(requestModel);
         }
@@ -34,7 +34,7 @@ namespace ItemsGroupPlanning.Pn.Controllers
         }
 
         [HttpGet]
-        [Route("api/items-group-planning-pn/lists/{id}")]
+        [Route("api/items-group-planning-pn/lists")]
         public async Task<OperationDataResult<ItemsListPnModel>> Read(int id)
         {
             return await _listService.Read(id);
@@ -48,7 +48,7 @@ namespace ItemsGroupPlanning.Pn.Controllers
         }
 
         [HttpDelete]
-        [Route("api/items-group-planning-pn/lists/{id}")]
+        [Route("api/items-group-planning-pn/lists")]
         public async Task<OperationResult> Delete(int id)
         {
             return await _listService.Delete(id);
