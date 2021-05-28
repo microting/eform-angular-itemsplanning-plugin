@@ -10,7 +10,6 @@ describe('Application settings page - site header section', function () {
     loginPage.login();
   });
   it('should go to plugin settings page', function () {
-    loginPage.login();
     myEformsPage.Navbar.goToPluginsPage();
     $('#plugin-name').waitForDisplayed({ timeout: 50000 });
 
