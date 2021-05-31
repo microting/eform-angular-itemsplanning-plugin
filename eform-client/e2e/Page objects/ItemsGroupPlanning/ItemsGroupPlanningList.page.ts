@@ -13,6 +13,28 @@ export class ItemsGroupPlanningListPage extends PageWithNavbarPage {
     browser.pause(500);
     return $$('#tableBody > tr').length;
   }
+
+  public get idTableHeader() {
+    const ele = $('#idTableHeader');
+    ele.waitForDisplayed({ timeout: 40000 });
+    ele.waitForClickable({ timeout: 40000 });
+    return ele;
+  }
+
+  public get nameTableHeader() {
+    const ele = $('#nameTableHeader');
+    ele.waitForDisplayed({ timeout: 40000 });
+    ele.waitForClickable({ timeout: 40000 });
+    return ele;
+  }
+
+  public get descriptionTableHeader() {
+    const ele = $('#descriptionTableHeader');
+    ele.waitForDisplayed({ timeout: 40000 });
+    ele.waitForClickable({ timeout: 40000 });
+    return ele;
+  }
+
   public get newEformBtn() {
     $('#newEFormBtn').waitForDisplayed({ timeout: 20000 });
     $('#newEFormBtn').waitForClickable({ timeout: 20000 });
