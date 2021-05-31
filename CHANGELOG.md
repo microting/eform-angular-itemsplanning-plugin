@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.0.120](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.120) (2021-05-31)
+
+[Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.119...v1.0.120)
+
+**Implemented enhancements:**
+
+- Bump Microting.ItemsGroupPlanningBase from 3.0.12 to 3.0.14 [\#207](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/207)
+- Bump Microting.eFormApi.BasePn from 3.0.13 to 3.0.14 [\#206](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/206)
+- Bump Microting.eForm from 5.2.3 to 5.2.4 [\#205](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/205)
+
 ## [v1.0.119](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.119) (2021-05-26)
 
 [Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.118...v1.0.119)
@@ -141,7 +151,6 @@
 **Implemented enhancements:**
 
 - Bump Microting.ItemsGroupPlanningBase from 2.0.97 to 2.0.98 [\#140](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/140)
-- Bump Microting.eFormApi.BasePn from 2.0.128 to 2.0.129 [\#139](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/139)
 - Bump Microting.eForm from 4.4.37 to 4.4.38 [\#138](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/138)
 
 ## [v1.0.105](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.105) (2021-04-19)
@@ -159,6 +168,7 @@
 
 **Implemented enhancements:**
 
+- Bump Microting.eFormApi.BasePn from 2.0.128 to 2.0.129 [\#139](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/139)
 - Bump Microting.ItemsGroupPlanningBase from 2.0.94 to 2.0.95 [\#132](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/132)
 - Bump Microting.eFormApi.BasePn from 2.0.122 to 2.0.126 [\#131](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/131)
 - Bump Microting.eForm from 4.4.31 to 4.4.35 [\#130](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/130)
@@ -262,6 +272,7 @@
 - Bump Microting.ItemsGroupPlanningBase from 2.0.81 to 2.0.83 [\#80](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/80)
 - Bump Microting.eFormApi.BasePn from 2.0.98 to 2.0.107 [\#79](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/79)
 - Bump Microting.eForm from 4.4.2 to 4.4.13 [\#78](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/78)
+- Bump Microting.eFormApi.BasePn from 2.0.97 to 2.0.99 [\#61](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/61)
 
 ## [v1.0.93](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.93) (2021-03-05)
 
@@ -270,8 +281,8 @@
 **Implemented enhancements:**
 
 - Bump Microting.ItemsGroupPlanningBase from 2.0.80 to 2.0.81 [\#62](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/62)
-- Bump Microting.eFormApi.BasePn from 2.0.97 to 2.0.99 [\#61](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/61)
 - Bump Microting.eForm from 4.4.1 to 4.4.3 [\#60](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/60)
+- Upgrade to make it work with angular 8, chromedriver branch [\#18](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/18)
 
 **Merged pull requests:**
 
@@ -518,10 +529,6 @@
 ## [v1.0.41](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.41) (2020-04-24)
 
 [Full Changelog](https://github.com/microting/eform-angular-items-group-planning-plugin/compare/v1.0.40...v1.0.41)
-
-**Implemented enhancements:**
-
-- Upgrade to make it work with angular 8, chromedriver branch [\#18](https://github.com/microting/eform-angular-items-group-planning-plugin/issues/18)
 
 ## [v1.0.40](https://github.com/microting/eform-angular-items-group-planning-plugin/tree/v1.0.40) (2020-03-04)
 
