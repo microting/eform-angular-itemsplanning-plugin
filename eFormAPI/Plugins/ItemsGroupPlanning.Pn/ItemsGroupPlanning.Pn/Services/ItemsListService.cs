@@ -353,10 +353,13 @@ namespace ItemsGroupPlanning.Pn.Services
         {
             try
             {
-                var itemsList = new ItemList
+                var itemsList = await _dbContext.ItemLists.FirstOrDefaultAsync(x => x.Id == id);
+                if (itemsList == null)
                 {
-                    Id = id
-                };
+                    return new OperationResult(
+                        false,
+                        _itemsPlanningLocalizationService.GetString("ItemListNotFound"));
+                }
                 await itemsList.Delete(_dbContext);
 
                 return new OperationResult(
