@@ -228,53 +228,58 @@ namespace ItemsGroupPlanning.Pn.Services
                 var locale = await _userService.GetCurrentUserLocale();
                 Language language = dbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
                 var template = await core.TemplateItemRead(updateModel.RelatedEFormId, language);
-                var itemsList = new ItemList
+                
+                var itemsList = await _dbContext.ItemLists.FirstOrDefaultAsync(x => x.Id == updateModel.Id);
+                if (itemsList == null)
                 {
-                    Id = updateModel.Id,
-                    RepeatUntil = updateModel.RepeatUntil,
-                    RepeatEvery = updateModel.RepeatEvery,
-                    RepeatType = updateModel.RepeatType,
-                    DayOfWeek = updateModel.DayOfWeek,
-                    DayOfMonth = updateModel.DayOfMonth,
-                    Description = updateModel.Description,
-                    Name = updateModel.Name,
-                    UpdatedByUserId = _userService.UserId,
-                    RelatedEFormId = updateModel.RelatedEFormId,
-                    RelatedEFormName = template?.Label,
-                    LabelEnabled = updateModel.LabelEnabled,
-                    DescriptionEnabled = updateModel.DescriptionEnabled,
-                    DeployedAtEnabled = updateModel.DeployedAtEnabled,
-                    DoneAtEnabled = updateModel.DoneAtEnabled,
-                    DoneByUserNameEnabled = updateModel.DoneByUserNameEnabled,
-                    UploadedDataEnabled = updateModel.UploadedDataEnabled,
-                    ItemNumberEnabled = updateModel.ItemNumberEnabled,
-                    LocationCodeEnabled = updateModel.LocationCodeEnabled,
-                    BuildYearEnabled = updateModel.BuildYearEnabled,
-                    TypeEnabled = updateModel.TypeEnabled,
-                    NumberOfImagesEnabled = updateModel.NumberOfImagesEnabled,
-                    SdkFieldId1 = updateModel.SdkFieldId1,
-                    SdkFieldId2 = updateModel.SdkFieldId2,
-                    SdkFieldId3 = updateModel.SdkFieldId3,
-                    SdkFieldId4 = updateModel.SdkFieldId4,
-                    SdkFieldId5 = updateModel.SdkFieldId5,
-                    SdkFieldId6 = updateModel.SdkFieldId6,
-                    SdkFieldId7 = updateModel.SdkFieldId7,
-                    SdkFieldId8 = updateModel.SdkFieldId8,
-                    SdkFieldId9 = updateModel.SdkFieldId9,
-                    SdkFieldId10 = updateModel.SdkFieldId10,
-                    SdkFieldEnabled1 = updateModel.SdkFieldId1 != null,
-                    SdkFieldEnabled2 = updateModel.SdkFieldId2 != null,
-                    SdkFieldEnabled3 = updateModel.SdkFieldId3 != null,
-                    SdkFieldEnabled4 = updateModel.SdkFieldId4 != null,
-                    SdkFieldEnabled5 = updateModel.SdkFieldId5 != null,
-                    SdkFieldEnabled6 = updateModel.SdkFieldId6 != null,
-                    SdkFieldEnabled7 = updateModel.SdkFieldId7 != null,
-                    SdkFieldEnabled8 = updateModel.SdkFieldId8 != null,
-                    SdkFieldEnabled9 = updateModel.SdkFieldId9 != null,
-                    SdkFieldEnabled10 = updateModel.SdkFieldId10 != null,
-                    LastExecutedTime = updateModel.LastExecutedTime
+                    return new OperationResult(
+                        false,
+                        _itemsPlanningLocalizationService.GetString("ItemListNotFound"));
+                }
 
-                };
+                itemsList.RepeatUntil = updateModel.RepeatUntil;
+                itemsList.RepeatEvery = updateModel.RepeatEvery;
+                itemsList.RepeatType = updateModel.RepeatType;
+                itemsList.DayOfWeek = updateModel.DayOfWeek;
+                itemsList.DayOfMonth = updateModel.DayOfMonth;
+                itemsList.Description = updateModel.Description;
+                itemsList.Name = updateModel.Name;
+                itemsList.UpdatedByUserId = _userService.UserId;
+                itemsList.RelatedEFormId = updateModel.RelatedEFormId;
+                itemsList.RelatedEFormName = template?.Label;
+                itemsList.LabelEnabled = updateModel.LabelEnabled;
+                itemsList.DescriptionEnabled = updateModel.DescriptionEnabled;
+                itemsList.DeployedAtEnabled = updateModel.DeployedAtEnabled;
+                itemsList.DoneAtEnabled = updateModel.DoneAtEnabled;
+                itemsList.DoneByUserNameEnabled = updateModel.DoneByUserNameEnabled;
+                itemsList.UploadedDataEnabled = updateModel.UploadedDataEnabled;
+                itemsList.ItemNumberEnabled = updateModel.ItemNumberEnabled;
+                itemsList.LocationCodeEnabled = updateModel.LocationCodeEnabled;
+                itemsList.BuildYearEnabled = updateModel.BuildYearEnabled;
+                itemsList.TypeEnabled = updateModel.TypeEnabled;
+                itemsList.NumberOfImagesEnabled = updateModel.NumberOfImagesEnabled;
+                itemsList.SdkFieldId1 = updateModel.SdkFieldId1;
+                itemsList.SdkFieldId2 = updateModel.SdkFieldId2;
+                itemsList.SdkFieldId3 = updateModel.SdkFieldId3;
+                itemsList.SdkFieldId4 = updateModel.SdkFieldId4;
+                itemsList.SdkFieldId5 = updateModel.SdkFieldId5;
+                itemsList.SdkFieldId6 = updateModel.SdkFieldId6;
+                itemsList.SdkFieldId7 = updateModel.SdkFieldId7;
+                itemsList.SdkFieldId8 = updateModel.SdkFieldId8;
+                itemsList.SdkFieldId9 = updateModel.SdkFieldId9;
+                itemsList.SdkFieldId10 = updateModel.SdkFieldId10;
+                itemsList.SdkFieldEnabled1 = updateModel.SdkFieldId1 != null;
+                itemsList.SdkFieldEnabled2 = updateModel.SdkFieldId2 != null;
+                itemsList.SdkFieldEnabled3 = updateModel.SdkFieldId3 != null;
+                itemsList.SdkFieldEnabled4 = updateModel.SdkFieldId4 != null;
+                itemsList.SdkFieldEnabled5 = updateModel.SdkFieldId5 != null;
+                itemsList.SdkFieldEnabled6 = updateModel.SdkFieldId6 != null;
+                itemsList.SdkFieldEnabled7 = updateModel.SdkFieldId7 != null;
+                itemsList.SdkFieldEnabled8 = updateModel.SdkFieldId8 != null;
+                itemsList.SdkFieldEnabled9 = updateModel.SdkFieldId9 != null;
+                itemsList.SdkFieldEnabled10 = updateModel.SdkFieldId10 != null;
+                itemsList.LastExecutedTime = updateModel.LastExecutedTime;
+
                 await itemsList.Update(_dbContext);
 
                 // update current items

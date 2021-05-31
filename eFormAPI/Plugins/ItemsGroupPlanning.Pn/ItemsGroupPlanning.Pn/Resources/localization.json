@@ -173,5 +173,12 @@
       "da": "Dato til",
       "en-US": "Date to"
     }
+  },
+  {
+    "Key": "ItemListNotFound",
+    "LocalizedValue": {
+      "da": "ItemList ikke fundet",
+      "en-US": "ItemList not found"
+    }
   }
 ]
