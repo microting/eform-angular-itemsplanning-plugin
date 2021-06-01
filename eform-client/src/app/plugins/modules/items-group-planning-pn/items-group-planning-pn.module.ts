@@ -1,41 +1,42 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {SharedPnModule} from '../shared/shared-pn.module';
-import {MDBBootstrapModule} from 'angular-bootstrap-md';
-import {TranslateModule} from '@ngx-translate/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgSelectModule} from '@ng-select/ng-select';
-import {EformSharedModule} from '../../../common/modules/eform-shared/eform-shared.module';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {ItemsGroupPlanningPnLayoutComponent} from './layouts';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SharedPnModule } from '../shared/shared-pn.module';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { EformSharedModule } from 'src/app/common/modules/eform-shared/eform-shared.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ItemsGroupPlanningPnLayoutComponent } from './layouts';
+import { RouterModule } from '@angular/router';
+import { ItemsGroupPlanningPnRouting } from './items-group-planning-pn.routing.module';
 import {
+  ItemsGroupPlanningPnListsService,
+  ItemsGroupPlanningPnSettingsService,
+  ItemsGroupPlanningPnReportsService,
+  ItemsGroupPlanningPnCasesService,
+  ItemsGroupPlanningPnUploadedDataService,
+} from './services';
+import { FileUploadModule } from 'ng2-file-upload';
+import { OwlDateTimeModule } from '@danielmoncada/angular-datetime-picker';
+import {
+  ItemCaseUploadedDataComponent,
   ItemListCaseColumnsModalComponent,
+  ItemsGroupPlanningPnUnitImportComponent,
+  ItemsGroupPlanningSettingsComponent,
   ItemsListCreateComponent,
   ListCasePageComponent,
   ListCaseResultPageComponent,
   ListDeleteComponent,
   ListEditComponent,
   ListsPageComponent,
-  ItemCaseUploadedDataComponent,
-  UploadedDataPdfComponent,
-  UploadedDataDeleteComponent,
-  ItemsGroupPlanningPnUnitImportComponent
-} from './components/items-lists';
-import {ItemsGroupPlanningSettingsComponent} from './components/items-group-plannings-setting';
-import {RouterModule} from '@angular/router';
-import {ItemsGroupPlanningPnRouting} from './items-group-planning-pn.routing.module';
-import {ItemsGroupPlanningPnListsService,
-  ItemsGroupPlanningPnSettingsService,
-  ItemsGroupPlanningPnReportsService,
-  ItemsGroupPlanningPnCasesService,
-  ItemsGroupPlanningPnUploadedDataService} from './services';
-import {
   ReportGeneratorContainerComponent,
   ReportGeneratorFormComponent,
-  ReportPreviewTableComponent
-} from './components/reports';
-import {FileUploadModule} from 'ng2-file-upload';
-import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
+  ReportPreviewTableComponent,
+  UploadedDataDeleteComponent,
+  UploadedDataPdfComponent,
+} from './components';
+import { itemsGroupPlanningStoreProviders } from './store-providers.config';
 
 @NgModule({
   imports: [
@@ -51,7 +52,7 @@ import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
     ItemsGroupPlanningPnRouting,
     ReactiveFormsModule,
     FileUploadModule,
-    OwlDateTimeModule
+    OwlDateTimeModule,
   ],
   declarations: [
     ItemsGroupPlanningPnLayoutComponent,
@@ -69,15 +70,15 @@ import {OwlDateTimeModule} from 'ng-pick-datetime-ex';
     ItemCaseUploadedDataComponent,
     UploadedDataPdfComponent,
     UploadedDataDeleteComponent,
-    ItemsGroupPlanningPnUnitImportComponent
+    ItemsGroupPlanningPnUnitImportComponent,
   ],
   providers: [
     ItemsGroupPlanningPnSettingsService,
     ItemsGroupPlanningPnListsService,
     ItemsGroupPlanningPnReportsService,
     ItemsGroupPlanningPnCasesService,
-    ItemsGroupPlanningPnUploadedDataService
-  ]
+    ItemsGroupPlanningPnUploadedDataService,
+    ...itemsGroupPlanningStoreProviders,
+  ],
 })
-
-export class ItemsGroupPlanningPnModule { }
+export class ItemsGroupPlanningPnModule {}

@@ -1,105 +1,118 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {PageSettingsModel} from 'src/app/common/models/settings';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ItemsListPnModel, ItemsListsPnModel } from '../../../models';
+import { ItemsGroupPlanningPnClaims } from '../../../enums';
+import { TableHeaderElementModel } from 'src/app/common/models';
+import { AuthStateService } from 'src/app/common/store';
+import { ItemListStateService } from '../../items-lists/store';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
-import {SharedPnService} from 'src/app/plugins/modules/shared/services';
-import {ItemsListPnModel, ItemsListPnRequestModel, ItemsListsPnModel} from '../../../models/list';
-import {ItemsGroupPlanningPnListsService} from '../../../services';
-import {PluginClaimsHelper} from '../../../../../../common/helpers';
-import {ItemsGroupPlanningPnClaims} from '../../../enums';
-
+@AutoUnsubscribe()
 @Component({
   selector: 'app-items-group-planning-pn-lists-page',
   templateUrl: './lists-page.component.html',
-  styleUrls: ['./lists-page.component.scss']
+  styleUrls: ['./lists-page.component.scss'],
 })
-export class ListsPageComponent implements OnInit {
-  @ViewChild('createListModal', {static: false}) createListModal;
-  @ViewChild('editListModal', {static: false}) editListModal;
-  @ViewChild('deleteListModal', {static: false}) deleteListModal;
-  @ViewChild('modalCasesColumns', {static: false}) modalCasesColumnsModal;
+export class ListsPageComponent implements OnInit, OnDestroy {
+  @ViewChild('createListModal', { static: false }) createListModal;
+  @ViewChild('editListModal', { static: false }) editListModal;
+  @ViewChild('deleteListModal', { static: false }) deleteListModal;
+  @ViewChild('modalCasesColumns', { static: false }) modalCasesColumnsModal;
 
-  localPageSettings: PageSettingsModel = new PageSettingsModel();
   listsModel: ItemsListsPnModel = new ItemsListsPnModel();
-  listRequestModel: ItemsListPnRequestModel = new ItemsListPnRequestModel();
 
-  constructor(private sharedPnService: SharedPnService,
-              private itemsGroupPlanningPnListsService: ItemsGroupPlanningPnListsService) { }
+  constructor(
+    public authStateService: AuthStateService,
+    public itemListStateService: ItemListStateService
+  ) {}
 
-  get pluginClaimsHelper() {
-    return PluginClaimsHelper;
-  }
+  tableHeaders: TableHeaderElementModel[] = [
+    { name: 'Id', elementId: 'idTableHeader', sortable: true },
+    { name: 'Name', elementId: 'nameTableHeader', sortable: true },
+    {
+      name: 'Description',
+      elementId: 'descriptionTableHeader',
+      sortable: true,
+    },
+    {
+      name: 'RepeatEvery',
+      elementId: 'repeatEveryTableHeader',
+      sortable: true,
+      visibleName: 'Repeat every',
+    },
+    {
+      name: 'RepeatType',
+      elementId: 'repeatTypeTableHeader',
+      sortable: true,
+      visibleName: 'Repeat type',
+    },
+    {
+      name: 'DayOfWeek',
+      elementId: 'dayOfWeekTableHeader',
+      sortable: true,
+      visibleName: 'Day of week',
+    },
+    {
+      name: 'DayOfMonth',
+      elementId: 'dayOfMonthTableHeader',
+      sortable: true,
+      visibleName: 'Day of month',
+    },
+    {
+      name: 'RepeatUntil',
+      elementId: 'repeatUntilTableHeader',
+      sortable: true,
+      visibleName: 'Repeat until',
+    },
+    { name: 'Actions', elementId: '', sortable: false },
+  ];
 
   get itemsPlanningPnClaims() {
     return ItemsGroupPlanningPnClaims;
   }
 
   ngOnInit() {
-    this.getLocalPageSettings();
-  }
-
-  getLocalPageSettings() {
-    this.localPageSettings = this.sharedPnService.getLocalPageSettings
-    ('itemsGroupPlanningPnSettings', 'ItemLists').settings;
     this.getAllInitialData();
   }
 
-  updateLocalPageSettings() {
-    this.sharedPnService.updateLocalPageSettings
-    ('itemsGroupPlanningPnSettings', this.localPageSettings, 'ItemLists');
-    this.getAllLists();
-  }
+  ngOnDestroy() {}
 
   getAllInitialData() {
     this.getAllLists();
   }
 
   getAllLists() {
-    this.listRequestModel.isSortDsc = this.localPageSettings.isSortDsc;
-    this.listRequestModel.sort = this.localPageSettings.sort;
-    this.listRequestModel.pageSize = this.localPageSettings.pageSize;
-    this.itemsGroupPlanningPnListsService.getAllLists(this.listRequestModel).subscribe((data) => {
+    this.itemListStateService.getAllLists().subscribe((data) => {
       if (data && data.success) {
         this.listsModel = data.model;
       }
     });
-  }
-  showEditListModal(list: ItemsListPnModel) {
-    this.editListModal.show(list);
   }
 
   showDeleteListModal(list: ItemsListPnModel) {
     this.deleteListModal.show(list);
   }
 
-  showCreateListModal() {
-    this.createListModal.show();
-  }
-
-
   openEditColumnsModal(templateId: number) {
     this.modalCasesColumnsModal.show(templateId);
   }
 
-  sortTable(sort: string) {
-    if (this.localPageSettings.sort === sort) {
-      this.localPageSettings.isSortDsc = !this.localPageSettings.isSortDsc;
-    } else {
-      this.localPageSettings.isSortDsc = false;
-      this.localPageSettings.sort = sort;
-    }
-    this.updateLocalPageSettings();
+  onSortTable(sort: string) {
+    this.itemListStateService.onSortTable(sort);
+    this.getAllLists();
   }
 
-  changePage(e: any) {
-    if (e || e === 0) {
-      this.listRequestModel.offset = e;
-      if (e === 0) {
-        this.listRequestModel.pageIndex = 0;
-      } else {
-        this.listRequestModel.pageIndex
-          = Math.floor(e / this.listRequestModel.pageSize);
-      }
-      this.getAllLists();
-    }
+  changePage(offset: number) {
+    this.itemListStateService.changePage(offset);
+    this.getAllLists();
+  }
+
+  onListDeleted() {
+    this.itemListStateService.onDelete();
+    this.getAllLists();
+  }
+
+  onPageSizeChanged(pageSize: number) {
+    this.itemListStateService.updatePageSize(pageSize);
+    this.getAllLists();
   }
 }
