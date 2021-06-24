@@ -219,6 +219,7 @@ namespace ItemsGroupPlanning.Pn.Services
             await using MicrotingDbContext microtingDbContext = core.DbContextHelper.GetDbContext();
             var locale = await _userService.GetCurrentUserLocale();
             Language language = microtingDbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+
             List<FieldDto> allFields = await _core.GetCore().Result.Advanced_TemplateFieldReadAll(itemList.RelatedEFormId, language);
 
             int i = 0;
