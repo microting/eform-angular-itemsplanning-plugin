@@ -1,5 +1,3 @@
-using eFormCore;
-using Microting.eForm.Infrastructure.Data.Entities;
 
 namespace ItemsGroupPlanning.Pn.Services
 {
@@ -16,17 +14,17 @@ namespace ItemsGroupPlanning.Pn.Services
     using Microsoft.EntityFrameworkCore;
     using Microting.eForm.Infrastructure.Constants;
     using Microting.eFormApi.BasePn.Abstractions;
-    using Microting.eFormApi.BasePn.Infrastructure.Extensions;
     using Microting.eFormApi.BasePn.Infrastructure.Models.API;
     using Microting.ItemsGroupPlanningBase.Infrastructure.Data;
     using Microting.ItemsGroupPlanningBase.Infrastructure.Data.Entities;
     using Newtonsoft.Json.Linq;
+    using Microting.eForm.Infrastructure.Data.Entities;
+    using Microting.eFormApi.BasePn.Infrastructure.Helpers;
 
     public class ItemsListService : IItemsListService
     {
         private readonly ItemsGroupPlanningPnDbContext _dbContext;
         private readonly IItemsPlanningLocalizationService _itemsPlanningLocalizationService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
         private readonly IEFormCoreService _coreHelper;
 
@@ -34,11 +32,10 @@ namespace ItemsGroupPlanning.Pn.Services
             ItemsGroupPlanningPnDbContext dbContext,
             IItemsPlanningLocalizationService itemsPlanningLocalizationService,
             IUserService userService,
-            IHttpContextAccessor httpContextAccessor, IEFormCoreService coreHelper)
+            IEFormCoreService coreHelper)
         {
             _dbContext = dbContext;
             _itemsPlanningLocalizationService = itemsPlanningLocalizationService;
-            _httpContextAccessor = httpContextAccessor;
             _coreHelper = coreHelper;
             _userService = userService;
         }
@@ -47,56 +44,41 @@ namespace ItemsGroupPlanning.Pn.Services
         {
             try
             {
-                ItemsListsModel listsModel = new ItemsListsModel();
+                var listsModel = new ItemsListsModel();
 
-                IQueryable<ItemList> itemListsQuery = _dbContext.ItemLists.AsQueryable();
-                if (!string.IsNullOrEmpty(pnRequestModel.Sort))
-                {
-                    if (pnRequestModel.IsSortDsc)
-                    {
-                        itemListsQuery = itemListsQuery
-                            .CustomOrderByDescending(pnRequestModel.Sort);
-                    }
-                    else
-                    {
-                        itemListsQuery = itemListsQuery
-                            .CustomOrderBy(pnRequestModel.Sort);
-                    }
-                }
-                else
-                {
-                    itemListsQuery = _dbContext.ItemLists
-                        .OrderBy(x => x.Id);
-                }
+                var itemListsQuery = _dbContext.ItemLists
+                        .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                        .AsQueryable();
+
+                itemListsQuery =
+                    QueryHelper.AddSortToQuery(itemListsQuery, pnRequestModel.Sort, pnRequestModel.IsSortDsc);
 
                 if (!string.IsNullOrEmpty(pnRequestModel.NameFilter))
                 {
                     itemListsQuery = itemListsQuery.Where(x => x.Name.Contains(pnRequestModel.NameFilter));
                 }
 
+                listsModel.Total = await itemListsQuery.Select(x => x.Id).CountAsync();
+
                 itemListsQuery
                     = itemListsQuery
-                        .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
                         .Skip(pnRequestModel.Offset)
                         .Take(pnRequestModel.PageSize);
 
-                List<ItemsListPnModel> lists = await itemListsQuery.Select(x => new ItemsListPnModel()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
-                    RepeatEvery = x.RepeatEvery,
-                    RepeatType = x.RepeatType,
-                    RepeatUntil = x.RepeatUntil,
-                    DayOfWeek = x.DayOfWeek,
-                    DayOfMonth = x.DayOfMonth,
-                    RelatedEFormId = x.RelatedEFormId,
-                    RelatedEFormName = x.RelatedEFormName,
-                }).ToListAsync();
-
-                listsModel.Total = await _dbContext.ItemLists.CountAsync(x =>
-                    x.WorkflowState != Constants.WorkflowStates.Removed);
-                listsModel.Lists = lists;
+                listsModel.Lists = await itemListsQuery
+                    .Select(x => new ItemsListPnModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        RepeatEvery = x.RepeatEvery,
+                        RepeatType = x.RepeatType,
+                        RepeatUntil = x.RepeatUntil,
+                        DayOfWeek = x.DayOfWeek,
+                        DayOfMonth = x.DayOfMonth,
+                        RelatedEFormId = x.RelatedEFormId,
+                        RelatedEFormName = x.RelatedEFormName,
+                    }).ToListAsync();
 
                 return new OperationDataResult<ItemsListsModel>(true, listsModel);
             }
@@ -116,46 +98,39 @@ namespace ItemsGroupPlanning.Pn.Services
                 await using var dbContext = core.DbContextHelper.GetDbContext();
 
                 var locale = await _userService.GetCurrentUserLocale();
-                Language language = dbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
+                var language = dbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
                 var template = await core.TemplateItemRead(model.RelatedEFormId, language);
                 var itemsList = new ItemList
                 {
                     Name = model.Name,
                     Description = model.Description,
-                    CreatedByUserId = UserId,
-                    CreatedAt = DateTime.UtcNow,
+                    CreatedByUserId = _userService.UserId,
                     RepeatEvery = model.RepeatEvery,
                     RepeatUntil = model.RepeatUntil,
                     RepeatType = model.RepeatType,
                     DayOfWeek = model.DayOfWeek,
                     DayOfMonth = model.DayOfMonth,
                     Enabled = true,
-                    Items = new List<Item>(),
                     RelatedEFormId = model.RelatedEFormId,
                     RelatedEFormName = template?.Label
                 };
 
                 await itemsList.Create(_dbContext);
 
-                foreach (var itemModel in model.Items)
+                foreach (var item in model.Items.Select(itemModel => new Item()
                 {
-                    var item = new Item()
-                    {
-                        LocationCode = itemModel.LocationCode,
-                        ItemNumber = itemModel.ItemNumber,
-                        Description = itemModel.Description,
-                        Name = itemModel.Name,
-                        Version = 1,
-                        WorkflowState = Constants.WorkflowStates.Created,
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow,
-                        Enabled = true,
-                        BuildYear = itemModel.BuildYear,
-                        Type = itemModel.Type,
-                        ItemListId = itemsList.Id,
-                        CreatedByUserId = UserId,
-                    };
-                    await item.Save(_dbContext);
+                    LocationCode = itemModel.LocationCode,
+                    ItemNumber = itemModel.ItemNumber,
+                    Description = itemModel.Description,
+                    Name = itemModel.Name,
+                    Enabled = true,
+                    BuildYear = itemModel.BuildYear,
+                    Type = itemModel.Type,
+                    ItemListId = itemsList.Id,
+                    CreatedByUserId = _userService.UserId,
+                }))
+                {
+                    await item.Create(_dbContext);
                 }
 
                 return new OperationResult(
@@ -174,8 +149,9 @@ namespace ItemsGroupPlanning.Pn.Services
             try
             {
                 var itemList = await _dbContext.ItemLists
-                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed && x.Id == listId)
-                    .Select(x => new ItemsListPnModel()
+                    .Where(x => x.WorkflowState != Constants.WorkflowStates.Removed)
+                    .Where(x => x.Id == listId)
+                    .Select(x => new ItemsListPnModel
                     {
                         Id = x.Id,
                         RepeatUntil = x.RepeatUntil,
@@ -251,55 +227,59 @@ namespace ItemsGroupPlanning.Pn.Services
 
                 var locale = await _userService.GetCurrentUserLocale();
                 Language language = dbContext.Languages.Single(x => x.LanguageCode.ToLower() == locale.ToLower());
-                var template = await _coreHelper.GetCore().Result.TemplateItemRead(updateModel.RelatedEFormId, language);
-                var itemsList = new ItemList
+                var template = await core.TemplateItemRead(updateModel.RelatedEFormId, language);
+                
+                var itemsList = await _dbContext.ItemLists.FirstOrDefaultAsync(x => x.Id == updateModel.Id);
+                if (itemsList == null)
                 {
-                    Id = updateModel.Id,
-                    RepeatUntil = updateModel.RepeatUntil,
-                    RepeatEvery = updateModel.RepeatEvery,
-                    RepeatType = updateModel.RepeatType,
-                    DayOfWeek = updateModel.DayOfWeek,
-                    DayOfMonth = updateModel.DayOfMonth,
-                    Description = updateModel.Description,
-                    Name = updateModel.Name,
-                    UpdatedAt = DateTime.UtcNow,
-                    UpdatedByUserId = UserId,
-                    RelatedEFormId = updateModel.RelatedEFormId,
-                    RelatedEFormName = template?.Label,
-                    LabelEnabled = updateModel.LabelEnabled,
-                    DescriptionEnabled = updateModel.DescriptionEnabled,
-                    DeployedAtEnabled = updateModel.DeployedAtEnabled,
-                    DoneAtEnabled = updateModel.DoneAtEnabled,
-                    DoneByUserNameEnabled = updateModel.DoneByUserNameEnabled,
-                    UploadedDataEnabled = updateModel.UploadedDataEnabled,
-                    ItemNumberEnabled = updateModel.ItemNumberEnabled,
-                    LocationCodeEnabled = updateModel.LocationCodeEnabled,
-                    BuildYearEnabled = updateModel.BuildYearEnabled,
-                    TypeEnabled = updateModel.TypeEnabled,
-                    NumberOfImagesEnabled = updateModel.NumberOfImagesEnabled,
-                    SdkFieldId1 = updateModel.SdkFieldId1,
-                    SdkFieldId2 = updateModel.SdkFieldId2,
-                    SdkFieldId3 = updateModel.SdkFieldId3,
-                    SdkFieldId4 = updateModel.SdkFieldId4,
-                    SdkFieldId5 = updateModel.SdkFieldId5,
-                    SdkFieldId6 = updateModel.SdkFieldId6,
-                    SdkFieldId7 = updateModel.SdkFieldId7,
-                    SdkFieldId8 = updateModel.SdkFieldId8,
-                    SdkFieldId9 = updateModel.SdkFieldId9,
-                    SdkFieldId10 = updateModel.SdkFieldId10,
-                    SdkFieldEnabled1 = updateModel.SdkFieldId1 != null,
-                    SdkFieldEnabled2 = updateModel.SdkFieldId2 != null,
-                    SdkFieldEnabled3 = updateModel.SdkFieldId3 != null,
-                    SdkFieldEnabled4 = updateModel.SdkFieldId4 != null,
-                    SdkFieldEnabled5 = updateModel.SdkFieldId5 != null,
-                    SdkFieldEnabled6 = updateModel.SdkFieldId6 != null,
-                    SdkFieldEnabled7 = updateModel.SdkFieldId7 != null,
-                    SdkFieldEnabled8 = updateModel.SdkFieldId8 != null,
-                    SdkFieldEnabled9 = updateModel.SdkFieldId9 != null,
-                    SdkFieldEnabled10 = updateModel.SdkFieldId10 != null,
-                    LastExecutedTime = updateModel.LastExecutedTime
+                    return new OperationResult(
+                        false,
+                        _itemsPlanningLocalizationService.GetString("ItemListNotFound"));
+                }
 
-                };
+                itemsList.RepeatUntil = updateModel.RepeatUntil;
+                itemsList.RepeatEvery = updateModel.RepeatEvery;
+                itemsList.RepeatType = updateModel.RepeatType;
+                itemsList.DayOfWeek = updateModel.DayOfWeek;
+                itemsList.DayOfMonth = updateModel.DayOfMonth;
+                itemsList.Description = updateModel.Description;
+                itemsList.Name = updateModel.Name;
+                itemsList.UpdatedByUserId = _userService.UserId;
+                itemsList.RelatedEFormId = updateModel.RelatedEFormId;
+                itemsList.RelatedEFormName = template?.Label;
+                itemsList.LabelEnabled = updateModel.LabelEnabled;
+                itemsList.DescriptionEnabled = updateModel.DescriptionEnabled;
+                itemsList.DeployedAtEnabled = updateModel.DeployedAtEnabled;
+                itemsList.DoneAtEnabled = updateModel.DoneAtEnabled;
+                itemsList.DoneByUserNameEnabled = updateModel.DoneByUserNameEnabled;
+                itemsList.UploadedDataEnabled = updateModel.UploadedDataEnabled;
+                itemsList.ItemNumberEnabled = updateModel.ItemNumberEnabled;
+                itemsList.LocationCodeEnabled = updateModel.LocationCodeEnabled;
+                itemsList.BuildYearEnabled = updateModel.BuildYearEnabled;
+                itemsList.TypeEnabled = updateModel.TypeEnabled;
+                itemsList.NumberOfImagesEnabled = updateModel.NumberOfImagesEnabled;
+                itemsList.SdkFieldId1 = updateModel.SdkFieldId1;
+                itemsList.SdkFieldId2 = updateModel.SdkFieldId2;
+                itemsList.SdkFieldId3 = updateModel.SdkFieldId3;
+                itemsList.SdkFieldId4 = updateModel.SdkFieldId4;
+                itemsList.SdkFieldId5 = updateModel.SdkFieldId5;
+                itemsList.SdkFieldId6 = updateModel.SdkFieldId6;
+                itemsList.SdkFieldId7 = updateModel.SdkFieldId7;
+                itemsList.SdkFieldId8 = updateModel.SdkFieldId8;
+                itemsList.SdkFieldId9 = updateModel.SdkFieldId9;
+                itemsList.SdkFieldId10 = updateModel.SdkFieldId10;
+                itemsList.SdkFieldEnabled1 = updateModel.SdkFieldId1 != null;
+                itemsList.SdkFieldEnabled2 = updateModel.SdkFieldId2 != null;
+                itemsList.SdkFieldEnabled3 = updateModel.SdkFieldId3 != null;
+                itemsList.SdkFieldEnabled4 = updateModel.SdkFieldId4 != null;
+                itemsList.SdkFieldEnabled5 = updateModel.SdkFieldId5 != null;
+                itemsList.SdkFieldEnabled6 = updateModel.SdkFieldId6 != null;
+                itemsList.SdkFieldEnabled7 = updateModel.SdkFieldId7 != null;
+                itemsList.SdkFieldEnabled8 = updateModel.SdkFieldId8 != null;
+                itemsList.SdkFieldEnabled9 = updateModel.SdkFieldId9 != null;
+                itemsList.SdkFieldEnabled10 = updateModel.SdkFieldId10 != null;
+                itemsList.LastExecutedTime = updateModel.LastExecutedTime;
+
                 await itemsList.Update(_dbContext);
 
                 // update current items
@@ -316,8 +296,7 @@ namespace ItemsGroupPlanning.Pn.Services
                         item.ItemNumber = itemModel.ItemNumber;
                         item.LocationCode = itemModel.LocationCode;
                         item.Name = itemModel.Name;
-                        item.UpdatedAt = DateTime.UtcNow;
-                        item.UpdatedByUserId = UserId;
+                        item.UpdatedByUserId = _userService.UserId;
                         item.BuildYear = itemModel.BuildYear;
                         item.Type = itemModel.Type;
                         await item.Update(_dbContext);
@@ -347,17 +326,13 @@ namespace ItemsGroupPlanning.Pn.Services
                             ItemNumber = itemModel.ItemNumber,
                             Description = itemModel.Description,
                             Name = itemModel.Name,
-                            Version = 1,
-                            WorkflowState = Constants.WorkflowStates.Created,
-                            CreatedAt = DateTime.UtcNow,
-                            CreatedByUserId = UserId,
-                            UpdatedAt = DateTime.UtcNow,
+                            CreatedByUserId = _userService.UserId,
                             Enabled = true,
                             BuildYear = itemModel.BuildYear,
                             Type = itemModel.Type,
                             ItemListId = itemsList.Id,
                         };
-                        await newItem.Save(_dbContext);
+                        await newItem.Create(_dbContext);
                     }
                 }
 
@@ -378,11 +353,13 @@ namespace ItemsGroupPlanning.Pn.Services
         {
             try
             {
-//                Debugger.Break();
-                var itemsList = new ItemList
+                var itemsList = await _dbContext.ItemLists.FirstOrDefaultAsync(x => x.Id == id);
+                if (itemsList == null)
                 {
-                    Id = id
-                };
+                    return new OperationResult(
+                        false,
+                        _itemsPlanningLocalizationService.GetString("ItemListNotFound"));
+                }
                 await itemsList.Delete(_dbContext);
 
                 return new OperationResult(
@@ -397,8 +374,6 @@ namespace ItemsGroupPlanning.Pn.Services
                     _itemsPlanningLocalizationService.GetString("ErrorWhileRemovingList"));
             }
         }
-
-
 
         private Item FindItem(bool numberExists, int numberColumn, bool itemNameExists,
             int itemNameColumn, JToken headers, JToken itemObj)
@@ -454,7 +429,7 @@ namespace ItemsGroupPlanning.Pn.Services
 
 
                                 };
-                               await newItem.Save(_dbContext);
+                               await newItem.Create(_dbContext);
 
                             }
                             else
@@ -487,15 +462,6 @@ namespace ItemsGroupPlanning.Pn.Services
                 _coreHelper.LogException(e.Message);
                 return new OperationResult(false,
                     _itemsPlanningLocalizationService.GetString("ErrorWhileImportingItems"));
-            }
-        }
-
-        public int UserId
-        {
-            get
-            {
-                var value = _httpContextAccessor?.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-                return value == null ? 0 : int.Parse(value);
             }
         }
     }

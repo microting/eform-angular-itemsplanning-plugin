@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System.Linq;
+
 namespace ItemsGroupPlanning.Pn.Services
 {
     using System;
@@ -34,8 +36,7 @@ namespace ItemsGroupPlanning.Pn.Services
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
     using Microting.eFormApi.BasePn.Infrastructure.Helpers;
-    using OfficeOpenXml;
-    using OfficeOpenXml.Style;
+    using ClosedXML.Excel;
 
     public class ExcelService : IExcelService
     {
@@ -54,91 +55,88 @@ namespace ItemsGroupPlanning.Pn.Services
 
         public bool WriteRecordsExportModelsToExcelFile(ReportModel reportModel, GenerateReportModel generateReportModel, string destFile)
         {
-            var file = new FileInfo(destFile);
-            using (var package = new ExcelPackage(file))
-            {
-                var worksheet = package.Workbook.Worksheets[1];
+            var workbook = new XLWorkbook(destFile);
+                var worksheet = workbook.Worksheets.First();
                 // Fill base info
                 var nameTitle = _itemsPlanningLocalizationService.GetString("Name");
-                worksheet.Cells[2, 2].Value = nameTitle;
-                worksheet.Cells[2, 3].Value = reportModel.Name;
+                worksheet.Cell(2, 2).Value = nameTitle;
+                worksheet.Cell(2, 3).Value = reportModel.Name;
 
                 var descriptionTitle = _itemsPlanningLocalizationService.GetString("Description");
-                worksheet.Cells[3, 2].Value = descriptionTitle;
-                worksheet.Cells[3, 3].Value = reportModel.Description;   
+                worksheet.Cell(3, 2).Value = descriptionTitle;
+                worksheet.Cell(3, 3).Value = reportModel.Description;
 
                 var periodFromTitle = _itemsPlanningLocalizationService.GetString("DateFrom");
-                worksheet.Cells[5, 2].Value = periodFromTitle;
-                worksheet.Cells[5, 3].Value = reportModel.DateFrom?.ToString("MM/dd/yyyy HH:mm");
+                worksheet.Cell(5, 2).Value = periodFromTitle;
+                worksheet.Cell(5, 3).Value = reportModel.DateFrom?.ToString("MM/dd/yyyy HH:mm");
 
                 var periodToTitle = _itemsPlanningLocalizationService.GetString("DateTo");
-                worksheet.Cells[6, 2].Value = periodToTitle;
-                worksheet.Cells[6, 3].Value = reportModel.DateTo?.ToString("MM/dd/yyyy HH:mm");
+                worksheet.Cell(6, 2).Value = periodToTitle;
+                worksheet.Cell(6, 3).Value = reportModel.DateTo?.ToString("MM/dd/yyyy HH:mm");
 
                 var col = 4;
                 var row = 8;
 
                 // Fill dates headers
                 var idName = _itemsPlanningLocalizationService.GetString("Id");
-                worksheet.Cells[8, 3].Value = idName;
+                worksheet.Cell(8, 3).Value = idName;
                 foreach (var id in reportModel.Ids)
                 {
-                    worksheet.Cells[row, col].Value = id;
-                    worksheet.Cells[row, col].Style.Font.Bold = true;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col].AutoFitColumns();
+                    worksheet.Cell(row, col).Value = id;
+                    worksheet.Cell(row, col).Style.Font.Bold = true;
+                    worksheet.Cell(row, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    // TODO fix worksheet.Cell(row, col).AutoFitColumns();
                     col++;
                 }
 
                 row += 1;
                 col = 4;
                 var deployedAt = _itemsPlanningLocalizationService.GetString("Deployed at");
-                worksheet.Cells[9, 3].Value = deployedAt;
+                worksheet.Cell(9, 3).Value = deployedAt;
                 foreach (var date in reportModel.Dates)
                 {
-                    worksheet.Cells[row, col].Value = date?.ToString("MM/dd/yyyy");
-                    worksheet.Cells[row, col].Style.Font.Bold = true;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col].AutoFitColumns();
+                    worksheet.Cell(row, col).Value = date?.ToString("MM/dd/yyyy");
+                    worksheet.Cell(row, col).Style.Font.Bold = true;
+                    worksheet.Cell(row, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    // TODO fix worksheet.Cell(row, col).AutoFitColumns();
                     col++;
                 }
 
                 row += 1;
                 col = 4;
                 var doneAt = _itemsPlanningLocalizationService.GetString("Date of doing");
-                worksheet.Cells[10, 3].Value = doneAt;
+                worksheet.Cell(10, 3).Value = doneAt;
                 foreach (var date in reportModel.DatesDoneAt)
                 {
-                    worksheet.Cells[row, col].Value = date?.ToString("MM/dd/yyyy");
-                    worksheet.Cells[row, col].Style.Font.Bold = true;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col].AutoFitColumns();
+                    worksheet.Cell(row, col).Value = date?.ToString("MM/dd/yyyy");
+                    worksheet.Cell(row, col).Style.Font.Bold = true;
+                    worksheet.Cell(row, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    // TODO fix worksheet.Cell(row, col).AutoFitColumns();
                     col++;
                 }
 
                 row += 1;
                 col = 4;
                 var doneBy = _itemsPlanningLocalizationService.GetString("Done by");
-                worksheet.Cells[11, 3].Value = doneBy;
+                worksheet.Cell(11, 3).Value = doneBy;
                 foreach (var name in reportModel.DoneBy)
                 {
-                    worksheet.Cells[row, col].Value = name;
-                    worksheet.Cells[row, col].Style.Font.Bold = true;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col].AutoFitColumns();
+                    worksheet.Cell(row, col).Value = name;
+                    worksheet.Cell(row, col).Style.Font.Bold = true;
+                    worksheet.Cell(row, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    // TODO fix worksheet.Cell(row, col).AutoFitColumns();
                     col++;
                 }
                 col = 4;
-
-                worksheet.Cells[row, 2, row, col - 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Range(row, 2, row, col - 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
                 row++;
 
                 // Fill form fields and options with data
                 foreach (var field in reportModel.FormFields)
                 {
-                    worksheet.Cells[row, 2].Value = field.Label;
-                    worksheet.Cells[row, 2, row + field.Options.Count - 1, 2].Merge = true;
+                    worksheet.Cell(row, 2).Value = field.Label;
+                    //worksheet.Cells(row, 2, row + field.Options.Count - 1, 2);
 
                     var fRow = row;
 
@@ -150,56 +148,53 @@ namespace ItemsGroupPlanning.Pn.Services
                         {
                             if (value?.GetType() == typeof(decimal))
                             {
-                                worksheet.Cells[row, col].Style.Numberformat.Format = "0.00";
+                                worksheet.Cell(row, col).Style.NumberFormat.Format = "0.00";
                             }
 
-                            worksheet.Cells[row, col].Value = value;
-                            worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                            worksheet.Cell(row, col).Value = value;
+                            worksheet.Cell(row, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
                             col++;
                         }
 
-                        worksheet.Cells[row, 3].Value = option.Label;
-                        worksheet.Cells[row, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cell(row, 3).Value = option.Label;
+                        worksheet.Cell(row, 3).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
                         row++;
                     }
 
-                    worksheet.Cells[fRow, 2, row - 1, col - 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Range(fRow, 2, row - 1, col - 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                 }
 
-                package.Save(); //Save the workbook.
-            }
+                workbook.Save();
             return true;
         }
 
         public bool WriteTableToExcel(string name, string description, ItemListPnCaseResultListModel reportModel,
             ItemListCasesPnRequestModel requestModel, string destFile)
         {
-            var file = new FileInfo(destFile);
-            using (var package = new ExcelPackage(file))
-            {
-                var worksheet = package.Workbook.Worksheets[1];
+            var workbook = new XLWorkbook(destFile);
+            var worksheet = workbook.Worksheets.First();
                 // Fill base info
                 var nameTitle = _itemsPlanningLocalizationService.GetString("Name");
-                worksheet.Cells[2, 2].Value = nameTitle;
-                worksheet.Cells[2, 3].Value = name;
+                worksheet.Cell(2, 2).Value = nameTitle;
+                worksheet.Cell(2, 3).Value = name;
 
                 var descriptionTitle = _itemsPlanningLocalizationService.GetString("Description");
-                worksheet.Cells[3, 2].Value = descriptionTitle;
-                worksheet.Cells[3, 3].Value = description;
+                worksheet.Cell(3, 2).Value = descriptionTitle;
+                worksheet.Cell(3, 3).Value = description;
 
                 var periodFromTitle = _itemsPlanningLocalizationService.GetString("DateFrom");
-                worksheet.Cells[5, 2].Value = periodFromTitle;
-                worksheet.Cells[5, 3].Value = requestModel.DateFrom?.ToString("MM/dd/yyyy");
+                worksheet.Cell(5, 2).Value = periodFromTitle;
+                worksheet.Cell(5, 3).Value = requestModel.DateFrom?.ToString("MM/dd/yyyy");
 
                 var periodToTitle = _itemsPlanningLocalizationService.GetString("DateTo");
-                worksheet.Cells[6, 2].Value = periodToTitle;
-                worksheet.Cells[6, 3].Value = requestModel.DateTo?.ToString("MM/dd/yyyy");
+                worksheet.Cell(6, 2).Value = periodToTitle;
+                worksheet.Cell(6, 3).Value = requestModel.DateTo?.ToString("MM/dd/yyyy");
 
                 var col = 2;
                 var row = 8;
-                
+
                 // Fill headers
 
                 worksheet = SetHeaders(worksheet, row, col, reportModel);
@@ -208,17 +203,16 @@ namespace ItemsGroupPlanning.Pn.Services
 
                 worksheet = SetRows(worksheet, row, col, reportModel);
 
-                package.Save(); //Save the workbook.
-            }
+                workbook.Save();
 
             return true;
         }
 
-        private ExcelWorksheet SetHeaders(ExcelWorksheet worksheet, int row, int col, ItemListPnCaseResultListModel reportModel)
+        private IXLWorksheet SetHeaders(IXLWorksheet worksheet, int row, int col, ItemListPnCaseResultListModel reportModel)
         {
             worksheet = SetRow(worksheet, row, col, true, true, false, _itemsPlanningLocalizationService.GetString("Id"));
             col += 1;
-            
+
             if (reportModel.DeployedAtEnabled) {
                 worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Deployed at"));
                 col += 1;
@@ -255,7 +249,7 @@ namespace ItemsGroupPlanning.Pn.Services
                 worksheet = SetRow(worksheet, row, col, true, true, true, _itemsPlanningLocalizationService.GetString("Type"));
                 col += 1;
             }
-            
+
             if (reportModel.FieldEnabled1) {
                 worksheet = SetRow(worksheet, row, col, true, true, true, reportModel.FieldName1);
                 col += 1;
@@ -304,7 +298,7 @@ namespace ItemsGroupPlanning.Pn.Services
             return worksheet;
         }
 
-        private ExcelWorksheet SetRows(ExcelWorksheet worksheet, int row, int col, ItemListPnCaseResultListModel reportModel)
+        private IXLWorksheet SetRows(IXLWorksheet worksheet, int row, int col, ItemListPnCaseResultListModel reportModel)
         {
             int startColNo = col;
             foreach (ItemsListPnCaseResultModel itemsListPnCaseResultModel in reportModel.Items)
@@ -437,27 +431,27 @@ namespace ItemsGroupPlanning.Pn.Services
             }
             return worksheet;
         }
-        
-        private ExcelWorksheet SetRow(ExcelWorksheet worksheet, int row, int col, bool boldText, bool thinBorder, bool
+
+        private IXLWorksheet SetRow(IXLWorksheet worksheet, int row, int col, bool boldText, bool thinBorder, bool
             autoFitColumns, object value)
         {
-            worksheet.Cells[row, col].Value = value;
-            worksheet.Cells[row, col].Style.Font.Bold = boldText;
+            worksheet.Cell(row, col).Value = value;
+            worksheet.Cell(row, col).Style.Font.Bold = boldText;
             if (thinBorder) {
-                worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                worksheet.Cell(row, col).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
             }
             if (autoFitColumns)
             {
-                worksheet.Cells[row, col].AutoFitColumns();    
+                worksheet.Columns().AdjustToContents();
             }
-            
+
             return worksheet;
         }
-        
+
         #endregion
 
         #region Working with file system
-        
+
         private int UserId
         {
             get

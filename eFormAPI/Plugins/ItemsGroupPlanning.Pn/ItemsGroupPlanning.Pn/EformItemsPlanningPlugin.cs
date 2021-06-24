@@ -83,15 +83,15 @@ namespace ItemsGroupPlanning.Pn
             var seedData = new ItemsPlanningConfigurationSeedData();
             var contextFactory = new ItemsGroupPlanningPnContextFactory();
             builder.AddPluginConfiguration(
-                connectionString, 
-                seedData, 
+                connectionString,
+                seedData,
                 contextFactory);
             //CaseUpdateDelegates.CaseUpdateDelegate += UpdateRelatedCase;
 
         }
 
         public void ConfigureOptionsServices(
-            IServiceCollection services, 
+            IServiceCollection services,
             IConfiguration configuration)
         {
             services.ConfigurePluginDbOptions<ItemsPlanningBaseSettings>(
@@ -101,17 +101,13 @@ namespace ItemsGroupPlanning.Pn
         public void ConfigureDbContext(IServiceCollection services, string connectionString)
         {
             _connectionString = connectionString;
-            if (connectionString.ToLower().Contains("convert zero datetime"))
-            {
-                services.AddDbContext<ItemsGroupPlanningPnDbContext>(o => o.UseMySql(connectionString,
-                    b => b.MigrationsAssembly(PluginAssembly().FullName)));
-            }
-            else
-            {
-                services.AddDbContext<ItemsGroupPlanningPnDbContext>(o => o.UseSqlServer(connectionString,
-                    b => b.MigrationsAssembly(PluginAssembly().FullName)));
-            }
-
+            services.AddDbContext<ItemsGroupPlanningPnDbContext>(o =>
+                o.UseMySql(connectionString, new MariaDbServerVersion(
+                    new Version(10, 4, 0)), mySqlOptionsAction: builder =>
+                {
+                    builder.EnableRetryOnFailure();
+                    builder.MigrationsAssembly(PluginAssembly().FullName);
+                }));
             ItemsGroupPlanningPnContextFactory contextFactory = new ItemsGroupPlanningPnContextFactory();
             var context = contextFactory.CreateDbContext(new[] {connectionString});
             context.Database.Migrate();
@@ -125,7 +121,7 @@ namespace ItemsGroupPlanning.Pn
             var serviceProvider = appBuilder.ApplicationServices;
             IRebusService rebusService = serviceProvider.GetService<IRebusService>();
             rebusService.Start(_connectionString);
-            
+
             _bus = rebusService.GetBus();
 
         }

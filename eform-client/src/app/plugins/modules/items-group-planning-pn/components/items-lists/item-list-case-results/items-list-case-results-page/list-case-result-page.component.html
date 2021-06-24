@@ -1,0 +1,217 @@
+<eform-subheader [title]="'List results' | translate"> </eform-subheader>
+
+<div class="container-fluid">
+  <form [formGroup]="generateForm">
+    <div class="row pl-1">
+      <div class="col-md-3">
+        <div class="md-form" [owlDateTimeTrigger]="dateRangePicker">
+          <i class="material-icons prefix"> calendar_today </i>
+          <input
+            mdbInput
+            formControlName="dateRange"
+            name="dateRange"
+            required
+            type="text"
+            [owlDateTime]="dateRangePicker"
+            [selectMode]="'range'"
+            class="form-control input-sm"
+            id="dateFormInput"
+          />
+          <label for="dateFormInput">{{
+            'Selected date range' | translate
+          }}</label>
+        </div>
+      </div>
+      <div class="col-md-3 text-center pt-3">
+        <button
+          mdbBtn
+          class="btn-success btn-small-height"
+          [disabled]="generateForm.invalid"
+          (click)="onGenerateReport()"
+        >
+          {{ 'Generate' | translate }}
+        </button>
+        <button
+          mdbBtn
+          class="btn-success btn-small-height"
+          [disabled]="generateForm.invalid"
+          (click)="onSaveReport()"
+        >
+          {{ 'Download' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<owl-date-time
+  [pickerType]="'calendar'"
+  [firstDayOfWeek]="1"
+  #dateRangePicker
+></owl-date-time>
+
+<div class="container-fluid">
+  <div class="row p-1 mt-4 table-responsive no-gutters">
+    <table
+      mdbTable
+      striped="true"
+      hover="true"
+      small="true"
+      class="z-depth-1 text-center"
+    >
+      <thead
+        table-headers
+        [tableHeaders]="tableHeaders"
+        [sort]="itemListCaseResultsStateService.getSort() | async"
+        (sortChanged)="sortTable($event)"
+      ></thead>
+      <tbody id="tableBody">
+        <tr *ngFor="let itemCase of casesModel.items">
+          <td id="caseId">
+            {{ itemCase.id }}
+          </td>
+          <td *ngIf="casesModel.deployedAtEnabled">
+            <date-formatter
+              [date]="itemCase.deployedAt"
+              [Format]="'date'"
+            ></date-formatter>
+          </td>
+          <td *ngIf="casesModel.doneAtEnabled">
+            <date-formatter
+              [date]="itemCase.doneAt"
+              [Format]="'datetime'"
+            ></date-formatter>
+          </td>
+          <td *ngIf="casesModel.doneByUserNameEnabled">
+            {{ itemCase.doneByUserName }}
+          </td>
+          <td *ngIf="casesModel.labelEnabled">
+            {{ itemCase.label }}
+          </td>
+          <td *ngIf="casesModel.descriptionEnabled">
+            {{ itemCase.description }}
+          </td>
+          <td *ngIf="casesModel.itemNumberEnabled">
+            {{ itemCase.itemNumber }}
+          </td>
+          <td *ngIf="casesModel.locationCodeEnabled">
+            {{ itemCase.locationCode }}
+          </td>
+          <td *ngIf="casesModel.buildYearEnabled">
+            {{ itemCase.buildYear }}
+          </td>
+          <td *ngIf="casesModel.typeEnabled">
+            {{ itemCase.type }}
+          </td>
+          <td *ngIf="casesModel.fieldEnabled1">
+            {{ itemCase.field1 }}
+          </td>
+          <td *ngIf="casesModel.fieldEnabled2">
+            {{ itemCase.field2 }}
+          </td>
+          <td *ngIf="casesModel.fieldEnabled3">
+            {{ itemCase.field3 }}
+          </td>
+          <td *ngIf="casesModel.fieldEnabled4">
+            {{ itemCase.field4 }}
+          </td>
+          <td *ngIf="casesModel.fieldEnabled5">
+            {{ itemCase.field5 }}
+          </td>
+          <td *ngIf="casesModel.fieldEnabled6">
+            {{ itemCase.field6 }}
+          </td>
+          <td *ngIf="casesModel.fieldEnabled7">
+            {{ itemCase.field7 }}
+          </td>
+          <td *ngIf="casesModel.fieldEnabled8">
+            {{ itemCase.field8 }}
+          </td>
+          <td *ngIf="casesModel.fieldEnabled9">
+            {{ itemCase.field9 }}
+          </td>
+          <td *ngIf="casesModel.fieldEnabled10">
+            {{ itemCase.field10 }}
+          </td>
+          <td *ngIf="casesModel.numberOfImagesEnabled">
+            {{ itemCase.numberOfImages }}
+          </td>
+          <td>
+            <button
+              mdbBtn
+              class="btn-success btn-icon mb-2"
+              *ngIf="itemCase.status === 100"
+              [routerLink]="[
+                '/cases/edit/' +
+                  itemCase.sdkCaseId +
+                  '/' +
+                  casesModel.sdkeFormId
+              ]"
+              [queryParams]="{
+                reverseRoute:
+                  '/plugins/items-group-planning-pn/item-itemCase-results/' +
+                  this.listCaseRequestModel.listId
+              }"
+              mdbTooltip="{{ 'Edit Case' | translate }}"
+            >
+              <fa-icon icon="pen" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+            <button
+              mdbBtn
+              class="btn-success btn-icon mb-2"
+              (click)="showListCasePdfModal(itemCase)"
+              *ngIf="itemCase.status === 100"
+              mdbTooltip="{{ 'Upload PDF' | translate }}"
+            >
+              <fa-icon
+                icon="file-upload"
+                size="lg"
+                [fixedWidth]="true"
+              ></fa-icon>
+            </button>
+            <button
+              mdbBtn
+              class="btn-success btn-icon mb-2"
+              *ngIf="
+                (currentTemplate.jasperExportEnabled ||
+                  currentTemplate.docxExportEnabled) &&
+                itemCase.status === 100
+              "
+              (click)="downloadFile(itemCase, 'pdf')"
+              mdbTooltip="{{ 'Download PDF' | translate }}"
+            >
+              <fa-icon icon="file-pdf" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+            <button
+              mdbBtn
+              class="btn-success btn-icon mb-2"
+              *ngIf="
+                currentTemplate.docxExportEnabled && itemCase.status === 100
+              "
+              (click)="downloadFile(itemCase, 'docx')"
+              mdbTooltip="{{ 'Download Docx' | translate }}"
+            >
+              <fa-icon icon="file-word" size="lg" [fixedWidth]="true"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row justify-content-between mr-2 ml-2">
+    <div class="col-md-1">
+      <eform-page-size
+        [pageSize]="itemListCaseResultsStateService.getPageSize() | async"
+        (onPageSizeChanged)="changePageSize($event)"
+      >
+      </eform-page-size>
+    </div>
+    <div class="col-md-4 ml-auto d-flex justify-content-end p-2">
+      <eform-pagination
+        [pagination]="itemListCaseResultsStateService.getPagination() | async"
+        (onPageChanged)="changePage($event)"
+      ></eform-pagination>
+    </div>
+  </div>
+</div>
+<app-item-case-uploaded-data #uploadedDataModal></app-item-case-uploaded-data>

@@ -35,20 +35,10 @@ export class ItemsGroupPlanningSettingsPage extends Page {
     return browser.$('#siteIds');
   }
 
-  public get itemsPlanningBtn() {
-    return browser.$('#items-group-planning-pn');
-  }
-
-  public get itemsPlanningSettingsBtn() {
-    return browser.$('#items-group-planning-pn-settings');
-  }
-
   public goToSettingsPage() {
-    myEformsPage.Navbar.advancedDropdownClick();
-    myEformsPage.Navbar.clickOnSubMenuItem('Plugins');
-    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
-    pluginPage.pluginSettingsLink.click();
-    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
+    myEformsPage.Navbar.goToPluginsPage();
+    pluginPage.getFirstPluginRowObj().settingsBtn.click();
+    $('#spinner-animation').waitForDisplayed({ timeout: 90000, reverse: true });
   }
 
   public saveSettings(data: any) {
@@ -59,11 +49,11 @@ export class ItemsGroupPlanningSettingsPage extends Page {
     this.numberOfWorkers.setValue(data.numberOfWorkers);
     this.siteIds.setValue(data.siteIds);
     this.saveSettingsBtn.click();
-    $('#spinner-animation').waitForDisplayed({timeout: 90000, reverse: true});
+    $('#spinner-animation').waitForDisplayed({ timeout: 90000, reverse: true });
   }
 
   public getSettings() {
-      browser.pause(500);
+    browser.pause(500);
     return new ItemsGroupPlanningSettings();
   }
 }
